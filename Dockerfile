@@ -43,12 +43,8 @@ RUN mkdir ~/.ssh/
 RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 
-# pmotools
-WORKDIR /opt
-RUN git clone  https://github.com/PlasmoGenEpi/pmotools-python.git
-WORKDIR /opt/pmotools-python
-RUN git checkout develop
-RUN pip install --break-system-packages .
+# pmotools from PyPI (provides pmotools-python CLI)
+RUN pip install --break-system-packages pmotools==1.0.0
 
 # R configuration
 RUN mkdir -p /usr/local/lib/R/etc/ /usr/lib/R/etc/
@@ -91,8 +87,7 @@ RUN R -e "remotes::install_github('aimeertaylor/FreqEstimationModel', build_vign
 RUN R -e 'library("FreqEstimationModel")'
 
 # R install dcifer, variantstring
-RUN R -e "install.packages(c('dcifer'), repos = c('https://plasmogenepi.r-universe.dev', 'https://cloud.r-project.org'))"
-RUN R -e "remotes::install_github('mrc-ide/variantstring@1.8.0')"
+RUN R -e "install.packages(c('dcifer', 'variantstring'), repos = c('https://plasmogenepi.r-universe.dev', 'https://cloud.r-project.org'))"
 
 ## attempt to load libraries to make sure they installed
 RUN R -e 'library("dcifer")'
@@ -106,6 +101,3 @@ RUN Rscript -e 'BiocManager::install("msa", ask = FALSE)'
 ## attempt to load libraries to make sure they installed
 RUN R -e 'library("Biostrings")'
 RUN R -e 'library("pwalign")'
-
-# update path
-ENV PATH="/opt/pmotools-python/scripts:$PATH"

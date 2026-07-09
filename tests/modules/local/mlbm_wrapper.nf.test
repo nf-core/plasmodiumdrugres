@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process MLBM_WRAPPER"
-    script "modules/local/mlbm_wrapper.nf"
+    script "modules/local/mlbm_wrapper"
     process "MLBM_WRAPPER"
 
     test("Test for failures and output file checksums") {

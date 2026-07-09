@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process FEM_WRAPPER"
-    script "modules/local/fem_wrapper.nf"
+    script "modules/local/fem_wrapper"
     process "FEM_WRAPPER"
 
     test("Should run without failures") {

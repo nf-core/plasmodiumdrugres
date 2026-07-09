@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process SPLIT_ALLELE_TABLE_BY_POP"
-    script "modules/local/split_allele_table_by_population.nf"
+    script "modules/local/split_allele_table_by_population"
     process "SPLIT_ALLELE_TABLE_BY_POP"
 
     test("Should run without failures") {

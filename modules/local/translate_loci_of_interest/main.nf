@@ -29,8 +29,6 @@ process TRANSLATE_LOCI_OF_INTEREST {
     script:
     def extra_args = "${extra_args}"
     """
-    Rscript -e 'if (!requireNamespace("validate", quietly=TRUE)) remotes::install_cran("validate", repos="https://cran.rstudio.com", lib=.libPaths()[1])'
-
     Rscript ${projectDir}/bin/PGEcore/scripts/translate_loci_of_interest/translate_loci_of_interest.R \\
         --allele_table ${allele_table} \\
         --ref_bed ${ref_bed} \\

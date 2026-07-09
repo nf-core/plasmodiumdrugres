@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process ADD_REF_SEQS_WITH_TARGETED_REF_FASTA"
-    script "modules/local/add_ref_seqs_with_targeted_ref_fasta.nf"
+    script "modules/local/add_ref_seqs_with_targeted_ref_fasta"
     process "ADD_REF_SEQS_WITH_TARGETED_REF_FASTA"
 
     test("Should run without failures") {

@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process COUNT_SAMPLES_BY_COI"
-    script "modules/local/count_samples_by_coi.nf"
+    script "modules/local/count_samples_by_coi"
     process "COUNT_SAMPLES_BY_COI"
 
     test("Should run without failures") {

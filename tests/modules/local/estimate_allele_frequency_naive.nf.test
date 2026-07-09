@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process ESTIMATE_ALLELE_FREQUENCY_NAIVE"
-    script "modules/local/estimate_allele_frequency_naive.nf"
+    script "modules/local/estimate_allele_frequency_naive"
     process "ESTIMATE_ALLELE_FREQUENCY_NAIVE"
 
     test("Estimating allele frequencies naively should run without failures with read_count_prop method") {

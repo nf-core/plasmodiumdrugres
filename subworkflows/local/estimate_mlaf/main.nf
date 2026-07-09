@@ -5,8 +5,8 @@
 include { MLBM_WRAPPER } from '../../../modules/local/mlbm_wrapper'
 include { FEM_WRAPPER } from '../../../modules/local/fem_wrapper'
 include { ESTIMATE_ML_PREVFREQ_NAIVE } from '../../../modules/local/estimate_multilocus_prevfreq_naive'
-include { SLAF_FROM_STAVE_MLAF as MLBM_SLAF_FROM_STAVE_MLAF} from '../../../modules/local/slaf_from_stave_mlaf.nf'
-include { SLAF_FROM_STAVE_MLAF as FEM_SLAF_FROM_STAVE_MLAF} from '../../../modules/local/slaf_from_stave_mlaf.nf'
+include { SLAF_FROM_STAVE_MLAF as MLBM_SLAF_FROM_STAVE_MLAF} from '../../../modules/local/slaf_from_stave_mlaf'
+include { SLAF_FROM_STAVE_MLAF as FEM_SLAF_FROM_STAVE_MLAF} from '../../../modules/local/slaf_from_stave_mlaf'
 
 workflow ESTIMATE_MLAF {
 

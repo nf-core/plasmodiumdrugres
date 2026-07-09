@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process EXTRACT_ALLELE_TABLE"
-    script "modules/local/extract_allele_table.nf"
+    script "modules/local/extract_allele_table"
     process "EXTRACT_ALLELE_TABLE"
 
     test("Should extract allele table without failures") {

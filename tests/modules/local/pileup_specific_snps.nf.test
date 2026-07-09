@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process PILEUP_SPECIFIC_SNPS"
-    script "modules/local/pileup_specific_snps.nf"
+    script "modules/local/pileup_specific_snps"
     process "PILEUP_SPECIFIC_SNPS"
 
     test("Should run without failures") {

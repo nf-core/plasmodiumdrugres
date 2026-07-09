@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process EXTRACT_PANEL_INFO_TO_BED"
-    script "modules/local/extract_panel_info_to_bed.nf"
+    script "modules/local/extract_panel_info_to_bed"
     process "EXTRACT_PANEL_INFO_TO_BED"
 
     test("Should extract panel info without failures") {

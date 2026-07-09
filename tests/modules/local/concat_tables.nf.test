@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process CONCAT_TABLES"
-    script "modules/local/concat_tables.nf"
+    script "modules/local/concat_tables"
     process "CONCAT_TABLES"
 
     test("Should run without failures with single input") {

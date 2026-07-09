@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process ADD_REF_SEQS_WITH_FULL_GENOME_REF_FASTA"
-    script "modules/local/add_ref_seqs_with_full_genome_ref_fasta.nf"
+    script "modules/local/add_ref_seqs_with_full_genome_ref_fasta"
     process "ADD_REF_SEQS_WITH_FULL_GENOME_REF_FASTA"
 
     test("Should run without failures") {

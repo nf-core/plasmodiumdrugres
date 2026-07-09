@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process EXTRACT_POPULATION_MAP_FROM_PMO"
-    script "modules/local/extract_population_map_from_pmo.nf"
+    script "modules/local/extract_population_map_from_pmo"
     process "EXTRACT_POPULATION_MAP_FROM_PMO"
 
     test("Should run without failures") {

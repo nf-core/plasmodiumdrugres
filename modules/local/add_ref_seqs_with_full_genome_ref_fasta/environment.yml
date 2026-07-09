@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+name: bioc_biostrings
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconda::bioconductor-biostrings=2.74.0
+  - conda-forge::r-base=4.4
+  - conda-forge::r-dplyr
+  - conda-forge::r-magrittr
+  - conda-forge::r-optparse
+  - conda-forge::r-readr
+  - conda-forge::r-stringr
+  - conda-forge::r-tibble
+  - conda-forge::r-validate

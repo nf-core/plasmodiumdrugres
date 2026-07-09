@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process ESTIMATE_ML_PREVFREQ_NAIVE"
-    script "modules/local/estimate_multilocus_prevfreq_naive.nf"
+    script "modules/local/estimate_multilocus_prevfreq_naive"
     process "ESTIMATE_ML_PREVFREQ_NAIVE"
 
     test("Estimating multilocus prev and frequency naively large example file, wsaf_prop method, should run without failures") {

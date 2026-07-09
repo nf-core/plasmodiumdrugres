@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process SLAF_FROM_STAVE_MLAF"
-    script "modules/local/slaf_from_stave_mlaf.nf"
+    script "modules/local/slaf_from_stave_mlaf"
     process "SLAF_FROM_STAVE_MLAF"
 
     test("Test for successful execution and output checksum") {

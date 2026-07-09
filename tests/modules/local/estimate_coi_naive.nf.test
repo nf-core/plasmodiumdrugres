@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process ESTIMATE_COI_NAIVE"
-    script "modules/local/estimate_coi_naive.nf"
+    script "modules/local/estimate_coi_naive"
     process "ESTIMATE_COI_NAIVE"
 
     test("Estimating coi with integer method should run without failures") {
