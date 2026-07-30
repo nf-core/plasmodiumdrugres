@@ -40,8 +40,21 @@ Run module tests with Docker (build images first):
 nf-test test tests/modules/local/merge_tables.nf.test --profile test,docker
 ```
 
-Use `--profile test,conda` for modules whose dependencies are on Bioconda/conda-forge (tidyverse, Biostrings, pmotools, etc.).
+Use `--profile test,conda` for local module tests. All module dependencies are now on Bioconda/conda-forge, including:
 
-**Conda limitations:** Some R packages are not on Bioconda/conda-forge (`dcifer`, `variantstring`, and `FreqEstimationModel` are installed from PlasmoGenEpi r-universe or GitHub in Dockerfiles). `pmotools` is installed from PyPI via `pip`. With `--profile conda`, Nextflow only uses `environment.yml`, not the Dockerfile — so `dcifer_*`, `mlbm_wrapper`, `slaf_from_stave_mlaf`, and `fem_wrapper` tests require `--profile test,docker` (after `./scripts/build_module_images.sh`).
+| Package | Conda name | Channel |
+|---------|------------|---------|
+| pmotools | `pmotools=1.1.0` | bioconda |
+| dcifer | `r-dcifer=1.5.2` | conda-forge |
+| variantstring | `r-variantstring=1.8.7` | bioconda |
+| FreqEstimationModel | `r-freqestimationmodel=0.1.0` | bioconda |
+
+Note: `r-variantstring` and `r-freqestimationmodel` currently ship R 4.5 builds only, so those module environments pin `r-base=4.5`. Other R modules remain on `r-base=4.4`.
+
+**Conda vs Docker parity:** Module Dockerfiles install from the same `environment.yml` files. After changing pins, rebuild images (`./scripts/build_module_images.sh`) so `--profile docker` and `--profile conda` use the same package versions. Old MD5 assertions from pre-conda images will not match until snapshots are regenerated.
+
+**Apple Silicon + conda:** `r-validate` has no `osx-arm64` build. Use `CONDA_SUBDIR=osx-64` (Rosetta) for local conda tests, or prefer `--profile docker`.
+
+**Host pyenv:** The `conda` / `mamba` profiles strip `~/.pyenv` from `PATH` so process CLIs (e.g. `pmotools-python`) come from the conda env, not a host install.
 
 Per-module images are not published to Docker Hub yet; build locally or extend CI publish workflows before removing the monolithic fallback.

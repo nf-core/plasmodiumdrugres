@@ -3,14 +3,16 @@
 name: fem_wrapper
 channels:
   - conda-forge
+  - bioconda
 dependencies:
-  - conda-forge::r-base=4.4
+  - conda-forge::r-base=4.5
+  - bioconda::r-freqestimationmodel=0.1.0
+  - bioconda::r-variantstring=1.8.7
   - conda-forge::r-dplyr
   - conda-forge::r-magrittr
   - conda-forge::r-optparse
   - conda-forge::r-purrr
   - conda-forge::r-readr
-  - conda-forge::r-remotes
   - conda-forge::r-rlang
   - conda-forge::r-stringr
   - conda-forge::r-tibble

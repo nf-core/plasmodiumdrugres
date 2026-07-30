@@ -44,7 +44,8 @@ RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 
 # pmotools from PyPI (provides pmotools-python CLI)
-RUN pip install --break-system-packages pmotools==1.0.0
+# Keep in sync with bioconda::pmotools in modules/local/*/environment.yml
+RUN pip install --break-system-packages pmotools==1.1.0
 
 # R configuration
 RUN mkdir -p /usr/local/lib/R/etc/ /usr/lib/R/etc/
