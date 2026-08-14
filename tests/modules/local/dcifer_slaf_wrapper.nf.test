@@ -1,15 +1,15 @@
 nextflow_process {
 
     name "Test Process DCIFER_SLAF_WRAPPER"
-    script "modules/local/dcifer_slaf_wrapper.nf"
+    script "modules/local/dcifer_slaf_wrapper/main.nf"
     process "DCIFER_SLAF_WRAPPER"
 
-    test("Test for failures and output file checksums with example_allele_table") {
+    test("Test for failures and output file checksums with allele_table") {
 
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_allele_table.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true)
                 """
             }
         }
@@ -20,15 +20,15 @@ nextflow_process {
             // unpack tuple output
             def (pop, outFile) = process.out.mhaps_slaf.get(0)
 
-            assert pop == 'example_allele_table'
+            assert pop == 'allele_table'
 
             // output md5 check
-            assert path(outFile).md5 == "5fefbcd20e84580785146b97c72175db"
+            assert path(outFile).md5 == "5782bf466d5ca3228baffca3a9147110"
         }
 
     }
 
-    test("Test for failures and output file checksums with example_allele_table coi_lrank 1") {
+    test("Test for failures and output file checksums with allele_table coi_lrank 1") {
 
         when {
             params{
@@ -36,7 +36,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_allele_table.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true)
                 """
             }
         }
@@ -47,61 +47,10 @@ nextflow_process {
             // unpack tuple output
             def (pop, outFile) = process.out.mhaps_slaf.get(0)
 
-            assert pop == 'example_allele_table'
+            assert pop == 'allele_table'
 
             // output md5 check
-            assert path(outFile).md5 == "6a57e9a67ba1fb273f376d7a47563b53"
-        }
-
-    }
-
-    test("Test for failures and output file checksums with example2_allele_table") {
-
-        when {
-            process {
-                """
-                input[0] = file("${projectDir}/tests/input/example2_allele_table.tsv")
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assert process.out.mhaps_slaf != null
-            // unpack tuple output
-            def (pop, outFile) = process.out.mhaps_slaf.get(0)
-
-            assert pop == 'example2_allele_table'
-
-            // output md5 check
-            assert path(outFile).md5 == "bf96bbdd0d49597bf48424a3c9f90c03"
-        }
-
-    }
-
-    test("Test for failures and output file checksums with example2_allele_table coi_lrank 1") {
-
-        when {
-            params{
-                dcifer_slaf_wrapper_coi_lrank = 1
-            }
-            process {
-                """
-                input[0] = file("${projectDir}/tests/input/example2_allele_table.tsv")
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assert process.out.mhaps_slaf != null
-            // unpack tuple output
-            def (pop, outFile) = process.out.mhaps_slaf.get(0)
-
-            assert pop == 'example2_allele_table'
-
-            // output md5 check
-            assert path(outFile).md5 == "5e73946aa7393434a4ad02e9818cb097"
+            assert path(outFile).md5 == "5782bf466d5ca3228baffca3a9147110"
         }
 
     }

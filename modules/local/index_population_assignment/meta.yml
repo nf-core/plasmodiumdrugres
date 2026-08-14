@@ -1,0 +1,62 @@
+name: index_population_assignment
+description: Add stable internal indices to population assignment labels
+keywords:
+  - population
+  - index
+  - assignment
+tools:
+  - index_population_assignment:
+      description: |
+        R script that maps population labels to stable indices for parallel processing.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      licence: ["MIT"]
+input:
+  - population_map:
+      type: file
+      description: Specimen population assignment TSV
+      pattern: "*"
+output:
+  - population_map_indexed:
+      - population_map_indexed.tsv:
+          type: file
+          description: Population map with stable index column
+          pattern: population_map_indexed.tsv
+  - population_index_lookup:
+      - population_index_lookup.tsv:
+          type: file
+          description: Index to true population label lookup
+          pattern: population_index_lookup.tsv
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/r_tidyverse:15b9e098f3fff0e2
+      build_id: bd-15b9e098f3fff0e2_1
+      scan_id: sc-9a22b02cec159dd7_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/r_tidyverse:4e1e0dec2f11d009
+      build_id: bd-4e1e0dec2f11d009_1
+      scan_id: sc-06ac88301c562b70_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r_tidyverse:902ddf85391a9ad0
+      build_id: bd-902ddf85391a9ad0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/25/25ec37d72caff047524cad028f190afbd7e97ff61cba29d8172883993c8a5c75/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r_tidyverse:8018b08123990697
+      build_id: bd-8018b08123990697_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7f/7f5e0a41f2a79c39b4a63597087fe5b7c189098b13da95622d4be00e11b7b28f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/index_population_assignment/.conda-lock/linux_amd64-bd-4e1e0dec2f11d009_1.txt
+    linux/arm64:
+      lock_file: modules/local/index_population_assignment/.conda-lock/linux_arm64-bd-15b9e098f3fff0e2_1.txt

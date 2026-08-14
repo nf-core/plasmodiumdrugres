@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process ESTIMATE_ALLELE_PREVALENCE_NAIVE"
-    script "modules/local/estimate_allele_prevalence_naive.nf"
+    script "modules/local/estimate_allele_prevalence_naive/main.nf"
     process "ESTIMATE_ALLELE_PREVALENCE_NAIVE"
 
     test("Estimate allele prev should run without failures") {
@@ -9,7 +9,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
                 """
             }
         }
@@ -22,10 +22,10 @@ nextflow_process {
             // unpack tuple output
             def (pop, outFile) = process.out.allele_prevalence.get(0)
 
-            assert pop == 'example_amino_acid_calls'
+            assert pop == 'amino_acid_calls'
 
             // output md5 check
-            assert path(outFile).md5 == "716a7d5e590b87ee9189857145eb4b37"
+            assert path(outFile).md5 == "7fd98b0413f895d1daa3f978aad74912"
         }
 
     }

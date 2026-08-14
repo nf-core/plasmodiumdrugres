@@ -1,0 +1,54 @@
+name: slaf_from_mhaps_freqs
+description: Derive single-locus allele frequencies from microhaplotype frequency tables
+keywords:
+  - slaf
+  - microhaplotype
+  - mhaps
+tools:
+  - slaf_from_mhaps_freqs:
+      description: |
+        PGEcore R script that expands microhap frequencies to single-locus frequencies.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://github.com/PlasmoGenEpi/PGEcore/tree/develop/scripts/calc_slaf_based_on_mhap_freqs
+      licence: ["MIT"]
+input:
+  - group_name:
+      type: string
+      description: Population or analysis group label
+  - mhaps_slaf_fnp:
+      type: file
+      description: Microhaplotype single-locus allele frequency table (TSV)
+      pattern: "*"
+  - loci_of_interest_per_microhaps_fnp:
+      type: file
+      description: Mapping of loci of interest to covering microhaplotypes (TSV)
+      pattern: "*"
+output:
+  - slaf:
+      - "${group_name}.slaf.tsv":
+          type: file
+          description: Derived single-locus allele frequency table
+          pattern: "${group_name}.slaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pgecore_r:b3d363b44f3cab5e
+      build_id: bd-b3d363b44f3cab5e_1
+      scan_id: sc-0e17c1447f1a6df7_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pgecore_r:ecb4612379d466a9
+      build_id: bd-ecb4612379d466a9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b8b5976e182bb3b8f3b3073fe7ccb663bfa240ef8476d59faf2cccf8b180fe6f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/slaf_from_mhaps_freqs/.conda-lock/linux_amd64-bd-b3d363b44f3cab5e_1.txt

@@ -1,0 +1,75 @@
+name: translate_loci_of_interest
+description: Translate loci of interest to amino acid calls using PGEcore
+keywords:
+  - translation
+  - amino acid
+  - plasmodium
+  - drug resistance
+tools:
+  - pgecore_translate_loci:
+      description: |
+        Wrapper around the PGEcore translate_loci_of_interest.R script.
+        Aligns alleles to reference codons and produces collapsed amino acid calls.
+      homepage: https://github.com/PlasmoGenEpi/PGEcore
+      documentation: https://github.com/PlasmoGenEpi/PGEcore/tree/develop/scripts/translate_loci_of_interest
+      licence: ["MIT"]
+input:
+  - allele_table:
+      type: file
+      description: Allele table (TSV)
+      pattern: "*.tsv"
+  - ref_bed:
+      type: file
+      description: Reference BED with sequences for panel targets
+      pattern: "*.bed"
+  - loci_of_interest:
+      type: file
+      description: BED of principal resistance markers / loci of interest
+      pattern: "*.bed"
+  - extra_args:
+      type: string
+      description: Additional CLI arguments passed to the R script
+output:
+  - collapsed_amino_acid_calls:
+      - "translated_loci/collapsed_amino_acid_calls.tsv.gz":
+          type: file
+          description: Collapsed amino acid calls per specimen and target
+          pattern: "collapsed_amino_acid_calls.tsv.gz"
+  - amino_acid_calls:
+      - "translated_loci/amino_acid_calls.tsv.gz":
+          type: file
+          description: Per-haplotype amino acid calls
+          pattern: "amino_acid_calls.tsv.gz"
+  - loci_covered_by_target_samples_info:
+      - "translated_loci/loci_covered_by_target_samples_info.tsv":
+          type: file
+          description: Coverage summary for loci of interest
+          pattern: "loci_covered_by_target_samples_info.tsv"
+  - loci_of_interest_for_target_for_microhap:
+      - "translated_loci/loci_of_interest_for_target_for_microhap.tsv.gz":
+          type: file
+          description: Loci of interest table for microhap-based SLAF methods
+          pattern: "loci_of_interest_for_target_for_microhap.tsv.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/translate_loci_of_interest:dd81facbe62d2c91
+      build_id: bd-dd81facbe62d2c91_1
+      scan_id: sc-b73e79a4ae23ef43_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/translate_loci_of_interest:a447d335d5f0f448
+      build_id: bd-a447d335d5f0f448_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3d/3d094be5e8095ff83cf9b7bf80b33b60f14a0690d9ea93079eb1c4ff6949e422/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/translate_loci_of_interest/.conda-lock/linux_amd64-bd-dd81facbe62d2c91_1.txt

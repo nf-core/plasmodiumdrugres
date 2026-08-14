@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process EXTRACT_POPULATION_MAP_FROM_PMO"
-    script "modules/local/extract_population_map_from_pmo.nf"
+    script "modules/local/extract_population_map_from_pmo/main.nf"
     process "EXTRACT_POPULATION_MAP_FROM_PMO"
 
     test("Should run without failures") {
@@ -9,7 +9,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_PMO.json")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/example_PMO.json', checkIfExists: true)
                 input[1] = "collection_country collection_date"
                 input[2] = "_"
                 """
@@ -19,7 +19,7 @@ nextflow_process {
         then {
             assert process.success
             assert process.out.population_map != null
-            assert path(process.out.population_map.get(0)).md5 == "11366424ca554abae269ae7295cc5a3c"
+            assert path(process.out.population_map.get(0)).md5 == "93ca2a7743b8f67ab2b9e5e8f9dc9c80"
         }
 
     }

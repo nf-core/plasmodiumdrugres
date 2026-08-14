@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process EXTRACT_ALLELE_TABLE"
-    script "modules/local/extract_allele_table.nf"
+    script "modules/local/extract_allele_table/main.nf"
     process "EXTRACT_ALLELE_TABLE"
 
     test("Should extract allele table without failures") {
@@ -9,7 +9,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_PMO.json")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/example_PMO.json', checkIfExists: true)
                 """
             }
         }
@@ -17,7 +17,7 @@ nextflow_process {
         then {
             assert process.success
             assert process.out.allele_table != null
-            assert path(process.out.allele_table.get(0)).md5 == "784b56cd9ab448472553457ad5a61105"
+            assert path(process.out.allele_table.get(0)).md5 == "e47cfc5c3adc0fe7e730d212abbc3ce5"
         }
 
     }

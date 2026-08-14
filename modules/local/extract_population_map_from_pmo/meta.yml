@@ -1,0 +1,63 @@
+name: extract_population_map_from_pmo
+description: Extract specimen population assignment from PMO metadata
+keywords:
+  - pmo
+  - pmotools
+  - population
+tools:
+  - pmotools:
+      description: |
+        pmotools export plus helper script to build a population assignment table.
+      homepage: https://github.com/PlasmoGenEpi/pmotools-python
+      documentation: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      licence: ["MIT"]
+input:
+  - pmo:
+      type: file
+      description: PMO JSON file
+      pattern: "*.json"
+  - population_fields:
+      type: string
+      description: Comma-separated PMO metadata fields for population label
+  - separator:
+      type: string
+      description: String used to join population fields
+output:
+  - population_map:
+      - population_map.tsv:
+          type: file
+          description: Specimen to population assignment TSV
+          pattern: population_map.tsv
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/pmotools:68db46a453531d5c
+      build_id: bd-68db46a453531d5c_4
+      scan_id: sc-9074ce4fde1a5047_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/pmotools:95ef48ca9c18fa35
+      build_id: bd-95ef48ca9c18fa35_4
+      scan_id: sc-cecb82adfc0984fe_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pmotools:d1b39a3d4c4e5e61
+      build_id: bd-d1b39a3d4c4e5e61_4
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/18/189c44118da9b46a927fb57c5ca01460fb93bfbc4b85bcb4484036888b8d5878/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pmotools:1431318b9150e3f5
+      build_id: bd-1431318b9150e3f5_4
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64de1303f6e6bdaceaaef450ff8554cd6a919b7f3a654fedafbe02c7f3546597/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/extract_population_map_from_pmo/.conda-lock/linux_amd64-bd-95ef48ca9c18fa35_4.txt
+    linux/arm64:
+      lock_file: modules/local/extract_population_map_from_pmo/.conda-lock/linux_arm64-bd-68db46a453531d5c_4.txt

@@ -1,0 +1,52 @@
+name: add_ref_seqs_with_full_genome_ref_fasta
+description: Add reference sequences to a panel BED using a full genome FASTA
+keywords:
+  - reference
+  - bed
+  - fasta
+  - biostrings
+tools:
+  - add_ref_seqs_with_full_genome_ref_fasta:
+      description: |
+        PGEcore R script that extracts sequences from a genome FASTA into a BED table.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://github.com/PlasmoGenEpi/PGEcore/tree/develop/scripts/add_ref_seq_to_ref_bed_table
+      licence: ["MIT"]
+input:
+  - ref_bed:
+      type: file
+      description: Panel BED without sequences
+      pattern: "*"
+  - genome:
+      type: file
+      description: Full genome FASTA
+      pattern: "*"
+output:
+  - ref_bed_with_seqs:
+      - ref_bed_with_seqs.bed:
+          type: file
+          description: BED with reference sequence column
+          pattern: ref_bed_with_seqs.bed
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioc_biostrings:4bff14692906e36a
+      build_id: bd-4bff14692906e36a_1
+      scan_id: sc-d8d0c5a4f911fca1_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioc_biostrings:97843eaee53666b9
+      build_id: bd-97843eaee53666b9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa5e7a47124ffe90a02dcbdc8d87234f42aa88ec26014d4f45928f92b647052a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/add_ref_seqs_with_full_genome_ref_fasta/.conda-lock/linux_amd64-bd-4bff14692906e36a_1.txt

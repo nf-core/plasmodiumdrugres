@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process ADD_REF_SEQS_WITH_FULL_GENOME_REF_FASTA"
-    script "modules/local/add_ref_seqs_with_full_genome_ref_fasta.nf"
+    script "modules/local/add_ref_seqs_with_full_genome_ref_fasta/main.nf"
     process "ADD_REF_SEQS_WITH_FULL_GENOME_REF_FASTA"
 
     test("Should run without failures") {
@@ -14,8 +14,8 @@ nextflow_process {
             process {
                 """
                 // define inputs of the process here. Example:
-                input[0] = file("${projectDir}/tests/input/testing_extract_from_genome_bed.bed")
-                input[1] = file("${projectDir}/tests/input/example_PMO_insert_locs_of_panel_refseqs.fasta")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/dummy_panel_info_fake_chroms.bed', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/insert_refseqs.fasta', checkIfExists: true)
                 """
             }
         }
@@ -25,7 +25,7 @@ nextflow_process {
             // channel exists
             assert process.out.ref_bed_with_seqs != null
             // output md5 check
-            assert path(process.out.ref_bed_with_seqs.get(0)).md5 == "d8edaa1aff6fa6026de4eec3c7860607"
+            assert path(process.out.ref_bed_with_seqs.get(0)).md5 == "b8451c64d69abf10cb2978c6b782dbe7"
         }
 
     }

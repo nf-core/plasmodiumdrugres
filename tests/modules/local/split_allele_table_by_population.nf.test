@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process SPLIT_ALLELE_TABLE_BY_POP"
-    script "modules/local/split_allele_table_by_population.nf"
+    script "modules/local/split_allele_table_by_population/main.nf"
     process "SPLIT_ALLELE_TABLE_BY_POP"
 
     test("Should run without failures") {
@@ -9,16 +9,17 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example2_allele_table.tsv")
-                input[1] = file("${projectDir}/tests/input/example2_population_map.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/population_assignment_indexed.tsv', checkIfExists: true)
                 """
             }
         }
 
         then {
             assert process.success
-            assert path(process.out.per_pop_tables.get(0)[0]).md5 == "d98f29e3192e75b336f81986299695af"
-            assert path(process.out.per_pop_tables.get(0)[1]).md5 == "e228f36acc883b677290e80af0923cb4"
+            assert path(process.out.per_pop_tables.get(0)[0]).md5 == "b32c48e492b19eca30f36893b2c0963e"
+            assert path(process.out.per_pop_tables.get(0)[1]).md5 == "0964d377bdef4edd0c8fef9e226d160e"
+            assert path(process.out.per_pop_tables.get(0)[2]).md5 == "a0bd92fbdb98f240e45e237386152086"
         }
 
     }

@@ -64,12 +64,12 @@ opts <- list(
     ),
     make_option(
         c("--population_map"),
-        help = "TSV of population map, needs at minimum the columns provided, --identifier_col and --population_col",
+        help = "TSV of population map, needs at minimum the columns provided by --identifier_col and --split_col",
         type = "character"
     ),
     make_option(
         c("--output_stub"),
-        help = "Output file name stub, output will be [POPULATION]_[OUTPUTSTUB]",
+        help = "Output file name stub, output will be [POPULATION_INDEX][OUTPUTSTUB]",
         type = "character"
     ),
     make_option(
@@ -79,10 +79,10 @@ opts <- list(
         default = "./"
     ),
     make_option(
-        c("--population_col"),
-        help = "population column to split on. Default: %default",
+        c("--split_col"),
+        help = "Internal population index column to split on. Default: %default",
         type = "character",
-        default = "population"
+        default = "population_index"
     ),
     make_option(
         c("--identifier_col"),
@@ -104,25 +104,33 @@ args <- parse_args(parser)
 
 checkOptparseRequiredArgsThrow(parser, args, c("input_table_fnp", "population_map", "output_stub"))
 
-population_map = read_input_and_check_cols(args$population_map, c(args$identifier_col, args$population_col))
+population_map = read_input_and_check_cols(
+    args$population_map,
+    c(args$identifier_col, args$split_col)
+) %>%
+    select(all_of(c(args$identifier_col, args$split_col))) %>%
+    distinct()
+
+population_map[[args$identifier_col]] <- trimws(gsub("\r", "", population_map[[args$identifier_col]]))
+population_map[[args$split_col]] <- trimws(gsub("\r", "", population_map[[args$split_col]]))
+
 input_table = read_input_and_check_cols(args$input_table_fnp, c(args$identifier_col)) %>%
     left_join(population_map, by = c(args$identifier_col))
 
-# Defensive cleanup: sometimes TSV values can contain trailing CR/LF or spaces,
-# which then end up inside output filenames. Trim to keep filenames stable.
-population_map[[args$identifier_col]] <- trimws(gsub("\r", "", population_map[[args$identifier_col]]))
-population_map[[args$population_col]] <- trimws(gsub("\r", "", population_map[[args$population_col]]))
-
 input_table_with_pop = input_table %>%
-    filter(!is.na(args$population_col))
+    filter(!is.na(.data[[args$split_col]]))
 
 input_table_with_no_pop = input_table %>%
-    filter(is.na(args$population_col))
+    filter(is.na(.data[[args$split_col]]))
 
-input_table_with_pop_split = split(input_table_with_pop, input_table_with_pop[[args$population_col]])
+input_table_with_pop_split = split(input_table_with_pop, input_table_with_pop[[args$split_col]])
 
-for(pop_name in names(input_table_with_pop_split)){
-    write_tsv(input_table_with_pop_split[[pop_name]], paste0(args$output_directory, "/", pop_name, "", args$output_stub))
+for (pop_index in names(input_table_with_pop_split)) {
+    pop_table <- input_table_with_pop_split[[pop_index]]
+    if (args$split_col %in% colnames(pop_table)) {
+        pop_table <- pop_table %>% select(-all_of(args$split_col))
+    }
+    write_tsv(pop_table, paste0(args$output_directory, "/", pop_index, args$output_stub))
 }
 
 if(nrow(input_table_with_no_pop) > 0){

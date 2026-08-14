@@ -49,9 +49,11 @@ workflow {
         params.loci_of_interest_bed,
         params.translate_loci_extra_args,
         PIPELINE_INITIALISATION.out.population_assignment_ch,
+        PIPELINE_INITIALISATION.out.population_index_lookup_ch,
         params.mlaf_method,
         params.loci_groups,
-        params.slaf_method
+        params.slaf_method,
+        PIPELINE_INITIALISATION.out.versions
     )
     //
     // SUBWORKFLOW: Run completion tasks
@@ -62,8 +64,6 @@ workflow {
         params.plaintext_email,
         params.outdir,
         params.monochrome_logs,
-        params.hook_url,
-        "multiqcreport",
     )
 }
 
@@ -83,9 +83,11 @@ workflow NFCORE_PLASMODIUMDRUGRES {
     loci_of_interest_bed
     translate_loci_extra_args
     population_assignment_ch
+    population_index_lookup_ch
     mlaf_method
     loci_groups
     slaf_method
+    ch_versions
 
     main:
 
@@ -98,12 +100,11 @@ workflow NFCORE_PLASMODIUMDRUGRES {
         loci_of_interest_bed,
         translate_loci_extra_args,
         population_assignment_ch,
+        population_index_lookup_ch,
         mlaf_method,
         loci_groups,
-        slaf_method
+        slaf_method,
+        ch_versions
     )
 
-    // emit:
-    sl_summary = PLASMODIUMDRUGRES.out.sl_summary // channel: /path/to/sl_summary.tsv
-    ml_summary = PLASMODIUMDRUGRES.out.ml_summary // channel: /path/to/ml_summary.tsv
 }

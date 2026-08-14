@@ -1,61 +1,87 @@
+// Pipeline-test when.params are written to a JSON file before Nextflow loads config,
+// so params.pipelines_testdata_base_path is not available here (becomes "null" + path).
+// Keep in sync with nextflow.config / tests/nextflow.config / nextflow_schema.json.
+def pipelines_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/plasmodiumdrugres/'
+
 nextflow_pipeline {
 
     name "Test pipeline"
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test_allele_table") {
+    // Inputs from conf/test.config via nf-test.config profile "test".
+    // Run with --profile=+docker (or +conda / +singularity).
+    test("-profile test") {
 
         when {
             params {
                 outdir = "$outputDir"
-
-                allele_table               = "${projectDir}/tests/input/example2_allele_table.tsv"
-                panel_info_bed             = "${projectDir}/tests/input/example_PMO_insert_locs_of_panel.bed"
-                loci_of_interest_bed       = "${projectDir}/tests/input/example_principal_resistance_marker_info_table.bed"
-                loci_groups                = "${projectDir}/tests/input/example2_loci_groups.tsv"
             }
         }
 
         then {
-            // stable_name: All files + folders in ${params.outdir}/ with a stable name
-            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            // stable_name: All files + folders in ${params.outdir}/ with a stable path (including file name)
+            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt,yml}'])
             // stable_path: All files in ${params.outdir}/ with stable content
             def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
             assertAll(
-                { assert workflow.success},
-                {             assert snapshot(
-                    //removeNextflowVersion("$outputDir/pipeline_info/nf_core_plasmodiumdrugres_software_mqc_versions.yml"),
-                    // All stable path name, with a relative path
+                { assert workflow.success },
+                { assert snapshot(
+                    // pipeline software versions.yml from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
+                    removeNextflowVersion("$outputDir/pipeline_info/nf_core_plasmodiumdrugres_software_versions.yml"),
                     stable_name,
-                    // All files with stable contents
                     stable_path
                 ).match() }
             )
         }
     }
 
-    // Default test running full pipeline from a PMO input
-    test("-profile test_PMO") {
+    // conf/test.config sets loci_groups; clear it to assert ML steps are skipped.
+    test("-profile test without loci_groups") {
 
         when {
             params {
-                outdir = "$outputDir"
-
-                pmo                      = "${projectDir}/tests/input/example_PMO.json"
-                loci_of_interest_bed       = "${projectDir}/tests/input/example_principal_resistance_marker_info_table.bed"
-                loci_groups                = "${projectDir}/tests/input/example2_loci_groups.tsv"
-                // Other inputs derived within the pipeline when starting from PMO
+                outdir       = "$outputDir"
+                loci_groups  = null
             }
         }
 
         then {
-
-            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt,yml}'])
             def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
             assertAll(
-                { assert workflow.success},
+                { assert workflow.success },
                 { assert snapshot(
+                    removeNextflowVersion("$outputDir/pipeline_info/nf_core_plasmodiumdrugres_software_versions.yml"),
+                    stable_name,
+                    stable_path
+                ).match() }
+            )
+        }
+    }
+
+    // Same file is fine; nf-test 0.9.x only allows `profile` on the suite, not per test().
+    // Global profile "test" still sets allele_table, so PMO inputs must be set here and
+    // allele-table params cleared (mirrors conf/test_pmo.config).
+    test("-profile test_pmo") {
+
+        when {
+            params {
+                outdir                = "$outputDir"
+                pmo                   = pipelines_testdata_base_path + 'testdata/example_PMO.json'
+                allele_table          = null
+                panel_info_bed        = null
+                pmo_population_fields = "collection_country"
+            }
+        }
+
+        then {
+            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt,yml}'])
+            def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    removeNextflowVersion("$outputDir/pipeline_info/nf_core_plasmodiumdrugres_software_versions.yml"),
                     stable_name,
                     stable_path
                 ).match() }

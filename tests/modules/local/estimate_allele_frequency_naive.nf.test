@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process ESTIMATE_ALLELE_FREQUENCY_NAIVE"
-    script "modules/local/estimate_allele_frequency_naive.nf"
+    script "modules/local/estimate_allele_frequency_naive/main.nf"
     process "ESTIMATE_ALLELE_FREQUENCY_NAIVE"
 
     test("Estimating allele frequencies naively should run without failures with read_count_prop method") {
@@ -10,7 +10,7 @@ nextflow_process {
             process {
                 """
                 // define inputs of the process here. Example:
-                input[0] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
                 input[1] = "read_count_prop"
                 """
             }
@@ -24,10 +24,10 @@ nextflow_process {
             // unpack tuple output
             def (pop, outFile) = process.out.slaf.get(0)
 
-            assert pop == 'example_amino_acid_calls'
+            assert pop == 'amino_acid_calls'
 
             // output md5 check
-            assert path(outFile).md5 == "645d675be20e36d5e462f23caf53989b"
+            assert path(outFile).md5 == "48059e04968526e08f508d7e771f02af"
         }
 
     }
@@ -37,7 +37,7 @@ nextflow_process {
             process {
                 """
                 // define inputs of the process here. Example:
-                input[0] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
                 input[1] = "presence_absence"
                 """
             }
@@ -51,10 +51,10 @@ nextflow_process {
             // unpack tuple output
             def (pop, outFile) = process.out.slaf.get(0)
 
-            assert pop == 'example_amino_acid_calls'
+            assert pop == 'amino_acid_calls'
 
             // output md5 check
-            assert path(outFile).md5 == "7adbc1efe55f7983b15c19ac6dad56e4"
+            assert path(outFile).md5 == "07b4d1c4f728f15dcc8332af1675eaa5"
 
         }
     }

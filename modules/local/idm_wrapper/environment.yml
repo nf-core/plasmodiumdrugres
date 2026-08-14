@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+name: idm_wrapper
+channels:
+  - conda-forge
+dependencies:
+  - conda-forge::r-base=4.4
+  - conda-forge::r-dplyr
+  - conda-forge::r-optparse
+  - conda-forge::r-readr
+  - conda-forge::r-remotes
+  - conda-forge::r-rmpfr
+  - conda-forge::r-openxlsx
+  - conda-forge::r-stringr
+  - conda-forge::r-tidyr
+  - conda-forge::r-validate

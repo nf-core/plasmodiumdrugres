@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process SPLIT_AA_TABLE_BY_POP"
-    script "modules/local/split_aa_table_by_population.nf"
+    script "modules/local/split_aa_table_by_population/main.nf"
     process "SPLIT_AA_TABLE_BY_POP"
 
     test("Should run without failures") {
@@ -9,16 +9,16 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv.gz")
-                input[1] = file("${projectDir}/tests/input/example_population_map.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/population_assignment_indexed.tsv', checkIfExists: true)
                 """
             }
         }
 
         then {
             assert process.success
-            assert path(process.out.per_pop_tables.get(0)[0]).md5 == "7e40bd248bb941f41c64a910402405d2"
-            assert path(process.out.per_pop_tables.get(0)[1]).md5 == "3994a47c3759685ce49b4d62ddfdb66d"
+            assert path(process.out.per_pop_tables.get(0)[0]).md5 == "e2f0fab0d8a9b88d32bfd1bd9d9f4648"
+            assert path(process.out.per_pop_tables.get(0)[1]).md5 == "9d66f68ef70dcf63f092277c69cb4f9b"
         }
 
     }

@@ -1,0 +1,60 @@
+name: estimate_multilocus_prevfreq_naive
+description: Naive multilocus prevalence and frequency estimation
+keywords:
+  - multilocus
+  - mlaf
+  - naive
+  - prevalence
+tools:
+  - estimate_multilocus_prevfreq_naive:
+      description: |
+        PGEcore R script for naive multilocus allele frequency / prevalence.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://github.com/PlasmoGenEpi/PGEcore/tree/develop/scripts/multilocus_prevfreq_naive
+      licence: ["MIT"]
+input:
+  - aa_calls:
+      type: file
+      description: Amino acid call table (TSV)
+      pattern: "*"
+  - loci_groups:
+      type: file
+      description: Loci group definition table (TSV)
+      pattern: "*"
+  - method:
+      type: string
+      description: Estimation method (e.g. read_count_prop or presence_absence)
+output:
+  - mlaf:
+      - "${aa_calls.getBaseName(3)}.aa_mlaf.tsv":
+          type: file
+          description: Naive multilocus allele frequency table
+          pattern: "${aa_calls.getBaseName(3)}.aa_mlaf.tsv"
+  - slaf_from_mlaf:
+      - "${aa_calls.getBaseName(3)}.aa_sl_from_ml.tsv":
+          type: file
+          description: Single-locus frequencies derived from the MLAF table
+          pattern: "${aa_calls.getBaseName(3)}.aa_sl_from_ml.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pgecore_r:b3d363b44f3cab5e
+      build_id: bd-b3d363b44f3cab5e_1
+      scan_id: sc-0e17c1447f1a6df7_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pgecore_r:ecb4612379d466a9
+      build_id: bd-ecb4612379d466a9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b8b5976e182bb3b8f3b3073fe7ccb663bfa240ef8476d59faf2cccf8b180fe6f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/estimate_multilocus_prevfreq_naive/.conda-lock/linux_amd64-bd-b3d363b44f3cab5e_1.txt

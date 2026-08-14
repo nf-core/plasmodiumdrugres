@@ -1,21 +1,16 @@
 nextflow_process {
 
     name "Test Process ADD_REF_SEQS_WITH_TARGETED_REF_FASTA"
-    script "modules/local/add_ref_seqs_with_targeted_ref_fasta.nf"
+    script "modules/local/add_ref_seqs_with_targeted_ref_fasta/main.nf"
     process "ADD_REF_SEQS_WITH_TARGETED_REF_FASTA"
 
     test("Should run without failures") {
 
         when {
-            params {
-                // define parameters here. Example:
-                // outdir = "tests/results"
-            }
             process {
                 """
-                // define inputs of the process here. Example:
-                input[0] = file("${projectDir}/tests/input/example_PMO_insert_locs_of_panel.bed")
-                input[1] = file("${projectDir}/tests/input/example_PMO_insert_locs_of_panel_refseqs.fasta")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/panel_info_no_ref.bed', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/insert_refseqs.fasta', checkIfExists: true)
                 """
             }
         }
@@ -25,7 +20,7 @@ nextflow_process {
             // channel exists
             assert process.out.ref_bed_with_seqs != null
             // output md5 check
-            assert path(process.out.ref_bed_with_seqs.get(0)).md5 == "5655fad30ea541867780d735327e67fe"
+            assert path(process.out.ref_bed_with_seqs.get(0)).md5 == "d991e06e47f68430e23080ec57d493c3"
         }
 
     }

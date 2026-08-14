@@ -1,0 +1,47 @@
+name: idm_wrapper
+description: Estimate single-locus allele frequencies with the Incomplete Data Model (IDM)
+keywords:
+  - idm
+  - slaf
+  - allele frequency
+tools:
+  - idm_wrapper:
+      description: |
+        PGEcore Incomplete Data Model wrapper for SLAF estimation.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://github.com/PlasmoGenEpi/PGEcore/tree/develop/scripts/IDM_wrapper
+      licence: ["MIT"]
+input:
+  - aa_calls_input:
+      type: file
+      description: Amino acid call table (TSV)
+      pattern: "*"
+output:
+  - slaf:
+      - "${aa_calls_input.getBaseName(3)}.aa_slaf.tsv":
+          type: file
+          description: IDM single-locus allele frequency table (tuple with stub name)
+          pattern: "${aa_calls_input.getBaseName(3)}.aa_slaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/idm_wrapper:bbf090b308b798b9
+      build_id: bd-bbf090b308b798b9_2
+      scan_id: sc-016e7532666dadfc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/idm_wrapper:f93aded561925363
+      build_id: bd-f93aded561925363_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/90/90d55445518a2cd019ee14b614bf95a334d7f4a6f431fd118f54b7efdef72c2a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/idm_wrapper/.conda-lock/linux_amd64-bd-bbf090b308b798b9_2.txt

@@ -1,0 +1,51 @@
+name: mlbm_wrapper
+description: Estimate multilocus allele frequencies with MultiLociBiallelicModel (MLBM)
+keywords:
+  - mlbm
+  - mlaf
+  - variantstring
+tools:
+  - variantstring:
+      description: |
+        Wrapper using variantstring / MultiLociBiallelicModel for MLAF estimation.
+      homepage: https://github.com/mrc-ide/variantstring
+      documentation: https://github.com/PlasmoGenEpi/PGEcore/tree/develop/scripts/MultiLociBiallelicModel_wrapper
+      licence: ["MIT"]
+input:
+  - aa_calls:
+      type: file
+      description: Amino acid call table (TSV)
+      pattern: "*"
+  - loci_group_table:
+      type: file
+      description: Loci group definition table (TSV)
+      pattern: "*"
+output:
+  - mlaf:
+      - "${aa_calls.getBaseName(3)}.aa_mlaf.tsv":
+          type: file
+          description: MLBM multilocus allele frequency table (tuple with stub name)
+          pattern: "${aa_calls.getBaseName(3)}.aa_mlaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/variantstring:baf88b1c56575a41
+      build_id: bd-baf88b1c56575a41_1
+      scan_id: sc-537aa174a86d0f0d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/variantstring:43bf268eba967f23
+      build_id: bd-43bf268eba967f23_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/81/81b920f9fbdfb306833b8fb40a0613cc6ab2ceb9ed5f185957da55b00e4d5281/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/mlbm_wrapper/.conda-lock/linux_amd64-bd-baf88b1c56575a41_1.txt

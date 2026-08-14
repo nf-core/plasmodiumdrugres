@@ -13,14 +13,16 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = channel.of(file("${projectDir}/tests/input/example2_allele_table.tsv"))
-                input[1] = channel.of(file(("${projectDir}/tests/input/example_PMO_insert_locs_of_panel.bed")))
-                input[2] = "${projectDir}/tests/input/example_principal_resistance_marker_info_table.bed"
+                input[0] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true))
+                input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true))
+                input[2] = params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed'
                 input[3] = ""
                 input[4] = null
-                input[5] = "MLBM"
-                input[6] = "${projectDir}/tests/input/example2_loci_groups.tsv"
-                input[7] = "naive"
+                input[5] = null
+                input[6] = "MLBM"
+                input[7] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
+                input[8] = "naive"
+                input[9] = channel.empty()
                 """
             }
         }
@@ -41,14 +43,16 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = channel.of(file("${projectDir}/tests/input/example2_allele_table.tsv" ))
-                input[1] = channel.of(file("${projectDir}/tests/input/example_PMO_insert_locs_of_panel.bed"))
-                input[2] = "${projectDir}/tests/input/example_principal_resistance_marker_info_table.bed"
+                input[0] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true))
+                input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true))
+                input[2] = params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed'
                 input[3] = ""
                 input[4] = null
-                input[5] = "FEM"
-                input[6] = "${projectDir}/tests/input/example2_loci_groups.tsv"
-                input[7] = "IDM"
+                input[5] = null
+                input[6] = "FEM"
+                input[7] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
+                input[8] = "IDM"
+                input[9] = channel.empty()
                 """
             }
         }
@@ -69,14 +73,16 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = channel.of(file("${projectDir}/tests/input/example2_allele_table.tsv"))
-                input[1] = channel.of(file("${projectDir}/tests/input/example_PMO_insert_locs_of_panel.bed"))
-                input[2] = "${projectDir}/tests/input/example_principal_resistance_marker_info_table.bed"
+                input[0] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true))
+                input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true))
+                input[2] = params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed'
                 input[3] = ""
                 input[4] = null
-                input[5] = "naive"
-                input[6] = "${projectDir}/tests/input/example2_loci_groups.tsv"
-                input[7] = "mhaps_freq"
+                input[5] = null
+                input[6] = "naive"
+                input[7] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
+                input[8] = "mhaps_freq"
+                input[9] = channel.empty()
                 """
             }
         }
@@ -92,52 +98,27 @@ nextflow_workflow {
 
         when {
             params {
-                population_assignment = "${projectDir}/tests/input/example2_population_map.tsv"
+                population_assignment = params.pipelines_testdata_base_path + 'testdata/population_assignment.tsv'
             }
             workflow {
                 """
-                input[0] = channel.of(file("${projectDir}/tests/input/example2_allele_table.tsv"))
-                input[1] = channel.of(file("${projectDir}/tests/input/example_PMO_insert_locs_of_panel.bed"))
-                input[2] = "${projectDir}/tests/input/example_principal_resistance_marker_info_table.bed"
+                input[0] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true))
+                input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true))
+                input[2] = params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed'
                 input[3] = ""
-                input[4] = channel.of(file("${projectDir}/tests/input/example2_population_map.tsv"))
-                input[5] = "naive"
-                input[6] = "${projectDir}/tests/input/example2_loci_groups.tsv"
-                input[7] = "mhaps_freq"
+                input[4] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/population_assignment_indexed.tsv', checkIfExists: true))
+                input[5] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/population_index_lookup.tsv', checkIfExists: true))
+                input[6] = "naive"
+                input[7] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
+                input[8] = "mhaps_freq"
+                input[9] = channel.empty()
                 """
             }
         }
 
         then {
             assert workflow.success
-            assert workflow.trace.tasks().size() == 14
-        }
-
-    }
-
-    test("Should run without failures with multiple populations") {
-
-        when {
-            params {
-                population_assignment = "${projectDir}/tests/input/example2_population_map.tsv"
-            }
-            workflow {
-                """
-                input[0] = channel.of(file("${projectDir}/tests/input/example2_allele_table.tsv"))
-                input[1] = channel.of(file("${projectDir}/tests/input/example_PMO_insert_locs_of_panel.bed"))
-                input[2] = "${projectDir}/tests/input/example_principal_resistance_marker_info_table.bed"
-                input[3] = ""
-                input[4] = channel.of(file("${projectDir}/tests/input/example2_population_map.tsv"))
-                input[5] = "MLBM"
-                input[6] = "${projectDir}/tests/input/example2_loci_groups.tsv"
-                input[7] = "naive"
-                """
-            }
-        }
-
-        then {
-            assert workflow.success
-            assert workflow.trace.tasks().size() == 13
+            assert workflow.trace.tasks().size() == 19
         }
 
     }

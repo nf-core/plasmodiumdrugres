@@ -1,0 +1,47 @@
+name: dcifer_slaf_wrapper
+description: Estimate single-locus allele frequencies with dcifer
+keywords:
+  - dcifer
+  - allele frequency
+  - slaf
+tools:
+  - dcifer:
+      description: |
+        Wrapper around the dcifer R package for SLAF estimation from allele tables.
+      homepage: https://github.com/bahlolab/dcifer
+      documentation: https://github.com/PlasmoGenEpi/PGEcore/tree/develop/scripts/dcifer_slaf_wrapper
+      licence: ["MIT"]
+input:
+  - allele_table:
+      type: file
+      description: Allele / amino-acid call table (TSV)
+      pattern: "*"
+output:
+  - mhaps_slaf:
+      - "${allele_table.getBaseName(3)}.mhaps_slaf.tsv":
+          type: file
+          description: dcifer single-locus allele frequency table
+          pattern: "${allele_table.getBaseName(3)}.mhaps_slaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/dcifer_slaf_wrapper:4d87f0ecbaaf98ef
+      build_id: bd-4d87f0ecbaaf98ef_1
+      scan_id: sc-1466d7fe0304d5f3_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/dcifer_slaf_wrapper:c26cdb4ff641c600
+      build_id: bd-c26cdb4ff641c600_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/05/05f1d70c93e8c8b63e03d0b0e1e29d4fedf8994a66f43a8886539bcbadafe10e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/dcifer_slaf_wrapper/.conda-lock/linux_amd64-bd-4d87f0ecbaaf98ef_1.txt

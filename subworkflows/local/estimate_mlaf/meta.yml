@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "ESTIMATE_MLAF"
+description: Estimate multi-locus allele frequencies (and derived single-locus frequencies) using MLBM, FEM, or naive methods
+keywords:
+  - allele frequency
+  - multilocus
+  - MLAF
+  - malaria
+components:
+  - mlbm/wrapper
+  - fem/wrapper
+  - estimate/ml/prevfreq/naive
+  - slaf/from/stave/mlaf
+input:
+  - method:
+      type: string
+      description: |
+        MLAF estimation method.
+        Allowed values: MLBM, FEM, naive.
+  - amino_acid_calls:
+      type: file
+      description: |
+        Channel of amino-acid call tables used for multilocus frequency estimation.
+        Structure: [ path(amino_acid_calls) ]
+      pattern: "*"
+  - loci_groups:
+      type: file
+      description: |
+        Channel of loci-group definitions for multilocus estimation.
+        Structure: [ path(loci_groups) ]
+      pattern: "*"
+output:
+  - mlaf_output:
+      type: file
+      description: |
+        Multilocus allele frequency / prevalence estimates.
+        Structure: [ path(mlaf) ]
+      pattern: "*"
+  - sl_from_ml_output:
+      type: file
+      description: |
+        Single-locus frequencies derived from the multilocus estimates.
+        Structure: [ path(slaf) ]
+      pattern: "*"
+  - versions:
+      type: file
+      description: |
+        Software versions from processes run in this subworkflow.
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"

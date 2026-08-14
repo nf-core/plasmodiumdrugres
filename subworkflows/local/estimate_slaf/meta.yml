@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "ESTIMATE_SLAF"
+description: Estimate single-locus allele frequencies using IDM, naive, or mhaps_freq (dcifer) methods
+keywords:
+  - allele frequency
+  - single locus
+  - SLAF
+  - malaria
+components:
+  - idm/wrapper
+  - estimate/allele/frequency/naive
+  - dcifer/slaf/wrapper
+  - slaf/from/mhaps/freqs
+input:
+  - method:
+      type: string
+      description: |
+        SLAF estimation method.
+        Allowed values: IDM, naive, mhaps_freq.
+  - method_input:
+      type: file
+      description: |
+        Allele table for mhaps_freq, or amino-acid table for IDM/naive.
+        Structure: [ path(table) ]
+      pattern: "*"
+  - loci_of_interest_for_target_for_microhap:
+      type: file
+      description: |
+        Loci-of-interest mapping used only for mhaps_freq (pass an empty channel otherwise).
+        Structure: [ path(loci) ]
+      pattern: "*"
+output:
+  - slaf_output:
+      type: file
+      description: |
+        Single-locus allele frequency estimates.
+        Structure: [ path(slaf) ]
+      pattern: "*"
+  - versions:
+      type: file
+      description: |
+        Software versions from processes run in this subworkflow.
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"

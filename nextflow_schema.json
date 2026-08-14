@@ -10,7 +10,7 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["loci_of_interest_bed", "loci_groups"],
+            "required": ["loci_of_interest_bed"],
             "properties": {
                 "pmo": {
                     "type": "string",
@@ -34,7 +34,9 @@
                 },
                 "input": {
                     "type": "null",
-                    "description": "Path to input samplesheet",
+                    "format": "file-path",
+                    "mimetype": "text/csv",
+                    "description": "Path to input samplesheet (unused; kept for nf-core template lint compatibility).",
                     "exists": false,
                     "hidden": true
                 },
@@ -50,13 +52,13 @@
                     "fa_icon": "fas fa-file-csv"
                 },
                 "loci_groups": {
-                    "type": "string",
+                    "type": ["string", "null"],
                     "format": "file-path",
                     "exists": true,
                     "mimetype": "text/tsv",
                     "pattern": "^\\S+\\.[ct]sv$",
-                    "description": "Path to tab separated file containing groups of loci of interest.",
-                    "help_text": "This file is used to define loci for which multilocus estimates will be made. Use this parameter to specify its location. It has to be tab separated and include columns group_id, gene_id, and aa_position. See [usage docs](https://nf-co.re/plasmodiumdrugres/usage#loci-groups-input).",
+                    "description": "Path to tab separated file containing groups of loci of interest. Multi-locus allele frequency estimation is skipped when this parameter is not provided.",
+                    "help_text": "Optional. When provided, this file defines loci for which multilocus estimates will be made and must be tab-separated with columns group_id, gene_id, and aa_position.",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "panel_info_bed": {
@@ -116,13 +118,6 @@
             "fa_icon": "fas fa-dna",
             "description": "Reference genome related files and options required for the workflow.",
             "properties": {
-                "genome": {
-                    "type": "string",
-                    "description": "Name of iGenomes reference.",
-                    "fa_icon": "fas fa-book",
-                    "hidden": true,
-                    "help_text": "If using a reference genome configured in the pipeline using iGenomes, use this parameter to give the ID for the reference. This is then used to build the full paths for all required reference genome files e.g. `--genome GRCh38`. \n\nSee the [nf-core website docs](https://nf-co.re/usage/reference_genomes) for more details."
-                },
                 "genome_reference": {
                     "type": "string",
                     "format": "file-path",
@@ -153,14 +148,16 @@
             "properties": {
                 "mlaf_method": {
                     "type": "string",
-                    "description": "method for multi locus allele frequency estimates.",
+                    "description": "Method for multi-locus allele frequency estimates.",
                     "default": "naive",
+                    "enum": ["MLBM", "FEM", "naive"],
                     "fa_icon": "fas fa-users-cog"
                 },
                 "slaf_method": {
                     "type": "string",
-                    "description": "method for single locus allele frequency estimates.",
+                    "description": "Method for single-locus allele frequency estimates.",
                     "default": "naive",
+                    "enum": ["IDM", "naive", "mhaps_freq"],
                     "fa_icon": "fas fa-users-cog"
                 },
                 "translate_loci_extra_args": {
@@ -171,8 +168,9 @@
                 },
                 "naive_slaf_method": {
                     "type": "string",
-                    "description": "method options for single locus allele frequency estimates with naive method. read_count_prop or presence_absence.",
+                    "description": "Naive SLAF method when --slaf_method is naive.",
                     "default": "read_count_prop",
+                    "enum": ["read_count_prop", "presence_absence"],
                     "fa_icon": "fas fa-users-cog"
                 },
                 "population_label": {
@@ -182,30 +180,17 @@
                     "default": "pop1",
                     "fa_icon": "fas fa-users-cog"
                 },
-                "mlaf_method_options": {
-                    "type": "string",
-                    "description": "method options for multi locus allele frequency estimates.",
-                    "default": "[\\'MLBM\\',\\'FEM\\',\\'naive\\']",
-                    "hidden": true,
-                    "fa_icon": "fas fa-users-cog"
-                },
                 "mlbm_wrapper_aa_specimen_occurence_cut_off": {
                     "type": ["integer", "null"],
                     "description": "when running MLBM, a cut off value for filtering amino acid calls.",
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
                 },
-                "slaf_method_options": {
-                    "type": "string",
-                    "description": "method options for single locus allele frequency estimates.",
-                    "default": "[\\'IDM\\',\\'naive\\',\\'mhaps_freq\\']",
-                    "hidden": true,
-                    "fa_icon": "fas fa-users-cog"
-                },
                 "naive_mlaf_method": {
                     "type": "string",
-                    "description": "method for naive multi locus allele frequency estimates.",
+                    "description": "Naive MLAF method when --mlaf_method is naive.",
                     "default": "wsaf_prop",
+                    "enum": ["wsaf_prop", "presence_absence"],
                     "fa_icon": "fas fa-users-cog"
                 },
                 "naive_multilocus_wsaf_cut_off": {
@@ -232,17 +217,11 @@
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
                 },
-                "slaf_method_mhaps_freq_method_options": {
-                    "type": "string",
-                    "description": "method options for mhaps_freq SLAF (e.g. dcifer).",
-                    "default": "[\\'dcifer\\']",
-                    "hidden": true,
-                    "fa_icon": "fas fa-users-cog"
-                },
                 "slaf_method_mhaps_freq_method": {
                     "type": "string",
-                    "description": "method for mhaps_freq SLAF.",
+                    "description": "Tool used for --slaf_method mhaps_freq.",
                     "default": "dcifer",
+                    "enum": ["dcifer"],
                     "fa_icon": "fas fa-users-cog"
                 }
             }
@@ -337,13 +316,6 @@
                     "fa_icon": "fas fa-palette",
                     "hidden": true
                 },
-                "hook_url": {
-                    "type": "string",
-                    "description": "Incoming hook URL for messaging service",
-                    "fa_icon": "fas fa-people-group",
-                    "help_text": "Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.",
-                    "hidden": true
-                },
                 "validate_params": {
                     "type": "boolean",
                     "description": "Boolean whether to validate parameters against the schema at runtime",
@@ -355,7 +327,7 @@
                     "type": "string",
                     "fa_icon": "far fa-check-circle",
                     "description": "Base URL or local path to location of pipeline test dataset files",
-                    "default": "https://raw.githubusercontent.com/nf-core/test-datasets/",
+                    "default": "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/plasmodiumdrugres/",
                     "hidden": true
                 },
                 "trace_report_suffix": {

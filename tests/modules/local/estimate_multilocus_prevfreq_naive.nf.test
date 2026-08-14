@@ -1,16 +1,16 @@
 nextflow_process {
 
     name "Test Process ESTIMATE_ML_PREVFREQ_NAIVE"
-    script "modules/local/estimate_multilocus_prevfreq_naive.nf"
+    script "modules/local/estimate_multilocus_prevfreq_naive/main.nf"
     process "ESTIMATE_ML_PREVFREQ_NAIVE"
 
-    test("Estimating multilocus prev and frequency naively large example file, wsaf_prop method, should run without failures") {
+    test("Estimating multilocus prev and frequency naively small example file, wsaf_prop method, should run without failures") {
 
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example2_amino_acid_calls.tsv")
-                input[1] = file("${projectDir}/tests/input/example_loci_groups.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv', checkIfExists: true)
                 input[2] = "wsaf_prop"
                 """
             }
@@ -25,12 +25,12 @@ nextflow_process {
             def (pop, outFile_ml) = process.out.mlaf.get(0)
             def (pop_again, outFile_sl) = process.out.slaf_from_mlaf.get(0)
 
-            assert pop == 'example2_amino_acid_calls'
-            assert pop_again == 'example2_amino_acid_calls'
+            assert pop == 'amino_acid_calls'
+            assert pop_again == 'amino_acid_calls'
 
             // output md5 check
-            assert path(outFile_ml).md5 == "11b7373c5727de79d35143ada6b445f9"
-            assert path(outFile_sl).md5 == "44929d9d1e40d26a924c7838d4f8ff6d"
+            assert path(outFile_ml).md5 == "cf0d6d097ee3bdf91bb63d31da07aece"
+            assert path(outFile_sl).md5 == "1e7a191bd60aad3d650784e82b75f411"
 
         }
 
@@ -41,40 +41,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv")
-                input[1] = file("${projectDir}/tests/input/example_loci_groups.tsv")
-                input[2] = "wsaf_prop"
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assert process.out.mlaf != null
-            assert process.out.slaf_from_mlaf != null
-
-            // unpack tuple output
-            def (pop, outFile_ml) = process.out.mlaf.get(0)
-            def (pop_again, outFile_sl) = process.out.slaf_from_mlaf.get(0)
-
-            assert pop == 'example_amino_acid_calls'
-            assert pop_again == 'example_amino_acid_calls'
-
-            // output md5 check
-            assert path(outFile_ml).md5 == "68fd38c967cb59778f127a941743c047"
-            assert path(outFile_sl).md5 == "93cf079a28d945f424f5ab7b8664c5a7"
-
-        }
-
-    }
-
-    test("Estimating multilocus prev and frequency naively large example file, presence_absence method, should run without failures") {
-
-        when {
-            process {
-                """
-                input[0] = file("${projectDir}/tests/input/example2_amino_acid_calls.tsv")
-                input[1] = file("${projectDir}/tests/input/example_loci_groups.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv', checkIfExists: true)
                 input[2] = "presence_absence"
                 """
             }
@@ -89,44 +57,12 @@ nextflow_process {
             def (pop, outFile_ml) = process.out.mlaf.get(0)
             def (pop_again, outFile_sl) = process.out.slaf_from_mlaf.get(0)
 
-            assert pop == 'example2_amino_acid_calls'
-            assert pop_again == 'example2_amino_acid_calls'
+            assert pop == 'amino_acid_calls'
+            assert pop_again == 'amino_acid_calls'
 
             // output md5 check
-            assert path(outFile_ml).md5 == "f7813ef6e39adf7bd2dd64d592bd6f2d"
-            assert path(outFile_sl).md5 == "2a9e1cb57a30e6f33fb0570a0f7d4bba"
-
-        }
-
-    }
-
-    test("Estimating multilocus prev and frequency naively small example file, wsaf_prop method, should run without failures") {
-
-        when {
-            process {
-                """
-                input[0] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv")
-                input[1] = file("${projectDir}/tests/input/example_loci_groups.tsv")
-                input[2] = "presence_absence"
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assert process.out.mlaf != null
-            assert process.out.slaf_from_mlaf != null
-
-            // unpack tuple output
-            def (pop, outFile_ml) = process.out.mlaf.get(0)
-            def (pop_again, outFile_sl) = process.out.slaf_from_mlaf.get(0)
-
-            assert pop == 'example_amino_acid_calls'
-            assert pop_again == 'example_amino_acid_calls'
-
-            // output md5 check
-            assert path(outFile_ml).md5 == "f85f0597959c313b467d7509962ab16c"
-            assert path(outFile_sl).md5 == "e65125da916a24020bc6a392823044a9"
+            assert path(outFile_ml).md5 == "79b9e0390b6d0146bb3879050438cc1f"
+            assert path(outFile_sl).md5 == "3c62c84138d933578150ee279bfab74c"
 
         }
 

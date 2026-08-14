@@ -10,8 +10,8 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = "MLBM"
-                input[1] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv")
-                input[2] = file("${projectDir}/tests/input/example_loci_groups.tsv")
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
+                input[2] = file(params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv', checkIfExists: true)
                 """
             }
         }
@@ -28,8 +28,8 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = "FEM"
-                input[1] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv")
-                input[2] = file("${projectDir}/tests/input/example_loci_groups.tsv")
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
+                input[2] = file(params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv', checkIfExists: true)
                 """
             }
         }
@@ -46,8 +46,8 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = "BAD_METHOD"
-                input[1] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv")
-                input[2] = file("${projectDir}/tests/input/example_loci_groups.tsv")
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
+                input[2] = file(params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv', checkIfExists: true)
                 """
             }
         }

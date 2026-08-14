@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "PIPELINE_INITIALISATION"
+description: Pipeline-specific initialisation, completion, and input validation for nf-core/plasmodiumdrugres
+keywords:
+  - utility
+  - validation
+  - initialisation
+  - completion
+components:
+  - utils_nfschema_plugin
+  - utils_nfcore_pipeline
+  - utils_nextflow_pipeline
+  - extract/allele/table
+  - extract_bed_file_from_pmo
+  - extract/population/map/from/pmo
+  - index/population/assignment
+  - completionemail
+  - completionsummary
+input:
+  - version:
+      type: boolean
+      description: Display version and exit
+  - validate_params:
+      type: boolean
+      description: Validate parameters against the schema at runtime
+  - monochrome_logs:
+      type: boolean
+      description: Do not use coloured log outputs
+  - nextflow_cli_args:
+      type: list
+      description: Array of positional Nextflow CLI args
+  - outdir:
+      type: string
+      description: Output directory where results will be saved
+  - help:
+      type: boolean
+      description: Display help message and exit
+  - help_full:
+      type: boolean
+      description: Show the full help message
+  - show_hidden:
+      type: boolean
+      description: Show hidden parameters in the help message
+output:
+  - allele_table_ch:
+      type: file
+      description: |
+        Allele table channel prepared from PMO or --allele_table.
+        Structure: [ path(allele_table) ]
+  - panel_info_bed_ch:
+      type: file
+      description: |
+        Panel BED channel from PMO extraction or --panel_info_bed.
+        Structure: [ path(bed) ]
+  - population_assignment_ch:
+      type: file
+      description: |
+        Indexed population assignment map, or null when unused.
+        Structure: [ path(population_map) ]
+  - population_index_lookup_ch:
+      type: file
+      description: |
+        Population index lookup table, or null when unused.
+        Structure: [ path(lookup) ]
+  - versions:
+      type: file
+      description: |
+        Software versions collected during initialisation.
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"

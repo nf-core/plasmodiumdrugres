@@ -1,0 +1,51 @@
+name: fem_wrapper
+description: Estimate multilocus allele frequencies with FreqEstimationModel (FEM)
+keywords:
+  - fem
+  - mlaf
+  - haplotype frequency
+tools:
+  - FreqEstimationModel:
+      description: |
+        Wrapper around the FreqEstimationModel R package for MLAF estimation.
+      homepage: https://github.com/aimeertaylor/FreqEstimationModel
+      documentation: https://github.com/PlasmoGenEpi/PGEcore/tree/develop/scripts/FreqEstimationModel_wrapper
+      licence: ["MIT"]
+input:
+  - aa_calls:
+      type: file
+      description: Amino acid call table (TSV)
+      pattern: "*"
+  - loci_group_table:
+      type: file
+      description: Loci group definition table (TSV)
+      pattern: "*"
+output:
+  - mlaf:
+      - "${aa_calls.getBaseName(3)}.aa_mlaf.tsv":
+          type: file
+          description: FEM multilocus allele frequency table (tuple with stub name)
+          pattern: "${aa_calls.getBaseName(3)}.aa_mlaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fem_wrapper:c76f649ce875f71b
+      build_id: bd-c76f649ce875f71b_1
+      scan_id: sc-d24084080f878546_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fem_wrapper:6a6a23fb62a74291
+      build_id: bd-6a6a23fb62a74291_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80a01e74c5e39ae20dfe8bfd9d0e1096372cd489febd1efc85f902f9ee880949/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/fem_wrapper/.conda-lock/linux_amd64-bd-c76f649ce875f71b_1.txt

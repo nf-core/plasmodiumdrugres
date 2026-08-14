@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process CONCAT_TABLES"
-    script "modules/local/concat_tables.nf"
+    script "modules/local/concat_tables/main.nf"
     process "CONCAT_TABLES"
 
     test("Should run without failures with single input") {
@@ -10,9 +10,9 @@ nextflow_process {
             process {
                 """
                 // define inputs of the process here. Example:
-                input[0] = file("${projectDir}/tests/input/example_sl_with_pop1.tsv")
-                input[1] = file("${projectDir}/tests/input/example_mlaf_with_pop1.tsv")
-                input[2] = file("${projectDir}/tests/input/example_sl_from_mlaf_with_pop1.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/sl_pop1.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/mlaf_pop1.tsv', checkIfExists: true)
+                input[2] = file(params.pipelines_testdata_base_path + 'testdata/sl_from_mlaf_pop1.tsv', checkIfExists: true)
                 """
             }
         }
@@ -22,13 +22,40 @@ nextflow_process {
             // channel exists
             assert process.out.sl_summary != null
             assert process.out.ml_summary != null
-            assert process.out.sl_from_ml_summary != null
+            assert process.out.raw_summaries != null
+            assert process.out.versions != null
 
             // output md5 check
-            assert path(process.out.sl_summary.get(0)).md5 == "43310cf33d5f288f15f96f9d53fa4826"
-            assert path(process.out.ml_summary.get(0)).md5 == "5d8ad4d3cbbc4db276e8d61d1f129ec6"
-            assert path(process.out.sl_from_ml_summary.get(0)).md5 == "462e31479a5971416d6ef28e58e32f72"
+            assert path(process.out.sl_summary.get(0)).md5 == "d0b472499f5a1ef562d4e428434184c6"
+            assert path(process.out.ml_summary.get(0)).md5 == "b5c5ff20feeaef4064324cf79472ce14"
+            def raw_dir = process.out.raw_summaries.get(0)
+            assert path("${raw_dir}/raw_sl_summary.tsv").md5 == "43310cf33d5f288f15f96f9d53fa4826"
+            assert path("${raw_dir}/raw_ml_summary.tsv").md5 == "ac0e47b769f1992184df3642ef16c3e8"
+            assert path("${raw_dir}/raw_sl_from_ml_summary.tsv").md5 == "462e31479a5971416d6ef28e58e32f72"
 
+        }
+
+    }
+
+    test("Should run without failures when ML summary inputs are empty") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/sl_pop1.tsv', checkIfExists: true)
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.sl_summary.get(0)).md5 == "d0b472499f5a1ef562d4e428434184c6"
+            assert path(process.out.ml_summary.get(0)).text == "population\tgroup_id\tvariant\tfreq\n"
+            def raw_dir = process.out.raw_summaries.get(0)
+            assert path("${raw_dir}/raw_ml_summary.tsv").text == "population\tgroup_id\tvariant\tfreq\n"
+            assert path("${raw_dir}/raw_sl_from_ml_summary.tsv").text == "population\tgroup_id\tvariant\tsample_total\tallele_total\tallele_count\tsample_count\tfreq\tprev\n"
         }
 
     }
@@ -38,9 +65,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [file("${projectDir}/tests/input/example_sl_with_pop1.tsv"),file("${projectDir}/tests/input/example_sl_with_pop2.tsv")]
-                input[1] = [file("${projectDir}/tests/input/example_mlaf_with_pop1.tsv"),file("${projectDir}/tests/input/example_mlaf_with_pop2.tsv")]
-                input[2] = [file("${projectDir}/tests/input/example_sl_from_mlaf_with_pop1.tsv"),file("${projectDir}/tests/input/example_sl_from_mlaf_with_pop2.tsv")]
+                input[0] = [file(params.pipelines_testdata_base_path + 'testdata/sl_pop1.tsv', checkIfExists: true),file(params.pipelines_testdata_base_path + 'testdata/sl_pop2.tsv', checkIfExists: true)]
+                input[1] = [file(params.pipelines_testdata_base_path + 'testdata/mlaf_pop1.tsv', checkIfExists: true),file(params.pipelines_testdata_base_path + 'testdata/mlaf_pop2.tsv', checkIfExists: true)]
+                input[2] = [file(params.pipelines_testdata_base_path + 'testdata/sl_from_mlaf_pop1.tsv', checkIfExists: true),file(params.pipelines_testdata_base_path + 'testdata/sl_from_mlaf_pop2.tsv', checkIfExists: true)]
                 """
             }
         }
@@ -50,12 +77,16 @@ nextflow_process {
             // channel exists
             assert process.out.sl_summary != null
             assert process.out.ml_summary != null
-            assert process.out.sl_from_ml_summary != null
+            assert process.out.raw_summaries != null
+            assert process.out.versions != null
 
             // output md5 check
-            assert path(process.out.sl_summary.get(0)).md5 == "92a17821c0126463ff6a98d2bc56de3b"
-            assert path(process.out.ml_summary.get(0)).md5 == "1246c7599e0beea175f19dc84b3aa300"
-            assert path(process.out.sl_from_ml_summary.get(0)).md5 == "135e6e272443ddfc91307367a7f7f45b"
+            assert path(process.out.sl_summary.get(0)).md5 == "8ff98a03f26d0684d5db8f9d7772980c"
+            assert path(process.out.ml_summary.get(0)).md5 == "e536b6269179a5ae6472ee69c8fd170e"
+            def raw_dir = process.out.raw_summaries.get(0)
+            assert path("${raw_dir}/raw_sl_summary.tsv").md5 == "92a17821c0126463ff6a98d2bc56de3b"
+            assert path("${raw_dir}/raw_ml_summary.tsv").md5 == "29c9f707a79e777b7c5f3344eadbd7eb"
+            assert path("${raw_dir}/raw_sl_from_ml_summary.tsv").md5 == "135e6e272443ddfc91307367a7f7f45b"
 
         }
 

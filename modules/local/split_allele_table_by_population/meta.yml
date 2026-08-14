@@ -1,0 +1,66 @@
+name: split_allele_table_by_population
+description: Split allele tables by population assignment
+keywords:
+  - split
+  - population
+  - allele table
+tools:
+  - split_allele_table_by_population:
+      description: |
+        R script that writes per-population allele tables.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      licence: ["MIT"]
+input:
+  - allele_table:
+      type: file
+      description: Allele table TSV
+      pattern: "*"
+  - population_map:
+      type: file
+      description: Indexed population assignment TSV
+      pattern: "*"
+output:
+  - per_pop_tables:
+      - "*.allele_table.tsv.gz":
+          type: file
+          description: Per-population allele tables
+          pattern: "*.allele_table.tsv.gz"
+  - unmapped_report:
+      - unmapped_identifers.txt:
+          type: file
+          description: Optional list of specimens not in the population map
+          pattern: unmapped_identifers.txt
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r_tidyverse:4e1e0dec2f11d009
+      build_id: bd-4e1e0dec2f11d009_1
+      scan_id: sc-06ac88301c562b70_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/r_tidyverse:15b9e098f3fff0e2
+      build_id: bd-15b9e098f3fff0e2_1
+      scan_id: sc-9a22b02cec159dd7_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r_tidyverse:8018b08123990697
+      build_id: bd-8018b08123990697_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7f/7f5e0a41f2a79c39b4a63597087fe5b7c189098b13da95622d4be00e11b7b28f/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r_tidyverse:902ddf85391a9ad0
+      build_id: bd-902ddf85391a9ad0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/25/25ec37d72caff047524cad028f190afbd7e97ff61cba29d8172883993c8a5c75/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/split_allele_table_by_population/.conda-lock/linux_amd64-bd-4e1e0dec2f11d009_1.txt
+    linux/arm64:
+      lock_file: modules/local/split_allele_table_by_population/.conda-lock/linux_arm64-bd-15b9e098f3fff0e2_1.txt

@@ -8,36 +8,34 @@
 
 **nf-core/plasmodiumdrugres** is a bioinformatics pipeline for analyzing drug resistance markers from microhaplotype data. It translates variants into amino acid changes at drug resistance loci and estimates allele frequencies and prevalences at both single-locus and multi-locus levels. Microhaplotype data can be supplied in the form of an allele table or a [PMO](https://plasmogenepi.github.io/PMO_Docs/) file.
 
-Key words
+> [!NOTE]
+> Software is provided **per process** via Docker/Singularity/Apptainer containers (or Conda as a last resort). There is no monolithic pipeline image to pull — choose a `-profile` such as `docker` or `singularity` and Nextflow fetches containers automatically. For environment setup, see the [nf-core getting started guide](https://nf-co.re/docs/get_started/environment_setup/overview).
 
-- population
-- locus
-- multi-locus
-
-## Getting set up
-
-The simplest way to get the software you need is to use [Docker](https://www.docker.com/get-started). Install Docker, then pull the pipeline image (when you first set up, and again when you upgrade the pipeline or want the latest image):
+If you clone this repository for local development (instead of `nextflow run nf-core/plasmodiumdrugres`), initialize Git submodules so the bundled `PGEcore` scripts are available:
 
 ```bash
-docker pull plasmogenepi/plasmodiumdrugres
+git clone --recurse-submodules https://github.com/nf-core/plasmodiumdrugres.git
+# or, if already cloned:
+git submodule update --init --recursive
 ```
-
-Use `-profile docker` when you run the pipeline so Nextflow uses that container.
 
 ## Entry points
 
 There are two supported entry points into the pipeline:
 
 1. **PMO input**
-   - Required: `--pmo`, `--loci_of_interest_bed`, `--loci_groups`
+   - Required: `--pmo`, `--loci_of_interest_bed`
    - Optional:
-     - `--pmo_population_fields` (+ optional `--pmo_population_separator`) to derive population assignment from PMO metadata
-     - `--population_assignment` (recommended if running by population)
+     - `--loci_groups` to enable multi-locus allele frequency estimation
+     - `--pmo_population_fields` (+ optional `--pmo_population_separator`) to derive population assignment from PMO specimen metadata
+     - `--population_assignment` to supply a population assignment table manually (use this instead of `--pmo_population_fields` if you prefer to define populations yourself)
+     - `--population_label` for single-population runs (default: `pop1`)
      - `--genome_reference` or `--targeted_reference` if PMO does not include usable reference sequence information
 
 2. **Allele table input**
-   - Required: `--allele_table`, `--panel_info_bed`, `--loci_of_interest_bed`, `--loci_groups`
+   - Required: `--allele_table`, `--panel_info_bed`, `--loci_of_interest_bed`
    - Optional:
+     - `--loci_groups` to enable multi-locus allele frequency estimation
      - `--population_assignment` for multi-population analysis
      - `--population_label` for single-population runs (default: `pop1`)
 
@@ -46,9 +44,9 @@ The pipeline enforces that exactly one of `--pmo` or `--allele_table` is provide
 > **Terminology note: “population”**
 >
 > In this pipeline, **population** means “a group of samples you want to estimate prevalence and frequency for”.
-> You define populations via `--population_assignment` (or derive them from PMO metadata via `--pmo_population_fields`).
+> See [Population grouping (optional)](#population-grouping-optional) for how to set populations via `--population_assignment`, `--pmo_population_fields`, or `--population_label`.
 > A population can represent any grouping level you care about, e.g. **country**, **health_facility**, **year**, or any combination.
-> If you don’t set `--population_assignment`, the pipeline treats all samples as a single group (labelled by `--population_label`, default `pop1`).
+> If you don’t set any population parameters, the pipeline treats all samples as a single group (labelled by `--population_label`, default `pop1`).
 
 ## Loci of Interest Input
 
@@ -60,7 +58,7 @@ You will need to create a bed file including the locations of the loci that you 
 
 ### Full loci of interest bed file
 
-This file will be used to call amino acids from your data and calculate frequencies and prevalences for the single loci. You can include as many single loci as you like, however the pipeline will fail if a locus is completely missing from the input data for a population.
+This file will be used to call amino acids from your data and calculate frequencies and prevalences for the single loci. You can include as many single loci as you like. Loci that are not covered by any panel target are skipped during amino acid calling and reported as uncovered in the translation coverage output.
 
 A final loci of interest bed file may look something like the one below.
 
@@ -94,11 +92,13 @@ Pf3D7_08_v3 550211  550214  PF3D7_0810800.1-AA613 3 + dhps  613 PF3D7_0810800.1
 | `gene_id`     | Full PlasmoDB gene model identifier (e.g., PF3D7_0417200.1).                                                                              |
 | `aa_position` | Amino acid position within the protein where the codon is located.                                                                        |
 
-An [example loci of interest bed file](../assets/loci_of_interest.bed) has been provided with the pipeline. It provides an extensive set of loci for _Plasmodium falciparum_, so you can simply filter for the loci relevant to your work rather than starting from scratch. If you identify a locus that should be added, [please let us know](Contributions and Support).
+An [example loci of interest bed file](../assets/loci_of_interest.bed) has been provided with the pipeline. It provides an extensive set of loci for _Plasmodium falciparum_, so you can simply filter for the loci relevant to your work rather than starting from scratch. If you identify a locus that should be added, [please let us know](https://github.com/nf-core/plasmodiumdrugres#contributions-and-support).
 
 ## Loci groups
 
-Before running the pipeline, you will need to create a BED file that defines the groups of loci for which you want to generate multi-locus estimates. It has to be a tab-separated file with 3 columns, and a header row as shown in the examples below.
+`--loci_groups` is optional. When provided, the pipeline runs multi-locus allele frequency (MLAF) estimation and writes `ml_summary.tsv` plus `raw_summaries/raw_sl_from_ml_summary.tsv`. When omitted, those ML steps are skipped; `ml_summary.tsv` and the corresponding raw SL-from-ML table are still written as header-only stubs so outputs stay consistent.
+
+Before running multi-locus estimates, create a tab-separated file that defines the groups of loci. It must have 3 columns and a header row as shown below.
 
 ```bash
 --loci_groups '[path to loci groups file]'
@@ -108,7 +108,7 @@ Before running the pipeline, you will need to create a BED file that defines the
 
 This file specifies which loci from the loci of interest file should be grouped together for generating multi-locus estimates. You can include as many groups as you like, however some tools are limited in how many loci they can handle per group. Any `gene_id` / `aa_position` combination listed in this file should also be defined in the loci of interest file.
 
-A final loci groups file may look something like the one below. In this example, three groups are defined: crt, mdr1, and pfdhfr_pfdhps, containing 2, 3, and 4 loci, respectively.
+A final loci groups file may look something like the one below. In this example, three groups are defined: crt, mdr1, and pfdhfr_pfdhps, containing 2, 3, and 9 loci, respectively.
 
 ```tsv title="loci_groups.tsv"
 group_id  gene_id aa_position
@@ -138,9 +138,13 @@ pfdhfr_pfdhps PF3D7_0810800.1 613
 
 Decide if you will be running the pipeline from a [PMO file](#pmo-inputs) or an [allele table](#allele-table-inputs) as other required inputs will depend on this. The most simple way to run this pipeline is by using a [Portable Microhaplotype Object (PMO)](https://plasmogenepi.github.io/PMO_Docs/) file. To maximize flexibility, the pipeline also allows users to provide a PMO with reference sequences separately, or to supply an allele table with panel information in a separate file.
 
+Shared optional inputs such as [population grouping](#population-grouping-optional) and `--loci_groups` apply to both entry points.
+
 ### PMO Inputs
 
 Generate a PMO file using [this documentation](https://plasmogenepi.github.io/PMO_Docs/). If you include reference sequences in your PMO then this is all you need. If you don't then you should provide a reference with either `--genome_reference` or `--targeted_reference`. `--genome_reference` can be a fasta file including a full genome. `--targeted_reference` is a fasta file where sequence names match up with target_names.
+
+For population grouping with PMO runs (manual assignment table, derive labels from specimen metadata, or a single `--population_label`), see [Population grouping (optional)](#population-grouping-optional).
 
 ### Allele Table Inputs
 
@@ -148,7 +152,7 @@ When running with an allele table you should create the following inputs:
 
 - [allele table](#allele-table)
 - [panel info bed file](#panel-info)
-- [population assignment (optional)](#population-assignment-optional)
+- [population grouping (optional)](#population-grouping-optional)
 
 #### Allele Table
 
@@ -160,7 +164,7 @@ You will need to create an allele table file that includes your genomic data. It
 
 ##### Full allele table
 
-A final allele table may look something like the one below. In this example, three groups are defined: crt, mdr1, and pfdhfr_pfdhps, containing 2, 3, and 4 loci, respectively.
+A final allele table may look something like the one below.
 
 ```tsv title="allele_table.tsv"
 specimen_name  target_name  seq reads
@@ -206,9 +210,21 @@ Pf3D7_01_v3     162889  163091  target2   202     +       ATATACCAATAATACTTTTTTT
 | `strand`      | Strand orientation (+ or -) relative to the reference genome.                                                                                 |
 | `ref_seq`     | reference sequence for the target (optional if genome_reference or targeted reference supplied)                                               |
 
-#### Population assignment (optional)
+### Population grouping (optional)
 
-If you would like to estimate prevalences and frequencies for several populations, provide a population assignment file. The file contains two columns: `specimen_name` (matching specimen names in your allele table/PMO-derived table) and `population` (the population label used in outputs).
+These options are shared by PMO and allele-table runs. Choose **one** multi-population approach, or omit them to treat all samples as a single group.
+
+#### Single population (`--population_label`)
+
+If you do not set `--population_assignment` or `--pmo_population_fields`, all samples are analysed as one group labelled by `--population_label` (default: `pop1`).
+
+```bash
+--population_label '[label for this run]'
+```
+
+#### Population assignment table (`--population_assignment`)
+
+To estimate prevalences and frequencies for several populations, provide a population assignment file. The file contains two columns: `specimen_name` (matching specimen names in your allele table or PMO-derived table) and `population` (the population label used in outputs).
 
 ```bash
 --population_assignment '[path to population assignment file]'
@@ -225,13 +241,23 @@ specimen_2  pop2
 specimen_3  pop2
 ```
 
+#### Derive populations from PMO metadata (`--pmo_population_fields`)
+
+When running with `--pmo`, you can build population labels from specimen metadata instead of supplying `--population_assignment`. Provide a comma-separated list of field names; values are joined with `--pmo_population_separator` (default: `_`).
+
+```bash
+--pmo_population_fields "collection_country,collection_date"
+--pmo_population_separator "_"
+```
+
+Do not set both `--population_assignment` and `--pmo_population_fields`; use one or the other.
+
 ## Other params
 
-- `--population_label` - If running one population used to label the dataset. (Default: pop1)
 - `--translate_loci_extra_args` - Extra arguments when translating loci of interest. [See documentation here](https://github.com/PlasmoGenEpi/PGEcore/tree/develop/scripts/translate_loci_of_interest).
-- `--slaf_method` - chosen method to estimate single locus allele frequencies (Default: IDM Options: ["IDM","naive","mhaps_freq"])
-- `--mlaf_method` - chosen method to estimate multi-locus allele frequencies (Default: MLBM Options: ["MLBM","FEM","naive"])
-- `--naive_slaf_method` - Chosen naive method when running `--slaf_method naive`. (Default:read_count_prop, Options: ["read_count_prop", "presence_absence])
+- `--slaf_method` - chosen method to estimate single locus allele frequencies (Default: `naive`; Options: `["IDM","naive","mhaps_freq"]`)
+- `--mlaf_method` - chosen method to estimate multi-locus allele frequencies (Default: `naive`; Options: `["MLBM","FEM","naive"]`)
+- `--naive_slaf_method` - Chosen naive method when running `--slaf_method naive`. (Default: `read_count_prop`; Options: `["read_count_prop", "presence_absence"]`)
 
 ## Running the pipeline
 
@@ -297,7 +323,7 @@ If you wish to repeatedly use the same parameters for multiple runs, rather than
 Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`.
 
 > [!WARNING]
-> Do not use `-c <file>` to specify parameters as this will result in errors. Custom config files specified with `-c` must only be used for [tuning process resource specifications](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources), other infrastructural tweaks (such as output directories), or module arguments (args).
+> Do not use `-c <file>` to specify parameters as this will result in errors. Custom config files specified with `-c` must only be used for [tuning process resource specifications](https://nf-co.re/docs/running/run-pipelines#configuring-pipelines), other infrastructural tweaks (such as output directories), or module arguments (args).
 
 The above pipeline run specified with a params file in yaml format:
 
@@ -331,7 +357,7 @@ It is a good idea to specify the pipeline version when running the pipeline on y
 
 First, go to the [nf-core/plasmodiumdrugres releases page](https://github.com/nf-core/plasmodiumdrugres/releases) and find the latest pipeline version - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`. Of course, you can switch to another version by changing the number after the `-r` flag.
 
-This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future. For example, at the bottom of the MultiQC reports.
+This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future. For example, see `pipeline_info/nf_core_plasmodiumdrugres_software_versions.yml`.
 
 To further assist in reproducibility, you can use share and reuse [parameter files](#running-the-pipeline) to repeat pipeline runs with the same settings without having to write out a command with every single parameter.
 
@@ -364,7 +390,6 @@ If `-profile` is not specified, the pipeline will run locally and expect all sof
   - Includes links to test data so needs no other parameters
 - `docker`
   - A generic configuration profile to be used with [Docker](https://docker.com/)
-  - See [Getting set up](#getting-set-up) for installing Docker and pulling the `plasmogenepi/plasmodiumdrugres` image.
 - `singularity`
   - A generic configuration profile to be used with [Singularity](https://sylabs.io/docs/)
 - `podman`
@@ -376,7 +401,11 @@ If `-profile` is not specified, the pipeline will run locally and expect all sof
 - `apptainer`
   - A generic configuration profile to be used with [Apptainer](https://apptainer.org/)
 - `wave`
-  - A generic configuration profile to enable [Wave](https://seqera.io/wave/) containers. Use together with one of the above (requires Nextflow ` 24.03.0-edge` or later).
+  - A generic configuration profile to enable [Wave](https://seqera.io/wave/) containers. Use together with one of the above (requires Nextflow `24.03.0-edge` or later).
+- `emulate_amd64`
+  - Run Docker containers as `linux/amd64` (useful on Apple Silicon when using default amd64 images)
+- `arm64`
+  - Prefer arm64 container variants where available; typically used with `wave`
 - `conda`
   - A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter, Charliecloud, or Apptainer.
 
@@ -396,19 +425,19 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customise the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time. For most of the pipeline steps, if the job exits with any of the error codes specified [here](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L18) it will automatically be resubmitted with higher resources request (2 x original, then 3 x original). If it still fails after the third attempt then the pipeline execution is stopped.
 
-To change the resource requests, please see the [max resources](https://nf-co.re/docs/usage/configuration#max-resources) and [tuning workflow resources](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources) section of the nf-core website.
+To change the resource requests, please see the [max resources](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#set-max-resources) and [customise process resources](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#customize-process-resources) section of the nf-core website.
 
 ### Custom Containers
 
 In some cases, you may wish to change the container or conda environment used by a pipeline steps for a particular tool. By default, nf-core pipelines use containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However, in some cases the pipeline specified version maybe out of date.
 
-To use a different container from the default container or conda environment specified in a pipeline, please see the [updating tool versions](https://nf-co.re/docs/usage/configuration#updating-tool-versions) section of the nf-core website.
+To use a different container from the default container or conda environment specified in a pipeline, please see the [updating tool versions](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#update-tool-versions) section of the nf-core website.
 
 ### Custom Tool Arguments
 
 A pipeline might not always support every possible argument or option of a particular tool used in pipeline. Fortunately, nf-core pipelines provide some freedom to users to insert additional parameters that the pipeline does not include by default.
 
-To learn how to provide additional arguments to a particular tool of the pipeline, please see the [customising tool arguments](https://nf-co.re/docs/usage/configuration#customising-tool-arguments) section of the nf-core website.
+To learn how to provide additional arguments to a particular tool of the pipeline, please see the [customising tool arguments](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#modifying-tool-arguments) section of the nf-core website.
 
 ### nf-core/configs
 
