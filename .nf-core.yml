@@ -11,11 +11,10 @@ nf_core_version: 4.1.0
 repository_type: pipeline
 template:
   author: PlasmoGenEpi
-  description: This pipeline takes PMO format and provides key metrics on supplied
-    markers applicable to drug resistance
+  description: This pipeline takes PMO format and provides key metrics on supplied markers applicable to drug resistance
   force: false
   is_nfcore: true
   name: plasmodiumdrugres
   org: nf-core
   outdir: .
-  version: 1.0.0dev
+  version: 1.0.0

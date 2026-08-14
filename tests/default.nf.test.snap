@@ -20,7 +20,7 @@
                     "bioconductor-pwalign": "1.6.0"
                 },
                 "Workflow": {
-                    "nf-core/plasmodiumdrugres": "v1.0.0dev"
+                    "nf-core/plasmodiumdrugres": "v1.0.0"
                 }
             },
             [
@@ -49,7 +49,7 @@
                 "loci_of_interest_for_target_for_microhap.tsv.gz:md5,2b9323b36ae6979db24b6456eac732ea"
             ]
         ],
-        "timestamp": "2026-08-11T10:53:06.136772",
+        "timestamp": "2026-08-12T15:37:14.979059",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -94,7 +94,7 @@
                     "bioconductor-pwalign": "1.6.0"
                 },
                 "Workflow": {
-                    "nf-core/plasmodiumdrugres": "v1.0.0dev"
+                    "nf-core/plasmodiumdrugres": "v1.0.0"
                 }
             },
             [
@@ -123,7 +123,7 @@
                 "loci_of_interest_for_target_for_microhap.tsv.gz:md5,2b9323b36ae6979db24b6456eac732ea"
             ]
         ],
-        "timestamp": "2026-08-10T14:44:15.562489",
+        "timestamp": "2026-08-12T15:39:31.668014",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -153,7 +153,7 @@
                     "bioconductor-pwalign": "1.6.0"
                 },
                 "Workflow": {
-                    "nf-core/plasmodiumdrugres": "v1.0.0dev"
+                    "nf-core/plasmodiumdrugres": "v1.0.0"
                 }
             },
             [
@@ -182,7 +182,7 @@
                 "loci_of_interest_for_target_for_microhap.tsv.gz:md5,2b9323b36ae6979db24b6456eac732ea"
             ]
         ],
-        "timestamp": "2026-08-10T14:42:21.506137",
+        "timestamp": "2026-08-12T15:34:41.265493",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
