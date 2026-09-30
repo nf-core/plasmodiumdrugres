@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/master/nextflow_schema.json",
+    "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/main/nextflow_schema.json",
     "title": "nf-core/plasmodiumdrugres pipeline parameters",
     "description": "This pipeline takes PMO format and provides key metrics on supplied markers applicable to drug resistance",
     "type": "object",

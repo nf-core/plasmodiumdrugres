@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/master/assets/schema_input.json",
+    "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/main/assets/schema_loci_of_interest_bed.json",
     "title": "nf-core/plasmodiumdrugres pipeline - params.loci_of_interest_bed schema",
     "description": "Schema for the file provided with params.loci_of_interest_bed",
     "type": "array",

@@ -18,6 +18,7 @@ Initial release of nf-core/plasmodiumdrugres, created with the [nf-core](https:/
 
 - Align README Nextflow / template badges with manifest and `.nf-core.yml`
 - Point contributing guidelines at `docs/CONTRIBUTING.md`
+- Set `manifest.defaultBranch` to `main` to match the repository, so `nextflow run nf-core/plasmodiumdrugres` without `-r` resolves correctly; update schema `$id`s, citation and contributing links from `master` to `main`
 - `docker` profile no longer forces `linux/amd64` emulation, so Apple Silicon uses native arm64 images (use `-profile docker,emulate_amd64` to opt back in)
 
 ### `Dependencies`
