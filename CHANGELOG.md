@@ -19,6 +19,7 @@ Initial release of nf-core/plasmodiumdrugres, created with the [nf-core](https:/
 - Align README Nextflow / template badges with manifest and `.nf-core.yml`
 - Point contributing guidelines at `docs/CONTRIBUTING.md`
 - `docker` profile no longer forces `linux/amd64` emulation, so Apple Silicon uses native arm64 images (use `-profile docker,emulate_amd64` to opt back in)
+- Call `bin/` scripts by name instead of `${projectDir}/bin/...` so they are staged on executors without a shared launch directory (AWS Batch, Google Batch, Seqera Platform); make all `bin/` scripts executable
 
 ### `Dependencies`
 

@@ -25,7 +25,7 @@ process SPLIT_ALLELE_TABLE_BY_POP {
     //@todo consider being able to supply population_col and identifier_col, will use defaults of the piepline for now
     """
 
-    ${projectDir}/bin/split_table_by_population_map.R \
+    split_table_by_population_map.R \
             --input_table_fnp ${allele_table} \
             --population_map ${population_map} \
             --split_col population_index --identifier_col specimen_name \

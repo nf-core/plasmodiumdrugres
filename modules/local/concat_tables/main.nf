@@ -26,7 +26,7 @@ process CONCAT_TABLES {
     script:
     """
     # Concatenate deterministically using R (avoids shell header/ordering drift).
-    Rscript ${projectDir}/bin/concat_tables.R \
+    concat_tables.R \
         --sl-files "${sl_files.join(',')}" \
         --ml-files "${ml_files.join(',')}" \
         --sl-from-ml-files "${sl_from_ml_files.join(',')}" \

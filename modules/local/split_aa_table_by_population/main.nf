@@ -22,7 +22,7 @@ process SPLIT_AA_TABLE_BY_POP {
 
     script:
     """
-     ${projectDir}/bin/split_table_by_population_map.R \
+    split_table_by_population_map.R \
             --input_table_fnp ${aa_table} \
             --population_map ${population_map} \
             --split_col population_index --identifier_col specimen_name \

@@ -27,7 +27,7 @@ process EXTRACT_POPULATION_MAP_FROM_PMO {
         --file ${pmo} \
         --output specimen_meta_table.tsv
 
-    python3 ${projectDir}/bin/specimen_info_to_population_map.py \
+    specimen_info_to_population_map.py \
         --specimen-info specimen_meta_table.tsv \
         --output population_map.tsv \
         --fields ${population_fields} \

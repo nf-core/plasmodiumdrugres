@@ -37,14 +37,14 @@ process MERGE_TABLES {
     # Matches pipeline outputs (*.aa_sl_from_ml.tsv) and nf-test fixtures (sl_from_ml.tsv).
     sl_from_ml_table=\$(ls ${pop_files} | grep -E 'sl_from_ml\\.tsv\$' || true)
 
-    Rscript ${projectDir}/bin/merge_tables.R --freq_table \${slaf_table} --population "\${true_population}" --prev_table \${slap_table} --output ${pop_index}.sl_summary.tsv
+    merge_tables.R --freq_table \${slaf_table} --population "\${true_population}" --prev_table \${slap_table} --output ${pop_index}.sl_summary.tsv
     if [ -n "\${mlaf_table}" ]; then
-        Rscript ${projectDir}/bin/add_population_column.R --table \${mlaf_table} --population "\${true_population}" --output ${pop_index}.ml_summary.tsv
+        add_population_column.R --table \${mlaf_table} --population "\${true_population}" --output ${pop_index}.ml_summary.tsv
     else
         printf 'population\\tgroup_id\\tvariant\\tfreq\\n' > ${pop_index}.ml_summary.tsv
     fi
     if [ -n "\${sl_from_ml_table}" ]; then
-        Rscript ${projectDir}/bin/add_population_column.R --table \${sl_from_ml_table} --population "\${true_population}" --output ${pop_index}.sl_from_ml_summary.tsv
+        add_population_column.R --table \${sl_from_ml_table} --population "\${true_population}" --output ${pop_index}.sl_from_ml_summary.tsv
     else
         printf 'population\\tgroup_id\\tvariant\\tsample_total\\tallele_total\\tallele_count\\tsample_count\\tfreq\\tprev\\n' > ${pop_index}.sl_from_ml_summary.tsv
     fi
