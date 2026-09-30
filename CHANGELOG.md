@@ -18,6 +18,7 @@ Initial release of nf-core/plasmodiumdrugres, created with the [nf-core](https:/
 
 - Align README Nextflow / template badges with manifest and `.nf-core.yml`
 - Point contributing guidelines at `docs/CONTRIBUTING.md`
+- Tool options in `conf/tools.config` (`--naive_multilocus_wsaf_cut_off`, `--mlbm_wrapper_aa_specimen_occurence_cut_off`, `--dcifer_slaf_wrapper_*`) are now passed when set to `0` instead of silently falling back to the script default, and the schema now enforces valid ranges for them
 - `docker` profile no longer forces `linux/amd64` emulation, so Apple Silicon uses native arm64 images (use `-profile docker,emulate_amd64` to opt back in)
 
 ### `Dependencies`

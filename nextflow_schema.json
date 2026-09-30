@@ -182,7 +182,8 @@
                 },
                 "mlbm_wrapper_aa_specimen_occurence_cut_off": {
                     "type": ["integer", "null"],
-                    "description": "when running MLBM, a cut off value for filtering amino acid calls.",
+                    "description": "When running MLBM, only keep amino acid calls seen in more than this number of specimens. Script default 0 (no filtering).",
+                    "minimum": 0,
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
                 },
@@ -195,25 +196,31 @@
                 },
                 "naive_multilocus_wsaf_cut_off": {
                     "type": ["number", "null"],
-                    "description": "wsaf cut off for naive multilocus estimates.",
+                    "description": "Minimum within-sample allele frequency for an allele to count towards a specimen's dominant haplotype in naive multilocus estimates. Script default 0.70.",
+                    "minimum": 0,
+                    "maximum": 1,
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
                 },
                 "dcifer_slaf_wrapper_coi_lrank": {
                     "type": ["integer", "null"],
-                    "description": "COI lrank for dcifer slaf wrapper.",
+                    "description": "Rank of the locus (by number of detected alleles) that sets each specimen's COI in dcifer. Script default 2.",
+                    "minimum": 1,
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
                 },
                 "dcifer_slaf_wrapper_qstart": {
                     "type": ["number", "null"],
-                    "description": "qstart for dcifer slaf wrapper.",
+                    "description": "Starting value for dcifer's allele frequency estimation. Script default 0.5.",
+                    "exclusiveMinimum": 0,
+                    "exclusiveMaximum": 1,
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
                 },
                 "dcifer_slaf_wrapper_tol": {
                     "type": ["number", "null"],
-                    "description": "tolerance for dcifer slaf wrapper.",
+                    "description": "Convergence tolerance for dcifer's allele frequency estimation. Script default 0.0001.",
+                    "exclusiveMinimum": 0,
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
                 },

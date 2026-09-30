@@ -67,4 +67,27 @@ nextflow_process {
         }
 
     }
+
+    test("Should pass a zero --naive_multilocus_wsaf_cut_off to the script") {
+
+        when {
+            params {
+                naive_multilocus_wsaf_cut_off = 0
+            }
+            process {
+                """
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv', checkIfExists: true)
+                input[2] = "wsaf_prop"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def command = path(process.out.mlaf.get(0)[1]).parent.resolve('.command.sh').text
+            assert command.contains('--wsaf_cut_off 0')
+        }
+
+    }
 }
