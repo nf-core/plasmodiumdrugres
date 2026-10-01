@@ -38,24 +38,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/fem_wrapper:5fbe1aa4f80981ca
-      build_id: bd-5fbe1aa4f80981ca_4
-      scan_id: sc-c96d971376ad1a06_1
+      name: community.wave.seqera.io/library/fem_wrapper:a701cba1416a0e6a
+      build_id: bd-a701cba1416a0e6a_1
+      scan_id: sc-35a5b7ae8b2e0ee5_1
     linux/arm64:
-      name: community.wave.seqera.io/library/fem_wrapper:af59a74088459c65
-      build_id: bd-af59a74088459c65_4
-      scan_id: sc-387864e80dc323ee_1
+      name: community.wave.seqera.io/library/fem_wrapper:ad86ed2a343c6f13
+      build_id: bd-ad86ed2a343c6f13_1
+      scan_id: sc-d4d0531b971cc8af_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/fem_wrapper:806320c9f4fd4286
-      build_id: bd-806320c9f4fd4286_4
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e71d228e76032b27c6fe6a5cabf12b9e8988d15d66f9bbc4d92a53b884801760/data
+      name: oras://community.wave.seqera.io/library/fem_wrapper:c1cfea3cbffdea13
+      build_id: bd-c1cfea3cbffdea13_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/6216ed31d33ddd6e9fc77859ecfb48f843df41a45482e840fe46837e9ef07623/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/fem_wrapper:e80e3936f9aad81c
-      build_id: bd-e80e3936f9aad81c_4
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/82/826cf8fa1092f5d0ae7294d004cef8692ea77489254fbca67bd38d9aca6a1049/data
+      name: oras://community.wave.seqera.io/library/fem_wrapper:5cefe9737b74a85f
+      build_id: bd-5cefe9737b74a85f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/77/776c60e5a399e22b25f4720956c59418eca9ba6d48d943dbee73c7e5beb85780/data
   conda:
     linux/amd64:
-      lock_file: modules/local/fem_wrapper/.conda-lock/linux_amd64-bd-5fbe1aa4f80981ca_4.txt
+      lock_file: modules/local/fem_wrapper/.conda-lock/linux_amd64-bd-a701cba1416a0e6a_1.txt
     linux/arm64:
-      lock_file: modules/local/fem_wrapper/.conda-lock/linux_arm64-bd-af59a74088459c65_4.txt
+      lock_file: modules/local/fem_wrapper/.conda-lock/linux_arm64-bd-ad86ed2a343c6f13_1.txt

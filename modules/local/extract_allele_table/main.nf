@@ -5,6 +5,7 @@
 
 process EXTRACT_ALLELE_TABLE {
 
+    tag "${pmo.name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -19,6 +20,9 @@ process EXTRACT_ALLELE_TABLE {
     path "allele_table.tsv", emit: allele_table
     path "versions.yml", emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     """
     pmotools-python extract_allele_table \
@@ -29,7 +33,7 @@ process EXTRACT_ALLELE_TABLE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pmotools-python: \$( pmotools-python --version 2>/dev/null || echo 'N/A' )
+        pmotools-python: \$( pmotools-python --version | sed 's/^pmotools-python //' )
     END_VERSIONS
     """
 }

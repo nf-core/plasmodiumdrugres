@@ -19,6 +19,11 @@ Initial release of nf-core/plasmodiumdrugres, created with the [nf-core](https:/
 - Align README Nextflow / template badges with manifest and `.nf-core.yml`
 - Point contributing guidelines at `docs/CONTRIBUTING.md`
 - `docker` profile no longer forces `linux/amd64` emulation, so Apple Silicon uses native arm64 images (use `-profile docker,emulate_amd64` to opt back in)
+- `TRANSLATE_LOCI_OF_INTEREST` takes `--translate_loci_extra_args` through `ext.args` (set in `conf/tools.config`) like the other wrappers, instead of a `val` input
+- Add `tag` and `when: task.ext.when == null || task.ext.when` to all local modules
+- Report `dplyr`, `readr`, `tibble` and `optparse` versions for the tidyverse-based local modules, drop `N/A` fallbacks from `versions.yml` and report the bare `pmotools-python` version number
+- Pin all local module conda dependencies to the versions in their lock files
+- Remove stale TODO comments from the `ESTIMATE_MLAF` subworkflow
 
 ### `Dependencies`
 

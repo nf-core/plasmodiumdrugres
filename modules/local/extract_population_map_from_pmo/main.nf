@@ -5,6 +5,7 @@
 
 process EXTRACT_POPULATION_MAP_FROM_PMO {
 
+    tag "${pmo.name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -21,6 +22,9 @@ process EXTRACT_POPULATION_MAP_FROM_PMO {
     path "population_map.tsv", emit: population_map
     path "versions.yml", emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     """
     pmotools-python export_specimen_meta_table \
@@ -35,7 +39,7 @@ process EXTRACT_POPULATION_MAP_FROM_PMO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pmotools-python: \$( pmotools-python --version 2>/dev/null || echo 'N/A' )
+        pmotools-python: \$( pmotools-python --version | sed 's/^pmotools-python //' )
     END_VERSIONS
     """
 }

@@ -5,6 +5,7 @@
 
 process EXTRACT_PANEL_INFO_TO_BED {
 
+    tag "${pmo.name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -19,6 +20,9 @@ process EXTRACT_PANEL_INFO_TO_BED {
     output:
     path "panel_info.bed", emit: panel_info_bed
     path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def parameter_string = add_ref_seqs == "TRUE"
@@ -38,7 +42,7 @@ process EXTRACT_PANEL_INFO_TO_BED {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pmotools-python: \$( pmotools-python --version 2>/dev/null || echo 'N/A' )
+        pmotools-python: \$( pmotools-python --version | sed 's/^pmotools-python //' )
     END_VERSIONS
     """
 }

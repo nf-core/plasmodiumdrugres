@@ -5,6 +5,7 @@
 
 process SLAF_FROM_MHAPS_FREQS {
 
+    tag "${group_name}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -19,6 +20,9 @@ process SLAF_FROM_MHAPS_FREQS {
     output:
     tuple val("${group_name}"), path("${group_name}.slaf.tsv"), emit: slaf
     path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
 

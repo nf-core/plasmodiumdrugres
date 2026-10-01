@@ -12,7 +12,6 @@ nextflow_process {
                 input[0] = file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true)
                 input[1] = file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true)
                 input[2] = file(params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed', checkIfExists: true)
-                input[3] = ""
                 """
             }
         }

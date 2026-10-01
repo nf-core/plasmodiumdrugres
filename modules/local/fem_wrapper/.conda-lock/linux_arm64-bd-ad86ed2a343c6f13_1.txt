@@ -59,14 +59,14 @@ linux-aarch64:
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libgfortran5-16.2.0-hc864f27_7.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libglib-2.90.0-h3584fe5_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libgomp-16.2.0-h8acb6b2_7.conda
-- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libharfbuzz-14.5.0-h8f7ccb3_0.conda
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libharfbuzz-14.5.1-h8f7ccb3_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libiconv-1.18-h1ea5142_3.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libjpeg-turbo-3.2.0-he30d5cf_1.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/liblapack-3.11.0-11_h88aeb00_openblas.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/liblzma-5.8.3-he30d5cf_1.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libnghttp2-1.68.1-ha4b982d_1.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libopenblas-0.3.34-pthreads_h4148b7d_2.conda
-- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libpng-1.6.58-hf9b7768_1.conda
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libpng-1.6.59-hf9b7768_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libpsl-0.23.1-hb8431ed_1.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libsanitizer-16.2.0-h73cac2c_7.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libssh2-1.11.1-h7572e3e_1.conda
@@ -686,9 +686,9 @@ license: GPL-3.0-only WITH GCC-exception-3.1
 license_family: GPL
 size: 617342
 timestamp: 1790302273072
-- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libharfbuzz-14.5.0-h8f7ccb3_0.conda
-sha256: a5b7e853d9af5d47d23ddfcfefa0e33d5e0b146deae98c221fad14b0fafa521d
-md5: 9a5a182cf6075cc2e196ea9f636adf8a
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libharfbuzz-14.5.1-h8f7ccb3_0.conda
+sha256: 9569596d9693bfc41d5269fa37dab20f8dbe15d56f80473f26da4538721ea502
+md5: 2cb97f237d3039aaab7a6bb0ef9dadfd
 depends:
 - cairo >=1.18.6,<2.0a0
 - graphite2 >=1.3.15,<2.0a0
@@ -697,13 +697,12 @@ depends:
 - libfreetype6 >=2.14.3
 - libgcc >=15
 - libglib >=2.90.0,<3.0a0
-- libpng >=1.6.58,<1.7.0a0
+- libpng >=1.6.59,<1.7.0a0
 - libstdcxx >=15
 - libzlib >=1.3.2,<2.0a0
 license: MIT
-license_family: MIT
-size: 1464461
-timestamp: 1790061663753
+size: 1466330
+timestamp: 1790860588144
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libiconv-1.18-h1ea5142_3.conda
 sha256: d22c666eb887afd2119aac2110e23a0e817e9391bda99293421f7c46dab1564c
 md5: 951b54a36388613a99820b33b997f690
@@ -774,15 +773,15 @@ license: BSD-3-Clause
 license_family: BSD
 size: 5854484
 timestamp: 1789141497196
-- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libpng-1.6.58-hf9b7768_1.conda
-sha256: bd6e423b08342969689d8893c965aad78244b29724da2168aef3634fa0e1ebd7
-md5: 308ecb7ad60637dc5e95558ab583c5ba
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libpng-1.6.59-hf9b7768_0.conda
+sha256: 11a8f519c148e9ce968b78ee718965a1166af135321e1803941ee6f92bd5862c
+md5: 233277975364a1c4c79ca15daaa0f49f
 depends:
 - libgcc >=15
 - libzlib >=1.3.2,<2.0a0
 license: zlib-acknowledgement
-size: 333238
-timestamp: 1786616546810
+size: 333207
+timestamp: 1790805159124
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libpsl-0.23.1-hb8431ed_1.conda
 sha256: 757f79c182ac3080cf416acd91c7643b8074b8b2e5c1eba0ffc5a16897feb84b
 md5: 5ab41e5e70b78eb00ef62cdaa35cd86f

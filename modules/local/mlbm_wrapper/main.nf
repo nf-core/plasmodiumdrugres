@@ -5,6 +5,7 @@
 
 process MLBM_WRAPPER {
 
+    tag "${aa_calls.name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -19,6 +20,9 @@ process MLBM_WRAPPER {
     output:
     tuple val("${aa_calls.getBaseName(3)}"), path("${aa_calls.getBaseName(3)}.aa_mlaf.tsv"), emit: mlaf
     path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def extra_args = task.ext.args ? task.ext.args : ''
@@ -35,7 +39,7 @@ process MLBM_WRAPPER {
     "${task.process}":
         r-base: \$( R --version | sed -n '1s/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' )
         r-pgecore: \$( Rscript -e 'cat(as.character(packageVersion("PGEcore")))' )
-        variantstring: \$( Rscript -e 'cat(as.character(packageVersion("variantstring")))' 2>/dev/null || echo 'N/A' )
+        variantstring: \$( Rscript -e 'cat(as.character(packageVersion("variantstring")))' )
     END_VERSIONS
     """
 }

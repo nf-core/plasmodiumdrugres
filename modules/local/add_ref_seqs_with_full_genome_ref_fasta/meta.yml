@@ -38,14 +38,14 @@ maintainers:
   - "@PlasmoGenEpi"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/add_ref_seqs_biostrings:a564fac02451aff5
-      build_id: bd-a564fac02451aff5_3
-      scan_id: sc-6ab4d9ca31a96f1d_1
     linux/amd64:
       name: community.wave.seqera.io/library/add_ref_seqs_biostrings:18ac1e5b6fdf043b
       build_id: bd-18ac1e5b6fdf043b_1
       scan_id: sc-18a0d5ea3a65858b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/add_ref_seqs_biostrings:a564fac02451aff5
+      build_id: bd-a564fac02451aff5_3
+      scan_id: sc-6ab4d9ca31a96f1d_1
   singularity:
     linux/amd64:
       name: oras://community.wave.seqera.io/library/add_ref_seqs_biostrings:6416162e38208eec

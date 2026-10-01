@@ -34,24 +34,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/idm_wrapper:1a9e1a40d75bade3
-      build_id: bd-1a9e1a40d75bade3_1
-      scan_id: sc-d210e97119d68ec2_1
+      name: community.wave.seqera.io/library/idm_wrapper:8fffb8098c99385c
+      build_id: bd-8fffb8098c99385c_1
+      scan_id: sc-6178d7a10cc9a358_1
     linux/arm64:
-      name: community.wave.seqera.io/library/idm_wrapper:8b9e6539baa49caa
-      build_id: bd-8b9e6539baa49caa_2
-      scan_id: sc-c128c331b481d326_1
+      name: community.wave.seqera.io/library/idm_wrapper:ad0d6ca77f66f5c6
+      build_id: bd-ad0d6ca77f66f5c6_1
+      scan_id: sc-2249e96edf40eef9_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/idm_wrapper:604feb09387e9ed8
-      build_id: bd-604feb09387e9ed8_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/09/095a76bcdad467aecddbf4109b65c1dc1ec1a624a30c19a0cf1c4e9aded6b604/data
+      name: oras://community.wave.seqera.io/library/idm_wrapper:234a74738940ddf5
+      build_id: bd-234a74738940ddf5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8d/8d36c36eac2443da4ffe45914b55136b2b4f0ffa444bb7dc3c1ce8cd7065525f/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/idm_wrapper:a9fb59da48595227
-      build_id: bd-a9fb59da48595227_2
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6df78da3cf639406152e2bb4c1ebf3aab3cfe702cac6c20c59cbac9f78dd5e3e/data
+      name: oras://community.wave.seqera.io/library/idm_wrapper:22315b34ce6ce588
+      build_id: bd-22315b34ce6ce588_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/3658c92722fd7f13e5a8d4179208f66a38a2057c358e24a00665d9241beead6a/data
   conda:
     linux/amd64:
-      lock_file: modules/local/idm_wrapper/.conda-lock/linux_amd64-bd-1a9e1a40d75bade3_1.txt
+      lock_file: modules/local/idm_wrapper/.conda-lock/linux_amd64-bd-8fffb8098c99385c_1.txt
     linux/arm64:
-      lock_file: modules/local/idm_wrapper/.conda-lock/linux_arm64-bd-8b9e6539baa49caa_2.txt
+      lock_file: modules/local/idm_wrapper/.conda-lock/linux_arm64-bd-ad0d6ca77f66f5c6_1.txt

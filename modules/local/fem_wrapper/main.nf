@@ -6,12 +6,13 @@
 // TODO: handle coi
 process FEM_WRAPPER {
 
+    tag "${aa_calls.name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e71d228e76032b27c6fe6a5cabf12b9e8988d15d66f9bbc4d92a53b884801760/data'
-:         'community.wave.seqera.io/library/fem_wrapper:5fbe1aa4f80981ca' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/6216ed31d33ddd6e9fc77859ecfb48f843df41a45482e840fe46837e9ef07623/data'
+:         'community.wave.seqera.io/library/fem_wrapper:a701cba1416a0e6a' }"
 
     input:
     path aa_calls
@@ -20,6 +21,9 @@ process FEM_WRAPPER {
     output:
     tuple val("${aa_calls.getBaseName(3)}"), path("${aa_calls.getBaseName(3)}.aa_mlaf.tsv"), emit: mlaf
     path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     """
@@ -34,7 +38,7 @@ process FEM_WRAPPER {
     "${task.process}":
         r-base: \$( R --version | sed -n '1s/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' )
         r-pgecore: \$( Rscript -e 'cat(as.character(packageVersion("PGEcore")))' )
-        freqestimationmodel: \$( Rscript -e 'cat(as.character(packageVersion("FreqEstimationModel")))' 2>/dev/null || echo 'N/A' )
+        freqestimationmodel: \$( Rscript -e 'cat(as.character(packageVersion("FreqEstimationModel")))' )
     END_VERSIONS
     """
 }

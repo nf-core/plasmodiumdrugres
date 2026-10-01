@@ -24,7 +24,6 @@ workflow PLASMODIUMDRUGRES {
     allele_table
     panel_info_bed_with_ref
     loci_of_interest_bed
-    translate_loci_extra_args
     population_assignment
     population_index_lookup
     mlaf_method
@@ -38,7 +37,7 @@ workflow PLASMODIUMDRUGRES {
     // Instead, decide based on pipeline parameters used to construct `population_map`.
     def has_population_assignment = params.population_assignment || (params.pmo && params.pmo_population_fields)
 
-    TRANSLATE_LOCI_OF_INTEREST(allele_table, panel_info_bed_with_ref, file(loci_of_interest_bed), translate_loci_extra_args)
+    TRANSLATE_LOCI_OF_INTEREST(allele_table, panel_info_bed_with_ref, file(loci_of_interest_bed))
     ch_versions = ch_versions.mix(TRANSLATE_LOCI_OF_INTEREST.out.versions)
 
     // Split allele table by population for mhaps_freq (only when population_map)

@@ -37,23 +37,23 @@ maintainers:
   - "@PlasmoGenEpi"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/slaf_from_stave_mlaf:ace8317a34749bc2
-      build_id: bd-ace8317a34749bc2_3
-      scan_id: sc-f33ba67f46aa92f0_1
     linux/amd64:
       name: community.wave.seqera.io/library/slaf_from_stave_mlaf:4c32c036540c052e
       build_id: bd-4c32c036540c052e_2
       scan_id: sc-72c48cf6d91434ef_1
-  singularity:
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/slaf_from_stave_mlaf:d8474b4d08e5c79f
-      build_id: bd-d8474b4d08e5c79f_3
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/13c2e282dc9f2dfe543a5995b1375589812a0952d9d0ea1f5d9db9331cd55966/data
+      name: community.wave.seqera.io/library/slaf_from_stave_mlaf:ace8317a34749bc2
+      build_id: bd-ace8317a34749bc2_3
+      scan_id: sc-f33ba67f46aa92f0_1
+  singularity:
     linux/amd64:
       name: oras://community.wave.seqera.io/library/slaf_from_stave_mlaf:1b44980fc997ad26
       build_id: bd-1b44980fc997ad26_2
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59694b9b3a63712c65ca417044bd5fb4d3927d9958fcf033bfa528a64d04caf8/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/slaf_from_stave_mlaf:d8474b4d08e5c79f
+      build_id: bd-d8474b4d08e5c79f_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/13c2e282dc9f2dfe543a5995b1375589812a0952d9d0ea1f5d9db9331cd55966/data
   conda:
     linux/amd64:
       lock_file: modules/local/slaf_from_stave_mlaf/.conda-lock/linux_amd64-bd-4c32c036540c052e_2.txt

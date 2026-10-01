@@ -7,5 +7,5 @@ channels:
 dependencies:
   - conda-forge::r-base=4.5
   - bioconda::r-pgecore=0.1.0
-  - conda-forge::r-rmpfr
-  - conda-forge::r-openxlsx
+  - conda-forge::r-rmpfr=1.1_1
+  - conda-forge::r-openxlsx=4.2.9

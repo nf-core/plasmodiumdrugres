@@ -5,6 +5,7 @@
 
 process ADD_REF_SEQS_WITH_FULL_GENOME_REF_FASTA {
 
+    tag "${ref_bed.name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -20,6 +21,9 @@ process ADD_REF_SEQS_WITH_FULL_GENOME_REF_FASTA {
     path ("ref_bed_with_seqs.bed"), emit: ref_bed_with_seqs
     path "versions.yml", emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     """
     export PATH="\$(Rscript -e 'cat(system.file(\"exec\", package = \"PGEcore\"))'):\${PATH}"
@@ -32,7 +36,7 @@ process ADD_REF_SEQS_WITH_FULL_GENOME_REF_FASTA {
     "${task.process}":
         r-base: \$( R --version | sed -n '1s/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' )
         r-pgecore: \$( Rscript -e 'cat(as.character(packageVersion("PGEcore")))' )
-        bioconductor-biostrings: \$( Rscript -e 'cat(as.character(packageVersion("Biostrings")))' 2>/dev/null || echo 'N/A' )
+        bioconductor-biostrings: \$( Rscript -e 'cat(as.character(packageVersion("Biostrings")))' )
     END_VERSIONS
     """
 }

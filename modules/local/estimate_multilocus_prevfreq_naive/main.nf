@@ -5,6 +5,7 @@
 
 process ESTIMATE_ML_PREVFREQ_NAIVE {
 
+    tag "${aa_calls.name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -21,6 +22,9 @@ process ESTIMATE_ML_PREVFREQ_NAIVE {
     tuple val("${aa_calls.getBaseName(3)}"), path("${aa_calls.getBaseName(3)}.aa_mlaf.tsv"), emit: mlaf
     tuple val("${aa_calls.getBaseName(3)}"), path("${aa_calls.getBaseName(3)}.aa_sl_from_ml.tsv"), emit: slaf_from_mlaf
     path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def extra_args = task.ext.args ? task.ext.args : ''

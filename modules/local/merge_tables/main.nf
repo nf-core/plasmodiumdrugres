@@ -5,12 +5,13 @@
 
 process MERGE_TABLES {
 
+    tag "${pop_index}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/25/25ec37d72caff047524cad028f190afbd7e97ff61cba29d8172883993c8a5c75/data'
-:         'community.wave.seqera.io/library/r_tidyverse:7733a7ba430c76e1' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/13ebff194324bc29f494831d874c29068468ef584f909ef7578025288c8bee62/data'
+:         'community.wave.seqera.io/library/tidyverse_tables:c07d709009059eb9' }"
 
     input:
     tuple val(pop_index), path(pop_files)
@@ -21,6 +22,9 @@ process MERGE_TABLES {
     path "${pop_index}.ml_summary.tsv", emit: ml_summary
     path "${pop_index}.sl_from_ml_summary.tsv", emit: sl_from_ml_summary
     path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     """
@@ -52,6 +56,9 @@ process MERGE_TABLES {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         r-base: \$( R --version | sed -n '1s/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' )
+        r-dplyr: \$( Rscript -e 'cat(as.character(packageVersion("dplyr")))' )
+        r-readr: \$( Rscript -e 'cat(as.character(packageVersion("readr")))' )
+        r-optparse: \$( Rscript -e 'cat(as.character(packageVersion("optparse")))' )
     END_VERSIONS
     """
 }

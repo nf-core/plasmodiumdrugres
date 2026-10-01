@@ -37,14 +37,14 @@ maintainers:
   - "@PlasmoGenEpi"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/mlbm_wrapper:f62633294b5f1f53
-      build_id: bd-f62633294b5f1f53_2
-      scan_id: sc-4571c465901b49ea_1
     linux/arm64:
       name: community.wave.seqera.io/library/mlbm_wrapper:52b974f98f8b840e
       build_id: bd-52b974f98f8b840e_4
       scan_id: sc-823a04dd7112a869_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/mlbm_wrapper:f62633294b5f1f53
+      build_id: bd-f62633294b5f1f53_2
+      scan_id: sc-4571c465901b49ea_1
   singularity:
     linux/amd64:
       name: oras://community.wave.seqera.io/library/mlbm_wrapper:1dc2e27a9991aa09

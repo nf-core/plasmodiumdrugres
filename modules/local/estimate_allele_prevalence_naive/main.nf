@@ -5,6 +5,7 @@
 
 process ESTIMATE_ALLELE_PREVALENCE_NAIVE {
 
+    tag "${aa_calls.name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -18,6 +19,9 @@ process ESTIMATE_ALLELE_PREVALENCE_NAIVE {
     output:
     tuple val("${aa_calls.getBaseName(3)}"), path("${aa_calls.getBaseName(3)}.allele_prev.tsv"), emit: allele_prevalence
     path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     """

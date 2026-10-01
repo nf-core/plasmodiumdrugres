@@ -5,12 +5,13 @@
 
 process IDM_WRAPPER {
 
+    tag "${aa_calls_input.name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/09/095a76bcdad467aecddbf4109b65c1dc1ec1a624a30c19a0cf1c4e9aded6b604/data'
-:         'community.wave.seqera.io/library/idm_wrapper:1a9e1a40d75bade3' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8d/8d36c36eac2443da4ffe45914b55136b2b4f0ffa444bb7dc3c1ce8cd7065525f/data'
+:         'community.wave.seqera.io/library/idm_wrapper:8fffb8098c99385c' }"
 
     input:
     path aa_calls_input
@@ -18,6 +19,9 @@ process IDM_WRAPPER {
     output:
     tuple val("${aa_calls_input.getBaseName(3)}"), path("${aa_calls_input.getBaseName(3)}.aa_slaf.tsv"), emit: slaf
     path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     """

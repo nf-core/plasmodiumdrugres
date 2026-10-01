@@ -16,13 +16,12 @@ nextflow_workflow {
                 input[0] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true))
                 input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true))
                 input[2] = params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed'
-                input[3] = ""
+                input[3] = null
                 input[4] = null
-                input[5] = null
-                input[6] = "MLBM"
-                input[7] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
-                input[8] = "naive"
-                input[9] = channel.empty()
+                input[5] = "MLBM"
+                input[6] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
+                input[7] = "naive"
+                input[8] = channel.empty()
                 """
             }
         }
@@ -46,13 +45,12 @@ nextflow_workflow {
                 input[0] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true))
                 input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true))
                 input[2] = params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed'
-                input[3] = ""
+                input[3] = null
                 input[4] = null
-                input[5] = null
-                input[6] = "FEM"
-                input[7] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
-                input[8] = "IDM"
-                input[9] = channel.empty()
+                input[5] = "FEM"
+                input[6] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
+                input[7] = "IDM"
+                input[8] = channel.empty()
                 """
             }
         }
@@ -76,13 +74,12 @@ nextflow_workflow {
                 input[0] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true))
                 input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true))
                 input[2] = params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed'
-                input[3] = ""
+                input[3] = null
                 input[4] = null
-                input[5] = null
-                input[6] = "naive"
-                input[7] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
-                input[8] = "mhaps_freq"
-                input[9] = channel.empty()
+                input[5] = "naive"
+                input[6] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
+                input[7] = "mhaps_freq"
+                input[8] = channel.empty()
                 """
             }
         }
@@ -105,13 +102,12 @@ nextflow_workflow {
                 input[0] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true))
                 input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true))
                 input[2] = params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed'
-                input[3] = ""
-                input[4] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/population_assignment_indexed.tsv', checkIfExists: true))
-                input[5] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/population_index_lookup.tsv', checkIfExists: true))
-                input[6] = "naive"
-                input[7] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
-                input[8] = "mhaps_freq"
-                input[9] = channel.empty()
+                input[3] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/population_assignment_indexed.tsv', checkIfExists: true))
+                input[4] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/population_index_lookup.tsv', checkIfExists: true))
+                input[5] = "naive"
+                input[6] = params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv'
+                input[7] = "mhaps_freq"
+                input[8] = channel.empty()
                 """
             }
         }

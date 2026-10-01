@@ -4,6 +4,7 @@
  */
 
 process TRANSLATE_LOCI_OF_INTEREST {
+    tag "${allele_table.name}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -15,7 +16,6 @@ process TRANSLATE_LOCI_OF_INTEREST {
     path allele_table
     path ref_bed
     path loci_of_interest
-    val extra_args
 
     output:
     path ("translated_loci/collapsed_amino_acid_calls.tsv.gz"), emit: collapsed_amino_acid_calls
@@ -24,7 +24,11 @@ process TRANSLATE_LOCI_OF_INTEREST {
     path ("translated_loci/loci_of_interest_for_target_for_microhap.tsv.gz"), emit: loci_of_interest_for_target_for_microhap
     path "versions.yml", emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
+    def args = task.ext.args ?: ''
     """
     export PATH="\$(Rscript -e 'cat(system.file(\"exec\", package = \"PGEcore\"))'):\${PATH}"
     translate_loci_of_interest \\
@@ -32,14 +36,14 @@ process TRANSLATE_LOCI_OF_INTEREST {
         --ref_bed ${ref_bed} \\
         --loci_of_interest ${loci_of_interest} \\
         --output_dir translated_loci \\
-        ${extra_args}
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         r-base: \$( R --version | sed -n '1s/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' )
         r-pgecore: \$( Rscript -e 'cat(as.character(packageVersion("PGEcore")))' )
-        bioconductor-biostrings: \$( Rscript -e 'cat(as.character(packageVersion("Biostrings")))' 2>/dev/null || echo 'N/A' )
-        bioconductor-pwalign: \$( Rscript -e 'cat(as.character(packageVersion("pwalign")))' 2>/dev/null || echo 'N/A' )
+        bioconductor-biostrings: \$( Rscript -e 'cat(as.character(packageVersion("Biostrings")))' )
+        bioconductor-pwalign: \$( Rscript -e 'cat(as.character(packageVersion("pwalign")))' )
     END_VERSIONS
     """
 }
