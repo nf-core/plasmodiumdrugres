@@ -1,0 +1,64 @@
+name: slaf_from_mhaps_freqs
+description: Derive single-locus allele frequencies from microhaplotype frequency tables
+keywords:
+  - slaf
+  - microhaplotype
+  - mhaps
+tools:
+  - slaf_from_mhaps_freqs:
+      description: |
+        PGEcore R script that expands microhap frequencies to single-locus frequencies.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://plasmogenepi.github.io/PGEcore/reference/slaf_from_mhaps_freqs.html
+      licence: ["MIT"]
+input:
+  - group_name:
+      type: string
+      description: Population or analysis group label
+  - mhaps_slaf_fnp:
+      type: file
+      description: Microhaplotype single-locus allele frequency table (TSV)
+      pattern: "*"
+  - loci_of_interest_per_microhaps_fnp:
+      type: file
+      description: Mapping of loci of interest to covering microhaplotypes (TSV)
+      pattern: "*"
+output:
+  - slaf:
+      - "${group_name}.slaf.tsv":
+          type: file
+          description: Derived single-locus allele frequency table
+          pattern: "${group_name}.slaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pgecore:e9024a6dc6e9a694
+      build_id: bd-e9024a6dc6e9a694_1
+      scan_id: sc-a4769a501b35cf15_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/pgecore:1f0ec0a47e85e3fa
+      build_id: bd-1f0ec0a47e85e3fa_1
+      scan_id: sc-04b9fa783897beff_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pgecore:a18df8d69a433f2a
+      build_id: bd-a18df8d69a433f2a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b7ca5eb26f1bbaf3fba4ea585e789071aa49902df3182030df649f596ac97b1/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pgecore:cb41742e1c237fbe
+      build_id: bd-cb41742e1c237fbe_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e88d9eb25521707812878be68bfcb5a86627875e07d7a1a9e42bda70e0294b20/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/slaf_from_mhaps_freqs/.conda-lock/linux_amd64-bd-e9024a6dc6e9a694_1.txt
+    linux/arm64:
+      lock_file: modules/local/slaf_from_mhaps_freqs/.conda-lock/linux_arm64-bd-1f0ec0a47e85e3fa_1.txt

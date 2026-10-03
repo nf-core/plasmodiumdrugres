@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process FEM_WRAPPER"
-    script "modules/local/fem_wrapper.nf"
+    script "modules/local/fem_wrapper/main.nf"
     process "FEM_WRAPPER"
 
     test("Should run without failures") {
@@ -9,8 +9,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_amino_acid_calls.tsv")
-                input[1] = file("${projectDir}/tests/input/example_loci_groups.tsv")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv', checkIfExists: true)
                 """
             }
         }
@@ -21,10 +21,33 @@ nextflow_process {
             // unpack tuple output
             def (pop, outFile) = process.out.mlaf.get(0)
 
-            assert pop == 'example_amino_acid_calls'
+            assert pop == 'amino_acid_calls'
+            assert path(outFile).parent.resolve('.command.sh').text.contains('--coi 3')
 
             // output md5 check
-            assert path(outFile).md5 == "709fb3612463e077ba2419b3d1aeb5d2"
+            assert path(outFile).md5 == "b97dd756815f90e5db6115f33a742436"
+        }
+
+    }
+
+    test("Should pass --fem_coi to FEM") {
+
+        when {
+            params {
+                fem_coi = 2
+            }
+            process {
+                """
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/loci_groups.tsv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def command = path(process.out.mlaf.get(0)[1]).parent.resolve('.command.sh').text
+            assert command.contains('--coi 2')
         }
 
     }

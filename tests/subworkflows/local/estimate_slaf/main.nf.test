@@ -10,8 +10,8 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = "IDM"
-                input[1] = channel.of(file("${projectDir}/tests/input/example_amino_acid_calls.tsv"))
-                input[2] = Channel.empty()
+                input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true))
+                input[2] = channel.empty()
                 """
             }
         }
@@ -29,8 +29,8 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = "naive"
-                input[1] = channel.of(file("${projectDir}/tests/input/example_amino_acid_calls.tsv"))
-                input[2] = Channel.empty()
+                input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true))
+                input[2] = channel.empty()
                 """
             }
         }
@@ -48,8 +48,8 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = "BAD_METHOD"
-                input[1] = channel.of(file("${projectDir}/tests/input/example_amino_acid_calls.tsv"))
-                input[2] = Channel.empty()
+                input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true))
+                input[2] = channel.empty()
                 """
             }
         }
@@ -69,8 +69,8 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = "mhaps_freq"
-                input[1] = channel.of(file("${projectDir}/tests/input/example2_allele_table.tsv"))
-                input[2] = channel.of(file("${projectDir}/tests/input/example_loci_of_interest_for_target_for_microhap.tsv"))
+                input[1] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true))
+                input[2] = channel.of(file(params.pipelines_testdata_base_path + 'testdata/loci_of_interest_mhaps.bed', checkIfExists: true))
                 """
             }
         }

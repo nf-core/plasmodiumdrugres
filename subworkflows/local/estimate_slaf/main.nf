@@ -13,15 +13,18 @@ workflow ESTIMATE_SLAF {
     take:
     method
     method_input         // allele table for mhaps_freq; AA table for other methods
-    loci_of_interest_for_target_for_microhap  // for mhaps_freq only (pass Channel.empty() for other methods)
+    loci_of_interest_for_target_for_microhap  // for mhaps_freq only (pass channel.empty() for other methods)
 
     main:
+    ch_versions = channel.empty()
     if (method == "IDM") {
         IDM_WRAPPER(method_input)
         slaf_output = IDM_WRAPPER.out.slaf
+        ch_versions = ch_versions.mix(IDM_WRAPPER.out.versions)
     } else if (method == "naive") {
         ESTIMATE_ALLELE_FREQUENCY_NAIVE(method_input, params.naive_slaf_method)
         slaf_output = ESTIMATE_ALLELE_FREQUENCY_NAIVE.out.slaf
+        ch_versions = ch_versions.mix(ESTIMATE_ALLELE_FREQUENCY_NAIVE.out.versions)
     } else if (method == "mhaps_freq") {
         DCIFER_SLAF_WRAPPER(method_input)
         mhaps_dcifer_ch = DCIFER_SLAF_WRAPPER.out.mhaps_slaf
@@ -31,11 +34,15 @@ workflow ESTIMATE_SLAF {
         // No population_assignment: use "collapsed_amino_acid_calls" as group_name for merge consistency
         slaf_output = params.population_assignment
             ? slaf_output_raw
-            : slaf_output_raw.map { tuple -> tuple[0] = "collapsed_amino_acid_calls"; tuple }
+            : slaf_output_raw.map { _group_name, slaf_file ->
+                ["collapsed_amino_acid_calls", slaf_file]
+            }
+        ch_versions = ch_versions.mix(DCIFER_SLAF_WRAPPER.out.versions).mix(SLAF_FROM_MHAPS_FREQS.out.versions)
     } else {
-        throw new IllegalArgumentException("Error: 'slaf_method' must be one of ${params.slaf_method_options} Provided value: ${method}.")
+        throw new IllegalArgumentException("Error: 'slaf_method' must be one of ['IDM','naive','mhaps_freq']. Provided value: ${method}.")
     }
 
     emit:
     slaf_output = slaf_output
+    versions = ch_versions
 }

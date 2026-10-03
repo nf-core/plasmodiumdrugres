@@ -1,0 +1,57 @@
+name: dcifer_slaf_wrapper
+description: Estimate single-locus allele frequencies with dcifer
+keywords:
+  - dcifer
+  - allele frequency
+  - slaf
+tools:
+  - dcifer:
+      description: |
+        Wrapper around the dcifer R package for SLAF estimation from allele tables.
+      homepage: https://github.com/bahlolab/dcifer
+      documentation: https://plasmogenepi.github.io/PGEcore/reference/dcifer_slaf_wrapper.html
+      licence: ["MIT"]
+input:
+  - allele_table:
+      type: file
+      description: Allele / amino-acid call table (TSV)
+      pattern: "*"
+output:
+  - mhaps_slaf:
+      - "${allele_table.getBaseName(3)}.mhaps_slaf.tsv":
+          type: file
+          description: dcifer single-locus allele frequency table
+          pattern: "${allele_table.getBaseName(3)}.mhaps_slaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/dcifer_slaf_wrapper:7599d72a94d4b1ed
+      build_id: bd-7599d72a94d4b1ed_3
+      scan_id: sc-94b64cf7a062fc74_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/dcifer_slaf_wrapper:d418b71ff1cb5828
+      build_id: bd-d418b71ff1cb5828_2
+      scan_id: sc-175b6545f3add95d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/dcifer_slaf_wrapper:b8d40d01df40fae7
+      build_id: bd-b8d40d01df40fae7_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9bab54983c4e424479bda4b7b8d6a17b403205bc68e93dc3078485f6b6528d3a/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/dcifer_slaf_wrapper:55893a508e170c84
+      build_id: bd-55893a508e170c84_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f2f381e356fdcfdb4ab13813515d36a5ea6bdc49102c5091ad8f2cc5a7a6b5e5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/dcifer_slaf_wrapper/.conda-lock/linux_amd64-bd-d418b71ff1cb5828_2.txt
+    linux/arm64:
+      lock_file: modules/local/dcifer_slaf_wrapper/.conda-lock/linux_arm64-bd-7599d72a94d4b1ed_3.txt
