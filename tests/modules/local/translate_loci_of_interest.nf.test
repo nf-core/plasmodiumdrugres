@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process TRANSLATE_LOCI_OF_INTEREST"
-    script "modules/local/translate_loci_of_interest.nf"
+    script "modules/local/translate_loci_of_interest/main.nf"
     process "TRANSLATE_LOCI_OF_INTEREST"
 
     test("Should run without failures") {
@@ -9,10 +9,9 @@ nextflow_process {
         when {
             process {
                 """
-                // define inputs of the process here. Example:
-                input[0] = file("${projectDir}/tests/input/example2_allele_table.tsv")
-                input[1] = file("${projectDir}/tests/input/example_PMO_insert_locs_of_panel.bed")
-                input[2] = file("${projectDir}/tests/input/example_principal_resistance_marker_info_table.bed")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/allele_table.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/panel_info.bed', checkIfExists: true)
+                input[2] = file(params.pipelines_testdata_base_path + 'testdata/loci_of_interest.bed', checkIfExists: true)
                 input[3] = ""
                 """
             }
@@ -23,10 +22,10 @@ nextflow_process {
             // channel exists
             assert process.out.collapsed_amino_acid_calls != null
             // output md5 check
-            assert path(process.out.collapsed_amino_acid_calls.get(0)).md5 == "0e55caf7dc912137457f3929eb785f40"
-            assert path(process.out.amino_acid_calls.get(0)).md5 == "8a34f7f4235b08473c5b5933a4ef6503"
-            assert path(process.out.loci_covered_by_target_samples_info.get(0)).md5 == "c732c7a2c01ef61d456ceda30ddd7e29"
-            assert path(process.out.loci_of_interest_for_target_for_microhap.get(0)).md5 == "10b8e2f5352441c28c3ea3c0bcef74cd"
+            assert path(process.out.collapsed_amino_acid_calls.get(0)).md5 == "cd9cf4a6aa1ad66c99816239abf3a532"
+            assert path(process.out.amino_acid_calls.get(0)).md5 == "545f952c39c8206625359cd613b1f29c"
+            assert path(process.out.loci_covered_by_target_samples_info.get(0)).md5 == "1b2c20818014cb785d013fc21ff46346"
+            assert path(process.out.loci_of_interest_for_target_for_microhap.get(0)).md5 == "2b9323b36ae6979db24b6456eac732ea"
 
         }
 

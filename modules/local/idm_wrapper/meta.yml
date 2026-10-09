@@ -1,0 +1,57 @@
+name: idm_wrapper
+description: Estimate single-locus allele frequencies with the Incomplete Data Model (IDM)
+keywords:
+  - idm
+  - slaf
+  - allele frequency
+tools:
+  - idm_wrapper:
+      description: |
+        PGEcore Incomplete Data Model wrapper for SLAF estimation.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://plasmogenepi.github.io/PGEcore/reference/IDM_wrapper.html
+      licence: ["MIT"]
+input:
+  - aa_calls_input:
+      type: file
+      description: Amino acid call table (TSV)
+      pattern: "*"
+output:
+  - slaf:
+      - "${aa_calls_input.getBaseName(3)}.aa_slaf.tsv":
+          type: file
+          description: IDM single-locus allele frequency table (tuple with stub name)
+          pattern: "${aa_calls_input.getBaseName(3)}.aa_slaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/idm_wrapper:1a9e1a40d75bade3
+      build_id: bd-1a9e1a40d75bade3_1
+      scan_id: sc-d210e97119d68ec2_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/idm_wrapper:8b9e6539baa49caa
+      build_id: bd-8b9e6539baa49caa_2
+      scan_id: sc-c128c331b481d326_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/idm_wrapper:604feb09387e9ed8
+      build_id: bd-604feb09387e9ed8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/09/095a76bcdad467aecddbf4109b65c1dc1ec1a624a30c19a0cf1c4e9aded6b604/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/idm_wrapper:a9fb59da48595227
+      build_id: bd-a9fb59da48595227_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6df78da3cf639406152e2bb4c1ebf3aab3cfe702cac6c20c59cbac9f78dd5e3e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/idm_wrapper/.conda-lock/linux_amd64-bd-1a9e1a40d75bade3_1.txt
+    linux/arm64:
+      lock_file: modules/local/idm_wrapper/.conda-lock/linux_arm64-bd-8b9e6539baa49caa_2.txt

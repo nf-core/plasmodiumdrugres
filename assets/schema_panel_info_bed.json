@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/master/assets/schema_input.json",
+    "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/main/assets/schema_panel_info_bed.json",
     "title": "nf-core/plasmodiumdrugres pipeline - params.panel_info_bed schema",
     "description": "Schema for the file provided with params.panel_info_bed",
     "type": "array",
@@ -41,11 +41,11 @@
             },
             "ref_seq": {
                 "type": "string",
-                "errorMessage": "Sequence of reference for target.",
+                "errorMessage": "Reference sequence for the target is required and must only contain A, T, C and G.",
                 "pattern": "^[ATCG]+$",
                 "meta": ["id"]
             }
         },
-        "required": ["#chrom", "start", "end", "target_name", "strand"]
+        "required": ["#chrom", "start", "end", "target_name", "strand", "ref_seq"]
     }
 }

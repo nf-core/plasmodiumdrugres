@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "EXTRACT_BED_FILE_FROM_PMO"
+description: Extract panel BED information from a PMO and optionally add reference sequences from a targeted or genome FASTA
+keywords:
+  - bed
+  - panel
+  - reference
+  - PMO
+components:
+  - extract/panel/info/to/bed
+  - add/ref/seqs/with/targeted/ref/fasta
+  - add/ref/seqs/with/full/genome/ref/fasta
+input:
+  - pmo:
+      type: file
+      description: |
+        PMO JSON input.
+        Structure: [ path(pmo) ]
+      pattern: "*.{json,pmo.json}"
+  - ref_type:
+      type: string
+      description: |
+        Reference mode: targeted_reference, genome_reference, or none.
+  - fasta:
+      type: file
+      description: |
+        Reference FASTA path when ref_type is targeted_reference or genome_reference; empty string otherwise.
+output:
+  - panel_info_bed:
+      type: file
+      description: |
+        Panel BED, optionally with reference sequences added.
+        Structure: [ path(bed) ]
+      pattern: "*.bed"
+  - versions:
+      type: file
+      description: |
+        Software versions from processes run in this subworkflow.
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"

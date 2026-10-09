@@ -1,0 +1,61 @@
+name: mlbm_wrapper
+description: Estimate multilocus allele frequencies with MultiLociBiallelicModel (MLBM)
+keywords:
+  - mlbm
+  - mlaf
+  - variantstring
+tools:
+  - variantstring:
+      description: |
+        Wrapper using variantstring / MultiLociBiallelicModel for MLAF estimation.
+      homepage: https://github.com/mrc-ide/variantstring
+      documentation: https://plasmogenepi.github.io/PGEcore/reference/MultiLociBiallelicModel_wrapper.html
+      licence: ["MIT"]
+input:
+  - aa_calls:
+      type: file
+      description: Amino acid call table (TSV)
+      pattern: "*"
+  - loci_group_table:
+      type: file
+      description: Loci group definition table (TSV)
+      pattern: "*"
+output:
+  - mlaf:
+      - "${aa_calls.getBaseName(3)}.aa_mlaf.tsv":
+          type: file
+          description: MLBM multilocus allele frequency table (tuple with stub name)
+          pattern: "${aa_calls.getBaseName(3)}.aa_mlaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/mlbm_wrapper:f62633294b5f1f53
+      build_id: bd-f62633294b5f1f53_2
+      scan_id: sc-4571c465901b49ea_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/mlbm_wrapper:52b974f98f8b840e
+      build_id: bd-52b974f98f8b840e_4
+      scan_id: sc-823a04dd7112a869_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mlbm_wrapper:1dc2e27a9991aa09
+      build_id: bd-1dc2e27a9991aa09_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b2cde7b1f98319441058490837b4fd366e55f570bf00c855d226e24c142595dd/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mlbm_wrapper:81f4595b92e41d5b
+      build_id: bd-81f4595b92e41d5b_4
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/77/77b433709cfab6a81cf1982e0043832542e16687e6c5ef7ca957b7a7977f45fa/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/mlbm_wrapper/.conda-lock/linux_amd64-bd-f62633294b5f1f53_2.txt
+    linux/arm64:
+      lock_file: modules/local/mlbm_wrapper/.conda-lock/linux_arm64-bd-52b974f98f8b840e_4.txt

@@ -1,0 +1,57 @@
+name: estimate_allele_prevalence_naive
+description: Naive allele prevalence estimation
+keywords:
+  - prevalence
+  - naive
+  - allele
+tools:
+  - estimate_allele_prevalence_naive:
+      description: |
+        PGEcore R script for naive allele prevalence from amino acid calls.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://plasmogenepi.github.io/PGEcore/reference/estimate_allele_prevalence_naive.html
+      licence: ["MIT"]
+input:
+  - aa_calls:
+      type: file
+      description: Amino acid call table (TSV)
+      pattern: "*"
+output:
+  - allele_prevalence:
+      - "${aa_calls.getBaseName(3)}.allele_prev.tsv":
+          type: file
+          description: Naive allele prevalence table
+          pattern: "${aa_calls.getBaseName(3)}.allele_prev.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/pgecore:1f0ec0a47e85e3fa
+      build_id: bd-1f0ec0a47e85e3fa_1
+      scan_id: sc-04b9fa783897beff_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/pgecore:e9024a6dc6e9a694
+      build_id: bd-e9024a6dc6e9a694_1
+      scan_id: sc-a4769a501b35cf15_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pgecore:cb41742e1c237fbe
+      build_id: bd-cb41742e1c237fbe_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e88d9eb25521707812878be68bfcb5a86627875e07d7a1a9e42bda70e0294b20/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pgecore:a18df8d69a433f2a
+      build_id: bd-a18df8d69a433f2a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b7ca5eb26f1bbaf3fba4ea585e789071aa49902df3182030df649f596ac97b1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/estimate_allele_prevalence_naive/.conda-lock/linux_amd64-bd-e9024a6dc6e9a694_1.txt
+    linux/arm64:
+      lock_file: modules/local/estimate_allele_prevalence_naive/.conda-lock/linux_arm64-bd-1f0ec0a47e85e3fa_1.txt

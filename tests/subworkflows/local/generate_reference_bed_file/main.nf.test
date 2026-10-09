@@ -9,7 +9,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = file("${projectDir}/tests/input/example_PMO.json")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/example_PMO.json', checkIfExists: true)
                 input[1] = null
                 input[2] = null
                 """
@@ -28,9 +28,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = file("${projectDir}/tests/input/example_PMO.json")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/example_PMO.json', checkIfExists: true)
                 input[1] = "targeted_reference"
-                input[2] = file("${projectDir}/tests/input/example_PMO_insert_locs_of_panel_refseqs.fasta")
+                input[2] = file(params.pipelines_testdata_base_path + 'testdata/insert_refseqs.fasta', checkIfExists: true)
                 """
             }
         }

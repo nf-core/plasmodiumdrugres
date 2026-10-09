@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process SLAF_FROM_STAVE_MLAF"
-    script "modules/local/slaf_from_stave_mlaf.nf"
+    script "modules/local/slaf_from_stave_mlaf/main.nf"
     process "SLAF_FROM_STAVE_MLAF"
 
     test("Test for successful execution and output checksum") {
@@ -9,7 +9,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = tuple(file("${projectDir}/tests/input/example_mlaf.tsv").getBaseName(3), file("${projectDir}/tests/input/example_mlaf.tsv"))
+                input[0] = tuple(file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.aa_mlaf.tsv').getBaseName(3), file(params.pipelines_testdata_base_path + 'testdata/aa_mlaf.tsv', checkIfExists: true))
                 """
             }
         }
@@ -21,10 +21,10 @@ nextflow_process {
             // unpack tuple output
             def (pop, outFile) = process.out.slaf.get(0)
 
-            assert pop == 'example_mlaf'
+            assert pop == 'aa_mlaf'
 
             // output md5 check
-            assert path(outFile).md5 == "937b13856732e07791f20eb9ebc47acd"
+            assert path(outFile).md5 == "16905e7b896609a5bfccc2c271cb46ef"
         }
 
     }

@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/master/assets/schema_allele_table.json",
+    "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/main/assets/schema_allele_data.json",
     "title": "nf-core/plasmodiumdrugres pipeline - params.allele_table schema",
     "description": "Schema for the file provided with params.allele_table",
     "type": "array",

@@ -1,0 +1,62 @@
+name: add_ref_seqs_with_targeted_ref_fasta
+description: Add reference sequences to a panel BED using a targeted/reference FASTA
+keywords:
+  - reference
+  - bed
+  - fasta
+  - biostrings
+tools:
+  - add_ref_seqs_with_targeted_ref_fasta:
+      description: |
+        PGEcore R script that matches target IDs to sequences in a targeted FASTA.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://plasmogenepi.github.io/PGEcore/reference/add_ref_seqs_with_targeted_ref_fasta.html
+      licence: ["MIT"]
+input:
+  - ref_bed:
+      type: file
+      description: Panel BED without sequences
+      pattern: "*"
+  - fasta:
+      type: file
+      description: Targeted reference FASTA
+      pattern: "*"
+output:
+  - ref_bed_with_seqs:
+      - ref_bed_with_seqs.bed:
+          type: file
+          description: BED with reference sequence column
+          pattern: ref_bed_with_seqs.bed
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/add_ref_seqs_biostrings:18ac1e5b6fdf043b
+      build_id: bd-18ac1e5b6fdf043b_1
+      scan_id: sc-18a0d5ea3a65858b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/add_ref_seqs_biostrings:a564fac02451aff5
+      build_id: bd-a564fac02451aff5_3
+      scan_id: sc-6ab4d9ca31a96f1d_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/add_ref_seqs_biostrings:c97b2ae0d1b87935
+      build_id: bd-c97b2ae0d1b87935_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0dc4ffdb79225a99b88d0a7fc266561d5d468a7c9defe575446a87c0538b8fe3/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/add_ref_seqs_biostrings:6416162e38208eec
+      build_id: bd-6416162e38208eec_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a1ec4aede8ca7ce3bbde592f7b88678ff5ccff21283a0f20f61f5fdca1a13db0/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/add_ref_seqs_with_targeted_ref_fasta/.conda-lock/linux_amd64-bd-18ac1e5b6fdf043b_1.txt
+    linux/arm64:
+      lock_file: modules/local/add_ref_seqs_with_targeted_ref_fasta/.conda-lock/linux_arm64-bd-a564fac02451aff5_3.txt

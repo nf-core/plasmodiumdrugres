@@ -1,0 +1,61 @@
+name: fem_wrapper
+description: Estimate multilocus allele frequencies with FreqEstimationModel (FEM)
+keywords:
+  - fem
+  - mlaf
+  - haplotype frequency
+tools:
+  - FreqEstimationModel:
+      description: |
+        Wrapper around the FreqEstimationModel R package for MLAF estimation.
+      homepage: https://github.com/aimeertaylor/FreqEstimationModel
+      documentation: https://plasmogenepi.github.io/PGEcore/reference/FreqEstimationModel_wrapper.html
+      licence: ["MIT"]
+input:
+  - aa_calls:
+      type: file
+      description: Amino acid call table (TSV)
+      pattern: "*"
+  - loci_group_table:
+      type: file
+      description: Loci group definition table (TSV)
+      pattern: "*"
+output:
+  - mlaf:
+      - "${aa_calls.getBaseName(3)}.aa_mlaf.tsv":
+          type: file
+          description: FEM multilocus allele frequency table (tuple with stub name)
+          pattern: "${aa_calls.getBaseName(3)}.aa_mlaf.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fem_wrapper:5fbe1aa4f80981ca
+      build_id: bd-5fbe1aa4f80981ca_4
+      scan_id: sc-c96d971376ad1a06_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fem_wrapper:af59a74088459c65
+      build_id: bd-af59a74088459c65_4
+      scan_id: sc-387864e80dc323ee_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fem_wrapper:806320c9f4fd4286
+      build_id: bd-806320c9f4fd4286_4
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e71d228e76032b27c6fe6a5cabf12b9e8988d15d66f9bbc4d92a53b884801760/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fem_wrapper:e80e3936f9aad81c
+      build_id: bd-e80e3936f9aad81c_4
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/82/826cf8fa1092f5d0ae7294d004cef8692ea77489254fbca67bd38d9aca6a1049/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/fem_wrapper/.conda-lock/linux_amd64-bd-5fbe1aa4f80981ca_4.txt
+    linux/arm64:
+      lock_file: modules/local/fem_wrapper/.conda-lock/linux_arm64-bd-af59a74088459c65_4.txt

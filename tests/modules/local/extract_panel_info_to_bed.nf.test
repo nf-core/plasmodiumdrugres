@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process EXTRACT_PANEL_INFO_TO_BED"
-    script "modules/local/extract_panel_info_to_bed.nf"
+    script "modules/local/extract_panel_info_to_bed/main.nf"
     process "EXTRACT_PANEL_INFO_TO_BED"
 
     test("Should extract panel info without failures") {
@@ -9,7 +9,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_PMO.json")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/example_PMO.json', checkIfExists: true)
                 input[1] = "FALSE"
                 """
             }
@@ -18,7 +18,7 @@ nextflow_process {
         then {
             assert process.success
             assert process.out.panel_info_bed != null
-            assert path(process.out.panel_info_bed.get(0)).md5 == "df63a89d3487c1d81e38aa1abab2240d"
+            assert path(process.out.panel_info_bed.get(0)).md5 == "bfca8b5369eac771e91c7f9404ef56b9"
         }
 
     }
@@ -28,7 +28,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("${projectDir}/tests/input/example_PMO.json")
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/example_PMO.json', checkIfExists: true)
                 input[1] = "TRUE"
                 """
             }
@@ -37,7 +37,7 @@ nextflow_process {
         then {
             assert process.success
             assert process.out.panel_info_bed != null
-            assert path(process.out.panel_info_bed.get(0)).md5 == "5655fad30ea541867780d735327e67fe"
+            assert path(process.out.panel_info_bed.get(0)).md5 == "d991e06e47f68430e23080ec57d493c3"
         }
 
     }

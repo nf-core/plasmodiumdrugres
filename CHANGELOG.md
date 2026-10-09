@@ -3,14 +3,33 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v1.0.0dev - 2025-03-09
+## v1.0.0 - [2026-10-09]
 
 Initial release of nf-core/plasmodiumdrugres, created with the [nf-core](https://nf-co.re/) template.
 
+nf-core/plasmodiumdrugres estimates the prevalence and frequency of drug resistance markers from targeted amplicon sequencing (microhaplotype) data. It was developed for _Plasmodium falciparum_, but can be applied to any polyclonal organism with microhaplotype data, a matching reference and a BED file of loci of interest.
+
+Thanks to everyone who contributed to this release: @kathrynmurie, @nickjhathaway, @a-hubbard, @jorgeamaya.
+
 ### `Added`
 
-### `Fixed`
+- Input
+  - Microhaplotype calls from a [Portable Microhaplotype Object (PMO)](https://plasmogenepi.github.io/PMO_Docs/) (`--pmo`, plain or gzip-compressed) or an allele table (`--allele_table`)
+  - Populations taken from PMO metadata fields (`--pmo_population_fields`) or a population assignment file (`--population_assignment`); specimens without a population are reported in `unassigned_specimens.txt` and logged as a warning
+  - Choice of how specimens with several library samples in a PMO are handled (`--pmo_replicate_libraries`)
+  - Reference sequences from either a targeted reference (`--targeted_reference`) or a full genome reference (`--genome_reference`)
+- Translation of microhaplotypes into amino acid calls at the drug resistance codons in `--loci_of_interest_bed`, summing calls across all targets covering a locus by default (`--collapse_calls_by_summing`)
+- Single-locus allele frequency estimation with IDM, a naive estimator, or from microhaplotype frequencies estimated with Dcifer
+- Multi-locus allele frequency estimation for haplotypes defined in `--loci_groups`, with MLBM, FEM or a naive estimator, plus single-locus frequencies derived from the multi-locus estimates
+- Naive allele prevalence estimation
+- Per-population analysis, with results merged into standardised `sl_summary.tsv` and `ml_summary.tsv` tables and the full tool-specific tables kept under `raw_summaries/`
+- Estimation methods provided by the [PGEcore](https://github.com/PlasmoGenEpi/PGEcore) R package (Bioconda `r-pgecore`)
+- Per-module Docker, Singularity and Conda environments for `linux/amd64` and `linux/arm64`
+- `test` profile on a small PMO and `test_full` profile on MAD4HatTeR surveillance data from Eswatini, Namibia, South Africa and Zambia (1,646 specimens, Dataset 1 of the PMO paper, [Zenodo 10.5281/zenodo.20550920](https://doi.org/10.5281/zenodo.20550920))
 
 ### `Dependencies`
 
-### `Deprecated`
+| Dependency              | Version |
+| ----------------------- | ------- |
+| `r-pgecore`             | 0.1.0   |
+| `r-freqestimationmodel` | 0.1.1   |
