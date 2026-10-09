@@ -23,7 +23,7 @@
                     "bioconductor-pwalign": "1.6.0"
                 },
                 "Workflow": {
-                    "nf-core/plasmodiumdrugres": "v1.0.0"
+                    "nf-core/plasmodiumdrugres": "v1.1.0dev"
                 }
             },
             [
@@ -101,7 +101,7 @@
                     "bioconductor-pwalign": "1.6.0"
                 },
                 "Workflow": {
-                    "nf-core/plasmodiumdrugres": "v1.0.0"
+                    "nf-core/plasmodiumdrugres": "v1.1.0dev"
                 }
             },
             [
@@ -164,7 +164,7 @@
                     "bioconductor-pwalign": "1.6.0"
                 },
                 "Workflow": {
-                    "nf-core/plasmodiumdrugres": "v1.0.0"
+                    "nf-core/plasmodiumdrugres": "v1.1.0dev"
                 }
             },
             [

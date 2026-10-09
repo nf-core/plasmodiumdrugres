@@ -1,0 +1,86 @@
+%%metro title: nf-core/plasmodiumdrugres
+%%metro style: nfcore
+%%metro logo: ../docs/images/nf-core-plasmodiumdrugres_logo_light.png | ../docs/images/nf-core-plasmodiumdrugres_logo_dark.png
+%%metro diamond_style: symmetric
+%%metro section_x_gap: 70
+%%metro x_spacing: 45
+%%metro y_spacing: 55
+%%metro section_y_gap: 30
+%%metro legend: 12,12
+%%metro line: opt   | Optional step   | #fbdae6
+%%metro line: step  | Mandatory step  | #ff4181
+%%metro line: input | Mandatory input | #7589c3
+%%metro line: optin | Optional input  | #dded3b
+
+%%metro file: pmo_in      | PMO   | Microhaplotypes
+%%metro file: allele_in   | TSV   | Allele table
+%%metro file: panel_in    | BED   | Panel info
+%%metro file: ref_in      | FASTQ | Reference
+%%metro file: loci_in     | BED   | Loci of interest
+%%metro file: pop_in      | TSV   | Populations
+%%metro file: variant_in  | TSV   | Variant groups
+%%metro file: single_out  | TSV   | Single-locus
+%%metro file: multi_out   | TSV   | Multi-locus
+%%metro off_track: ref_in, loci_in, pop_in, variant_in
+
+graph LR
+    subgraph table_input [Allele table input]
+        allele_in[ ]
+        panel_in[ ]
+        _table_join
+        allele_in -->|input| _table_join
+        panel_in -->|input| _table_join
+    end
+
+    subgraph prep [PMO input]
+        pmo_in[ ]
+        ref_in[ ]
+        extract[Extract allele table]
+        gen_pop[Generate populations]
+        gen_panel[Generate panel info]
+        add_ref[Add loci reference]
+
+        pmo_in -->|input| extract
+        pmo_in -->|opt| gen_pop
+        pmo_in -->|opt| gen_panel
+        gen_panel -->|opt| add_ref
+        ref_in -->|optin| add_ref
+    end
+
+    subgraph translate_sec [Translate and split]
+        loci_in[ ]
+        pop_in[ ]
+        translate[Translate loci\nof interest]
+        split[Split by\npopulation]
+        loci_in -->|input| translate
+        pop_in -->|optin| split
+        translate -->|step,opt| split
+    end
+
+    subgraph single [Single-locus estimates]
+        slaf[SLAF\n(naive, IDM, Dcifer)]
+        slap[SLAP]
+        single_out[ ]
+        slaf -->|step,opt| single_out
+        slap -->|step| single_out
+    end
+
+    subgraph multi [Multi-locus estimates]
+        variant_in[ ]
+        _mlaf
+        mlaf[MLAF/P\n(naive, MLBM, FEM)]
+        _mlaf_out
+        multi_out[ ]
+        variant_in -->|optin| _mlaf
+        _mlaf -->|opt| mlaf
+        mlaf -->|opt| _mlaf_out
+        _mlaf_out -->|opt| multi_out
+    end
+
+    extract -->|step| translate
+    gen_pop -->|opt| translate
+    add_ref -->|opt| translate
+    _table_join -->|input| translate
+    split -->|step,opt| slaf
+    split -->|step| slap
+    split -->|opt| _mlaf
