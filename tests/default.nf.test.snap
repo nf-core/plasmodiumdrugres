@@ -86,13 +86,13 @@
                     "r-pgecore": "0.1.0"
                 },
                 "EXTRACT_ALLELE_TABLE": {
-                    "pmotools-python": "1.1.0"
+                    "pmotools-python": "1.2.1"
                 },
                 "EXTRACT_PANEL_INFO_TO_BED": {
-                    "pmotools-python": "1.1.0"
+                    "pmotools-python": "1.2.1"
                 },
                 "EXTRACT_POPULATION_MAP_FROM_PMO": {
-                    "pmotools-python": "1.1.0"
+                    "pmotools-python": "1.2.1"
                 },
                 "INDEX_POPULATION_ASSIGNMENT": {
                     "r-base": "4.4.3",

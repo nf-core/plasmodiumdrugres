@@ -9,8 +9,8 @@ process EXTRACT_PANEL_INFO_TO_BED {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/18/189c44118da9b46a927fb57c5ca01460fb93bfbc4b85bcb4484036888b8d5878/data'
-:         'community.wave.seqera.io/library/pmotools:49e8a88de6f47183' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/486b002855a25cd4739d4f3da8f069b03c157e7a91c95b02bba56cf20438d202/data'
+:         'community.wave.seqera.io/library/pmotools:b396e7b3d4cedca6' }"
 
     input:
     path pmo

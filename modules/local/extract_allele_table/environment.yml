@@ -5,4 +5,4 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::pmotools=1.1.0
+  - bioconda::pmotools=1.2.1

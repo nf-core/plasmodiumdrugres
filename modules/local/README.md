@@ -29,7 +29,7 @@ All module dependencies are on Bioconda/conda-forge, including:
 | Package             | Conda name                    | Channel     |
 | ------------------- | ----------------------------- | ----------- |
 | PGEcore             | `r-pgecore=0.1.0`             | bioconda    |
-| pmotools            | `pmotools=1.1.0`              | bioconda    |
+| pmotools            | `pmotools=1.2.1`              | bioconda    |
 | dcifer              | `r-dcifer=1.5.2`              | conda-forge |
 | variantstring       | `r-variantstring=1.8.7`       | bioconda    |
 | FreqEstimationModel | `r-freqestimationmodel=0.1.1` | bioconda    |
