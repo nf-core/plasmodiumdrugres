@@ -31,8 +31,13 @@ workflow ESTIMATE_SLAF {
         // Use .first() so the single loci file broadcasts to each mhaps_dcifer item (runs per population)
         SLAF_FROM_MHAPS_FREQS(mhaps_dcifer_ch, loci_of_interest_for_target_for_microhap.first())
         slaf_output_raw = SLAF_FROM_MHAPS_FREQS.out.slaf
-        // No population_assignment: use "collapsed_amino_acid_calls" as group_name for merge consistency
-        slaf_output = params.population_assignment
+        // Populations come from --population_assignment or from PMO metadata
+        // (--pmo_population_fields). Either way the SLAF files are already named
+        // by population index and must keep that name so MERGE_TABLES can pair
+        // them with prevalence and MLAF. With no populations, retag the single
+        // file to match the unsplit amino-acid table.
+        def has_population_assignment = params.population_assignment || (params.pmo && params.pmo_population_fields)
+        slaf_output = has_population_assignment
             ? slaf_output_raw
             : slaf_output_raw.map { _group_name, slaf_file ->
                 ["collapsed_amino_acid_calls", slaf_file]

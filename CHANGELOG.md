@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Fixed`
 
+- `mhaps_freq` with `--pmo_population_fields` keeps each population index on the SLAF table, so `MERGE_TABLES` can pair it with prevalence and MLAF. Previously every SLAF file was renamed `collapsed_amino_acid_calls` unless `--population_assignment` was set, and the merge failed
 - `TRANSLATE_LOCI_OF_INTEREST` takes `--translate_loci_extra_args` and `--collapse_calls_by_summing` through `ext.args` (set in `conf/tools.config`) like the other wrappers, instead of a `val` input
 - Add `tag` and `when: task.ext.when == null || task.ext.when` to all local modules
 - Report `dplyr`, `readr`, `tibble` and `optparse` versions for the tidyverse-based local modules, drop `N/A` fallbacks from `versions.yml` and report the bare `pmotools-python` version number
