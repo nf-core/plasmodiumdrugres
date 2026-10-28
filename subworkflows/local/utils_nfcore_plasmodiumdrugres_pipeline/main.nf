@@ -226,6 +226,45 @@ workflow PIPELINE_COMPLETION {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 //
+// PGEcore rejects a locus unless end - start == 3. Column presence is checked
+// by the loci schema; this catches a span other than 3 before translation runs.
+//
+def lociCodonSpanErrors(loci_path) {
+    def errors = []
+    def lines = file(loci_path).readLines().findAll { line -> line.trim() }
+    if (!lines) {
+        return errors
+    }
+    def header = lines[0].split('\t', -1)*.trim()
+    def start_idx = header.indexOf('start')
+    def end_idx = header.indexOf('end')
+    def gene_idx = header.indexOf('gene_id')
+    def aa_idx = header.indexOf('aa_position')
+    if (start_idx < 0 || end_idx < 0) {
+        return errors
+    }
+    lines.drop(1).eachWithIndex { line, row_idx ->
+        def cols = line.split('\t', -1)
+        if (cols.size() <= Math.max(start_idx, end_idx)) {
+            return
+        }
+        def start = cols[start_idx].trim()
+        def end = cols[end_idx].trim()
+        if (!(start ==~ /-?\d+/ && end ==~ /-?\d+/)) {
+            return
+        }
+        def span = (end as int) - (start as int)
+        if (span != 3) {
+            def label = (gene_idx >= 0 && aa_idx >= 0 && cols.size() > Math.max(gene_idx, aa_idx))
+                ? "${cols[gene_idx].trim()}:${cols[aa_idx].trim()}"
+                : "row ${row_idx + 2}"
+            errors.add("Locus ${label} in '${loci_path}' must span 3 bases (end - start == 3); end - start = ${span}.")
+        }
+    }
+    return errors
+}
+
+//
 // Check and validate pipeline parameters
 //
 def validateInputParameters() {
@@ -272,6 +311,11 @@ def validateInputParameters() {
 
     if (params.loci_groups && !file(params.loci_groups).exists()) {
         validation_errors.add("File not found: 'loci_groups' at path '${params.loci_groups}'.")
+    }
+
+    // PGEcore checks codon span as end - start == 3. JSON schema cannot compare two columns.
+    if (params.loci_of_interest_bed && file(params.loci_of_interest_bed).exists()) {
+        validation_errors.addAll(lociCodonSpanErrors(params.loci_of_interest_bed))
     }
 
     // Print warnings if any

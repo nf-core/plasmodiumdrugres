@@ -39,24 +39,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/add_ref_seqs_biostrings:18ac1e5b6fdf043b
-      build_id: bd-18ac1e5b6fdf043b_1
-      scan_id: sc-18a0d5ea3a65858b_1
+      name: community.wave.seqera.io/library/add_ref_seqs_biostrings:d01d72c23bec9e6c
+      build_id: bd-d01d72c23bec9e6c_1
+      scan_id: sc-dfc5946c9f0839bc_1
     linux/arm64:
-      name: community.wave.seqera.io/library/add_ref_seqs_biostrings:a564fac02451aff5
-      build_id: bd-a564fac02451aff5_3
-      scan_id: sc-6ab4d9ca31a96f1d_1
+      name: community.wave.seqera.io/library/add_ref_seqs_biostrings:8a1c5ebd085b6dd8
+      build_id: bd-8a1c5ebd085b6dd8_1
+      scan_id: sc-54a6e9b5ce2f9878_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/add_ref_seqs_biostrings:6416162e38208eec
-      build_id: bd-6416162e38208eec_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a1ec4aede8ca7ce3bbde592f7b88678ff5ccff21283a0f20f61f5fdca1a13db0/data
+      name: oras://community.wave.seqera.io/library/add_ref_seqs_biostrings:44dada61c083b8ca
+      build_id: bd-44dada61c083b8ca_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/235feee891e603259b7567113cccf878a64af4a645f7df5437538c6850cc8095/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/add_ref_seqs_biostrings:c97b2ae0d1b87935
-      build_id: bd-c97b2ae0d1b87935_3
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0dc4ffdb79225a99b88d0a7fc266561d5d468a7c9defe575446a87c0538b8fe3/data
+      name: oras://community.wave.seqera.io/library/add_ref_seqs_biostrings:a6a2254b774cba82
+      build_id: bd-a6a2254b774cba82_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/57/578afea58d7b0821f9c0cdfe8a27b796e746783dfc276559a752fd1dff093ffd/data
   conda:
     linux/amd64:
-      lock_file: modules/local/add_ref_seqs_with_targeted_ref_fasta/.conda-lock/linux_amd64-bd-18ac1e5b6fdf043b_1.txt
+      lock_file: modules/local/add_ref_seqs_with_targeted_ref_fasta/.conda-lock/linux_amd64-bd-d01d72c23bec9e6c_1.txt
     linux/arm64:
-      lock_file: modules/local/add_ref_seqs_with_targeted_ref_fasta/.conda-lock/linux_arm64-bd-a564fac02451aff5_3.txt
+      lock_file: modules/local/add_ref_seqs_with_targeted_ref_fasta/.conda-lock/linux_arm64-bd-8a1c5ebd085b6dd8_1.txt

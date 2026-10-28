@@ -37,25 +37,25 @@ maintainers:
   - "@PlasmoGenEpi"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/mlbm_wrapper:52b974f98f8b840e
-      build_id: bd-52b974f98f8b840e_4
-      scan_id: sc-823a04dd7112a869_1
     linux/amd64:
-      name: community.wave.seqera.io/library/mlbm_wrapper:f62633294b5f1f53
-      build_id: bd-f62633294b5f1f53_2
-      scan_id: sc-4571c465901b49ea_1
+      name: community.wave.seqera.io/library/mlbm_wrapper:649ab7bbd21e183c
+      build_id: bd-649ab7bbd21e183c_1
+      scan_id: sc-522b5f8334123225_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/mlbm_wrapper:6b17a84b16fe2c28
+      build_id: bd-6b17a84b16fe2c28_1
+      scan_id: sc-a4f3cd6fb1d99a0c_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/mlbm_wrapper:1dc2e27a9991aa09
-      build_id: bd-1dc2e27a9991aa09_2
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b2cde7b1f98319441058490837b4fd366e55f570bf00c855d226e24c142595dd/data
+      name: oras://community.wave.seqera.io/library/mlbm_wrapper:6782133a9edcfa5f
+      build_id: bd-6782133a9edcfa5f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5c/5cd7ba13e2d633661da134f48104b971bd92a3d8d1bc70553cf4878e99d4deae/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/mlbm_wrapper:81f4595b92e41d5b
-      build_id: bd-81f4595b92e41d5b_4
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/77/77b433709cfab6a81cf1982e0043832542e16687e6c5ef7ca957b7a7977f45fa/data
+      name: oras://community.wave.seqera.io/library/mlbm_wrapper:051ee41b1b51e05b
+      build_id: bd-051ee41b1b51e05b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/82/8234d9bcabe0e6e44eddbbfb4265e3bfe790268ee265163bb1ebd800e3c165c7/data
   conda:
     linux/amd64:
-      lock_file: modules/local/mlbm_wrapper/.conda-lock/linux_amd64-bd-f62633294b5f1f53_2.txt
+      lock_file: modules/local/mlbm_wrapper/.conda-lock/linux_amd64-bd-649ab7bbd21e183c_1.txt
     linux/arm64:
-      lock_file: modules/local/mlbm_wrapper/.conda-lock/linux_arm64-bd-52b974f98f8b840e_4.txt
+      lock_file: modules/local/mlbm_wrapper/.conda-lock/linux_arm64-bd-6b17a84b16fe2c28_1.txt

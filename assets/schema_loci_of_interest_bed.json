@@ -2,7 +2,7 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/main/assets/schema_loci_of_interest_bed.json",
     "title": "nf-core/plasmodiumdrugres pipeline - params.loci_of_interest_bed schema",
-    "description": "Schema for the file provided with params.loci_of_interest_bed",
+    "description": "Codon BED for params.loci_of_interest_bed. Required columns: #chrom, start, end, strand, gene_id, aa_position. name, length, and gene are optional. Each locus must span 3 bases (end - start == 3).",
     "type": "array",
     "items": {
         "type": "object",
@@ -25,7 +25,7 @@
             },
             "length": {
                 "type": "integer",
-                "errorMessage": "Length of codon. Should be 3.",
+                "errorMessage": "Length of the codon in base pairs. Optional; the codon span is end - start and must be 3.",
                 "meta": ["id"]
             },
             "strand": {
@@ -37,7 +37,7 @@
             "name": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Codon name, but is optional.",
+                "errorMessage": "Codon name. Optional.",
                 "meta": ["id"]
             },
             "gene": {
@@ -54,10 +54,10 @@
             },
             "aa_position": {
                 "type": "integer",
-                "errorMessage": "Amino acid position.",
+                "errorMessage": "Amino acid position. Required.",
                 "meta": ["id"]
             }
         },
-        "required": ["#chrom", "start", "end", "gene_id", "strand"]
+        "required": ["#chrom", "start", "end", "strand", "gene_id", "aa_position"]
     }
 }

@@ -9,8 +9,8 @@ process IDM_WRAPPER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8d/8d36c36eac2443da4ffe45914b55136b2b4f0ffa444bb7dc3c1ce8cd7065525f/data'
-:         'community.wave.seqera.io/library/idm_wrapper:8fffb8098c99385c' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b482414ef51ff11af0005d8a89eea60c48fe78dab0720611b18d50e620b84920/data'
+:         'community.wave.seqera.io/library/idm_wrapper:d5932b119a13eaf4' }"
 
     input:
     path aa_calls_input

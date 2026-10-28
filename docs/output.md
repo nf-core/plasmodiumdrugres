@@ -86,7 +86,7 @@ In a polyclonal infection it is usually not possible to tell which amino acids c
 
 - `naive` (default): uses specimens with a call at every locus in the group, and infers their haplotypes when only one locus is mixed or when one allele dominates at every locus (its share of reads is above `--naive_multilocus_wsaf_cut_off`, default 0.70). Prevalence and frequency are then calculated from the within-specimen allele proportions (`--naive_mlaf_method wsaf_prop`, default) or presence/absence (`presence_absence`). Implemented in PGEcore as [`multilocus_prevfreq_naive`](https://plasmogenepi.github.io/PGEcore/reference/multilocus_prevfreq_naive.html).
 - `MLBM`: the [MultiLociBiallelicModel](https://www.frontiersin.org/articles/10.3389/fepid.2022.943625/full). Run through a PGEcore wrapper.
-- `FEM`: the [FreqEstimationModel](https://doi.org/10.1186/1475-2875-13-102), a Bayesian model that also reports credible intervals. It needs the average complexity of infection, set with `--fem_coi`. Run through a PGEcore wrapper.
+- `FEM`: the [FreqEstimationModel](https://doi.org/10.1186/1475-2875-13-102), a Bayesian model that also reports credible intervals. It needs the average complexity of infection, set with `--fem_coi`. `--fem_seed` is optional; leave it unset and PGEcore draws a random seed. Run through a PGEcore wrapper.
 
 <details markdown="1">
 <summary>Output files</summary>

@@ -9,8 +9,8 @@ process ESTIMATE_ALLELE_PREVALENCE_NAIVE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b7ca5eb26f1bbaf3fba4ea585e789071aa49902df3182030df649f596ac97b1/data'
-:         'community.wave.seqera.io/library/pgecore:e9024a6dc6e9a694' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8bb7bd8a2b78f4d460b00f1df86ec9e05e68ae1cfb2132665575995df5404ce1/data'
+:         'community.wave.seqera.io/library/pgecore:7027edf49864476b' }"
 
     input:
     path aa_calls

@@ -28,7 +28,7 @@ process MERGE_TABLES {
     script:
     """
     if [ -s ${population_index_lookup} ]; then
-        true_population=\$(awk -F'\\t' -v idx="${pop_index}" '\$1==idx {print \$2; exit}' ${population_index_lookup})
+        true_population=\$(awk -F'\\t' -v idx="${pop_index}" '\$1==idx {gsub(/\\r/, "", \$2); print \$2; exit}' ${population_index_lookup})
     else
         true_population="${pop_index}"
     fi

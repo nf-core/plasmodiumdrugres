@@ -28,7 +28,8 @@
                     "mimetype": "text/tsv",
                     "pattern": "^\\S+\\.[ct]sv$",
                     "description": "Path to tab separated file containing microhaplotypes for specimens.",
-                    "help_text": "This parameter is *mandatory* if `--pmo` is not specified. You will need to create a TSV file before running the pipeline. Use this parameter to specify its location. It has to be tab separated and include columns specimen_name, target_name, and seq. See [usage docs](https://nf-co.re/plasmodiumdrugres/usage#allele-table-input).",
+                    "schema": "assets/schema_allele_data.json",
+                    "help_text": "This parameter is *mandatory* if `--pmo` is not specified. You will need to create a TSV file before running the pipeline. Use this parameter to specify its location. It has to be tab separated and include columns specimen_name, target_name, seq, and reads. See [usage docs](https://nf-co.re/plasmodiumdrugres/usage#allele-table-input).",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "input": {
@@ -47,13 +48,14 @@
                     "mimetype": "bed",
                     "pattern": "^\\S+\\.bed$",
                     "description": "Path to BED file containing individual loci of interest.",
-                    "help_text": "You will need to create a BED file before running the pipeline. Use this parameter to specify its location. It has to comply with BED format standards and include the coordinates of loci of interest. See [usage docs](https://nf-co.re/plasmodiumdrugres/usage#loci-of-interest-input).",
+                    "help_text": "You will need to create a BED file before running the pipeline. Use this parameter to specify its location. Required columns are #chrom, start, end, strand, gene_id, and aa_position. Each locus must span 3 bases (end - start == 3). name, length, and gene are optional. See [usage docs](https://nf-co.re/plasmodiumdrugres/usage#loci-of-interest-input).",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "loci_groups": {
                     "type": ["string", "null"],
                     "format": "file-path",
                     "exists": true,
+                    "schema": "assets/schema_loci_groups.json",
                     "mimetype": "text/tsv",
                     "pattern": "^\\S+\\.[ct]sv$",
                     "description": "Path to tab separated file containing groups of loci of interest. Multi-locus allele frequency estimation is skipped when this parameter is not provided.",
@@ -68,7 +70,7 @@
                     "mimetype": "bed",
                     "pattern": "^\\S+\\.bed$",
                     "description": "Path to BED file containing panel location information.",
-                    "help_text": "Required with `--allele_table`. Defines the coordinates and reference sequence (`ref_seq` column) of each target in the panel. See [usage docs](https://nf-co.re/plasmodiumdrugres/usage#panel-info).",
+                    "help_text": "Required with `--allele_table`. Required columns are #chrom, start, end, target_name, length, strand, and ref_seq. See [usage docs](https://nf-co.re/plasmodiumdrugres/usage#panel-info).",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "population_assignment": {
@@ -207,6 +209,14 @@
                     "help_text": "FreqEstimationModel needs a COI for each specimen. The pipeline does not estimate COI, so this single value is applied to all specimens. Set it to the expected mean COI for your study population; the default of 3 is a generic assumption, not an estimate from your data.",
                     "default": 3,
                     "minimum": 1,
+                    "fa_icon": "fas fa-users-cog"
+                },
+                "fem_seed": {
+                    "type": ["integer", "null"],
+                    "description": "Optional random seed for FreqEstimationModel when --mlaf_method is FEM. Leave unset and PGEcore draws one.",
+                    "help_text": "Passed as --seed. PGEcore 0.2.0 draws a new seed on every run when this is unset, and records the seed it used. Set an integer to repeat a run.",
+                    "default": null,
+                    "minimum": 0,
                     "fa_icon": "fas fa-users-cog"
                 },
                 "naive_mlaf_method": {

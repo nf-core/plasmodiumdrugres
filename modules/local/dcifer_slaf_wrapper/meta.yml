@@ -33,25 +33,25 @@ maintainers:
   - "@PlasmoGenEpi"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/dcifer_slaf_wrapper:d2fa9b4c3df25acd
-      build_id: bd-d2fa9b4c3df25acd_1
-      scan_id: sc-db1c8dbc001349e5_1
     linux/arm64:
-      name: community.wave.seqera.io/library/dcifer_slaf_wrapper:f1b020d296a4cb98
-      build_id: bd-f1b020d296a4cb98_1
-      scan_id: sc-d857840fdedefdbf_1
+      name: community.wave.seqera.io/library/dcifer_slaf_wrapper:5b81b179f7ff9d06
+      build_id: bd-5b81b179f7ff9d06_1
+      scan_id: sc-f38d30759ea6c9e5_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/dcifer_slaf_wrapper:7f4ead3962e3451b
+      build_id: bd-7f4ead3962e3451b_1
+      scan_id: sc-b8cefab6c2268c4b_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/dcifer_slaf_wrapper:6af32e02697ba6f3
-      build_id: bd-6af32e02697ba6f3_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/891d55dbb2d0589c2bdce58bbf72064c403bd7eefdf25c7cb20df3a5b099ffdb/data
+      name: oras://community.wave.seqera.io/library/dcifer_slaf_wrapper:be581a77f8825c22
+      build_id: bd-be581a77f8825c22_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/226cddb1a4a0b5390d15f097f3281b4b4e4c5a47333083faf4df1c210a665279/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/dcifer_slaf_wrapper:9a9cee2a25907c30
-      build_id: bd-9a9cee2a25907c30_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/4793b5938f63d515f9de1c12098d20414335a7d7c822c5f00c63da7308546132/data
+      name: oras://community.wave.seqera.io/library/dcifer_slaf_wrapper:a6f10fa46d029153
+      build_id: bd-a6f10fa46d029153_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/19b50d6b11690f98a443d572fc7a2fa8e6983a1a0de7242ea6b782d72a239223/data
   conda:
     linux/amd64:
-      lock_file: modules/local/dcifer_slaf_wrapper/.conda-lock/linux_amd64-bd-d2fa9b4c3df25acd_1.txt
+      lock_file: modules/local/dcifer_slaf_wrapper/.conda-lock/linux_amd64-bd-7f4ead3962e3451b_1.txt
     linux/arm64:
-      lock_file: modules/local/dcifer_slaf_wrapper/.conda-lock/linux_arm64-bd-f1b020d296a4cb98_1.txt
+      lock_file: modules/local/dcifer_slaf_wrapper/.conda-lock/linux_arm64-bd-5b81b179f7ff9d06_1.txt

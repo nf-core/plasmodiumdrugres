@@ -9,8 +9,8 @@ process DCIFER_SLAF_WRAPPER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/891d55dbb2d0589c2bdce58bbf72064c403bd7eefdf25c7cb20df3a5b099ffdb/data'
-:         'community.wave.seqera.io/library/dcifer_slaf_wrapper:d2fa9b4c3df25acd' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/226cddb1a4a0b5390d15f097f3281b4b4e4c5a47333083faf4df1c210a665279/data'
+:         'community.wave.seqera.io/library/dcifer_slaf_wrapper:7f4ead3962e3451b' }"
 
     input:
     path allele_table

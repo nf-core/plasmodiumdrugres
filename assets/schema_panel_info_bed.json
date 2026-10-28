@@ -2,7 +2,7 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/main/assets/schema_panel_info_bed.json",
     "title": "nf-core/plasmodiumdrugres pipeline - params.panel_info_bed schema",
-    "description": "Schema for the file provided with params.panel_info_bed",
+    "description": "Panel BED for params.panel_info_bed. Required columns: #chrom, start, end, target_name, length, strand, ref_seq.",
     "type": "array",
     "items": {
         "type": "object",
@@ -23,9 +23,15 @@
                 "errorMessage": "Zero-based end coordinate of target",
                 "meta": ["id"]
             },
+            "target_name": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Identifier for the target. Required, and cannot contain spaces.",
+                "meta": ["id"]
+            },
             "length": {
                 "type": "integer",
-                "errorMessage": "Length must be an integer, but is optional.",
+                "errorMessage": "Length of the target in base pairs. Required.",
                 "meta": ["id"]
             },
             "strand": {
@@ -46,6 +52,6 @@
                 "meta": ["id"]
             }
         },
-        "required": ["#chrom", "start", "end", "target_name", "strand", "ref_seq"]
+        "required": ["#chrom", "start", "end", "target_name", "length", "strand", "ref_seq"]
     }
 }

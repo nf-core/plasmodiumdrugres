@@ -32,7 +32,7 @@ Optional:
 
 ## Loci of Interest Input
 
-You will need to create a bed file including the locations of the loci that you are interested in before running the pipeline. It has to be a tab-separated file with 9 columns, and a header row as shown in the examples below.
+You will need to create a bed file including the locations of the loci that you are interested in before running the pipeline. It has to be a tab-separated file with a header row. Column order does not matter. Required columns are `#chrom`, `start`, `end`, `strand`, `gene_id`, and `aa_position`. `name`, `length`, and `gene` are optional. Each locus must span 3 bases (`end - start` equals 3).
 
 ```bash
 --loci_of_interest_bed '[path to loci of interest file]'
@@ -62,17 +62,17 @@ Pf3D7_08_v3 550115  550118  PF3D7_0810800.1-AA581 3 + dhps  581 PF3D7_0810800.1
 Pf3D7_08_v3 550211  550214  PF3D7_0810800.1-AA613 3 + dhps  613 PF3D7_0810800.1
 ```
 
-| Column        | Description                                                                                                                               |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `#chrom`      | Chromosome that the locus is found on. You may have multiple loci with the same #chrom. This should match with the reference information. |
-| `start`       | Genomic start position of the locus (0-based).                                                                                            |
-| `end`         | Genomic end position of the locus (0-based).                                                                                              |
-| `name`        | Unique identifier for the locus.                                                                                                          |
-| `length`      | Length in base pairs. (e.g. 3 for a standard codon)                                                                                       |
-| `strand`      | Strand orientation (+ or -) relative to the reference genome.                                                                             |
-| `gene`        | Short gene name or symbol (e.g., dhfr-ts, mdr1, crt).                                                                                     |
-| `gene_id`     | Full PlasmoDB gene model identifier (e.g., PF3D7_0417200.1).                                                                              |
-| `aa_position` | Amino acid position within the protein where the codon is located.                                                                        |
+| Column        | Description                                                                                                                                                                      |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `#chrom`      | Chromosome that the locus is found on. Required. You may have multiple loci with the same #chrom. This should match with the reference information.                              |
+| `start`       | Genomic start position of the locus (0-based). Required.                                                                                                                         |
+| `end`         | Genomic end position of the locus (0-based). Required. `end - start` must be 3.                                                                                                  |
+| `name`        | Unique identifier for the locus. Optional.                                                                                                                                       |
+| `length`      | Length in base pairs. Optional. The codon span is `end - start`, which must be 3.                                                                                                |
+| `strand`      | Strand orientation (+ or -) relative to the reference genome. Required.                                                                                                          |
+| `gene`        | Short gene name or symbol (e.g., dhfr-ts, mdr1, crt). Optional. Copied onto amino-acid outputs only when passed in `--translate_loci_extra_args` as `--extra_loci_columns gene`. |
+| `gene_id`     | Full PlasmoDB gene model identifier (e.g., PF3D7_0417200.1). Required.                                                                                                           |
+| `aa_position` | Amino acid position within the protein where the codon is located. Required.                                                                                                     |
 
 An [example loci of interest bed file](../assets/loci_of_interest.bed) has been provided with the pipeline. It provides an extensive set of loci for _Plasmodium falciparum_, so you can simply filter for the loci relevant to your work rather than starting from scratch. If you identify a locus that should be added, [please let us know](https://github.com/nf-core/plasmodiumdrugres#contributions-and-support).
 
@@ -140,7 +140,7 @@ When running with an allele table you should create the following inputs:
 
 #### Allele Table
 
-You will need to create an allele table file that includes your genomic data. It has to be a tab-separated file with 3 columns, and a header row as shown in the examples below. You can optionally include a 4th column.
+You will need to create an allele table file that includes your genomic data. It has to be a tab-separated file with a header row and the four columns shown below.
 
 ```bash
 --allele_table '[path to allele table file]'
@@ -159,16 +159,16 @@ specimen_2  target1 AATAAAGAAGAAGATAAATATGGAAAAAATGAAAAAAACGAAAAATATGACAAATATGAC
 specimen_3  target1 AATAAAGAAGAAGATAAATATGGAAAAAATGAAAAAAACGAAAAATATGACAAATATGACAAATATGAAAAATATGATAAATACAAAAAAGAT 650
 ```
 
-| Column          | Description                                                                                                       |
-| --------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `specimen_name` | Unique identifier for the specimen or sample from which the sequence was obtained.                                |
-| `target_name`   | Identifier for the genomic region being sequenced.                                                                |
-| `seq`           | Observed nucleotide sequence (microhaplotype) aligned to the target region.                                       |
-| `reads`         | Number of sequencing reads supporting the given sequence in that specimen, representing its abundance. (Optional) |
+| Column          | Description                                                                                                      |
+| --------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `specimen_name` | Unique identifier for the specimen or sample from which the sequence was obtained.                               |
+| `target_name`   | Identifier for the genomic region being sequenced.                                                               |
+| `seq`           | Observed nucleotide sequence (microhaplotype) aligned to the target region.                                      |
+| `reads`         | Number of sequencing reads supporting the given sequence in that specimen, representing its abundance. Required. |
 
 #### Panel Info
 
-Next, prepare a panel info bed file. This will define the locations of the targets in the `target_name` column in the allele table. It has to be a tab-separated file with 7 columns.
+Next, prepare a panel info bed file. This will define the locations of the targets in the `target_name` column in the allele table. It has to be a tab-separated file. Required columns are `#chrom`, `start`, `end`, `target_name`, `length`, `strand`, and `ref_seq`. `extra_info` is optional.
 
 The panel info bed file must include the reference sequence of each target in the `ref_seq` column. `--genome_reference` and `--targeted_reference` only apply to PMO input and are ignored when running from an allele table.
 
@@ -192,7 +192,7 @@ Pf3D7_01_v3     162889  163091  target2   202     +       ATATACCAATAATACTTTTTTT
 | `start`       | Genomic start position of the target (0-based).                                                                                               |
 | `end`         | Genomic end position of the target (0-based).                                                                                                 |
 | `target_name` | Identifier for the genomic region being sequenced.                                                                                            |
-| `length`      | Length in base pairs.                                                                                                                         |
+| `length`      | Length in base pairs. Required.                                                                                                               |
 | `strand`      | Strand orientation (+ or -) relative to the reference genome.                                                                                 |
 | `ref_seq`     | Reference sequence for the target. Required.                                                                                                  |
 
@@ -245,6 +245,7 @@ Do not set both `--population_assignment` and `--pmo_population_fields`; use one
 - `--slaf_method` - chosen method to estimate single locus allele frequencies (Default: `naive`; Options: `["IDM","naive","mhaps_freq"]`)
 - `--mlaf_method` - chosen method to estimate multi-locus allele frequencies (Default: `naive`; Options: `["MLBM","FEM","naive"]`)
 - `--fem_coi` - Average complexity of infection (COI) assumed for every specimen when running `--mlaf_method FEM` (Default: `3`). The pipeline does not estimate COI, so FEM applies this single value to all specimens. The default is a generic assumption rather than an estimate from your data; set it to the expected mean COI for your study population.
+- `--fem_seed` - Optional random seed passed to FreqEstimationModel when running `--mlaf_method FEM`. Leave unset and PGEcore 0.2.0 draws a new seed on every run. Set an integer to repeat a run.
 - `--naive_slaf_method` - Chosen naive method when running `--slaf_method naive`. (Default: `read_count_prop`; Options: `["read_count_prop", "presence_absence"]`)
 
 ## Running the pipeline

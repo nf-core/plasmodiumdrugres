@@ -9,8 +9,8 @@ process SLAF_FROM_STAVE_MLAF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59694b9b3a63712c65ca417044bd5fb4d3927d9958fcf033bfa528a64d04caf8/data'
-:         'community.wave.seqera.io/library/slaf_from_stave_mlaf:4c32c036540c052e' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f073209823f3bf084792041071652ee30ccee39a1e66196e3ef7700ee069416c/data'
+:         'community.wave.seqera.io/library/slaf_from_stave_mlaf:409e9faea8baa13f' }"
 
     input:
     tuple val(mlaf_base), path(mlaf_input)

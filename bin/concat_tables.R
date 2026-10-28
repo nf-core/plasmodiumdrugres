@@ -25,6 +25,16 @@ args <- parse_args(parser)
 
 SL_SUMMARY_COLS <- c("population", "variant", "prev", "sample_count", "sample_total", "freq")
 
+# Header-only population files are guessed as character. Data files guess the
+# same columns as double. Force one type before binding so an empty population
+# does not crash the concatenate.
+SUMMARY_DOUBLE_COLS <- c(
+  "prev", "freq", "sample_count", "sample_total",
+  "allele_total", "allele_count", "median_freq",
+  "CI_2.5", "CI_97.5", "sample_total_for_allele_freq"
+)
+SUMMARY_CHARACTER_COLS <- c("population", "variant", "group_id", "sequence")
+
 ML_SUMMARY_REQUIRED_COLS <- c("population", "group_id", "variant")
 ML_SUMMARY_OPTIONAL_COLS <- c("prev", "sample_count", "sample_total")
 ML_SUMMARY_FREQ_COL <- "freq"
@@ -36,16 +46,27 @@ split_files <- function(x) {
   return(parts)
 }
 
+coerce_summary_types <- function(df) {
+  double_cols <- intersect(SUMMARY_DOUBLE_COLS, colnames(df))
+  character_cols <- intersect(SUMMARY_CHARACTER_COLS, colnames(df))
+  if (length(double_cols) > 0) {
+    df <- df %>% mutate(across(all_of(double_cols), as.numeric))
+  }
+  if (length(character_cols) > 0) {
+    df <- df %>% mutate(across(all_of(character_cols), as.character))
+  }
+  df
+}
+
 files_to_df <- function(files) {
   if (length(files) == 0) {
     return(tibble())
   }
-  # Keep column types stable-ish; most columns are numeric but we mostly sort on strings.
   dfs <- lapply(files, function(f) {
     if (!file.exists(f)) {
       stop(sprintf("Input file does not exist: '%s'", f))
     }
-    read_tsv(f, show_col_types = FALSE)
+    read_tsv(f, show_col_types = FALSE) %>% coerce_summary_types()
   })
   bind_rows(dfs)
 }

@@ -1,0 +1,30 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/nf-core/plasmodiumdrugres/main/assets/schema_loci_groups.json",
+    "title": "nf-core/plasmodiumdrugres pipeline - params.loci_groups schema",
+    "description": "Loci groups for params.loci_groups. Required columns: group_id, gene_id, aa_position.",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "group_id": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Identifier for the group of loci. Required, and cannot contain spaces.",
+                "meta": ["id"]
+            },
+            "gene_id": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "ID of the gene the codon is on. Required, and cannot contain spaces.",
+                "meta": ["id"]
+            },
+            "aa_position": {
+                "type": "integer",
+                "errorMessage": "Amino acid position. Required.",
+                "meta": ["id"]
+            }
+        },
+        "required": ["group_id", "gene_id", "aa_position"]
+    }
+}

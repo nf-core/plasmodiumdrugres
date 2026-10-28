@@ -5,6 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.1.0dev - [unreleased]
 
+### `Changed`
+
+- Pin [PGEcore](https://github.com/PlasmoGenEpi/PGEcore) to 0.2.0 (`bioconda::r-pgecore=0.2.0`) in every local module environment
+- Add optional `--fem_seed` for FreqEstimationModel. Leave it unset and PGEcore 0.2.0 draws a random seed; set an integer to repeat a run
+- Concatenate per-population summaries when a count column is numeric in one file and empty in another
+- Strip a trailing carriage return from population names read out of the population index lookup
+- Require the PGEcore 0.2.0 input columns at parameter validation: loci of interest need `aa_position` and a 3-base span (`end - start == 3`); allele tables need `reads`; panel BEDs need `length`; loci groups are validated for `group_id`, `gene_id`, and `aa_position`
+
 ### `Fixed`
 
 - `TRANSLATE_LOCI_OF_INTEREST` takes `--translate_loci_extra_args` and `--collapse_calls_by_summing` through `ext.args` (set in `conf/tools.config`) like the other wrappers, instead of a `val` input

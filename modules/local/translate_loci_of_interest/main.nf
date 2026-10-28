@@ -9,8 +9,8 @@ process TRANSLATE_LOCI_OF_INTEREST {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aa9ef580720050e47cf35c8e9bf304181d75f083469f481c2c8e188af16e443b/data'
-:         'community.wave.seqera.io/library/translate_loci_of_interest:b373d6f56b2b4b34' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/6897d6ff9d3d1e9bc0f10f0ceb02a170773f32118f76e720048931bc85eea558/data'
+:         'community.wave.seqera.io/library/translate_loci_of_interest:5289b509dbf0e57a' }"
 
     input:
     path allele_table

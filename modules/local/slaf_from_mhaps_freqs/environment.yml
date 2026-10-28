@@ -6,4 +6,4 @@ channels:
   - bioconda
 dependencies:
   - conda-forge::r-base=4.5
-  - bioconda::r-pgecore=0.1.0
+  - bioconda::r-pgecore=0.2.0

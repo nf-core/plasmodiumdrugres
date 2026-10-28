@@ -24,10 +24,10 @@ nextflow_process {
             // channel exists
             assert process.out.collapsed_amino_acid_calls != null
             // output md5 check
-            assert path(process.out.collapsed_amino_acid_calls.get(0)).md5 == "cd9cf4a6aa1ad66c99816239abf3a532"
-            assert path(process.out.amino_acid_calls.get(0)).md5 == "545f952c39c8206625359cd613b1f29c"
+            assert path(process.out.collapsed_amino_acid_calls.get(0)).md5 == "3f0406da2b491b57c966f100f75344c4"
+            assert path(process.out.amino_acid_calls.get(0)).md5 == "8ceb411243ca723b50789091364a2806"
             assert path(process.out.loci_covered_by_target_samples_info.get(0)).md5 == "1b2c20818014cb785d013fc21ff46346"
-            assert path(process.out.loci_of_interest_for_target_for_microhap.get(0)).md5 == "2b9323b36ae6979db24b6456eac732ea"
+            assert path(process.out.loci_of_interest_for_target_for_microhap.get(0)).md5 == "9edf5e426dffd32eb3acbd6d7394671b"
 
         }
 

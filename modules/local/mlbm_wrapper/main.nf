@@ -9,8 +9,8 @@ process MLBM_WRAPPER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b2cde7b1f98319441058490837b4fd366e55f570bf00c855d226e24c142595dd/data'
-:         'community.wave.seqera.io/library/mlbm_wrapper:f62633294b5f1f53' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5c/5cd7ba13e2d633661da134f48104b971bd92a3d8d1bc70553cf4878e99d4deae/data'
+:         'community.wave.seqera.io/library/mlbm_wrapper:649ab7bbd21e183c' }"
 
     input:
     path aa_calls

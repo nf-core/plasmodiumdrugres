@@ -37,24 +37,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/pgecore:e9024a6dc6e9a694
-      build_id: bd-e9024a6dc6e9a694_1
-      scan_id: sc-a4769a501b35cf15_1
+      name: community.wave.seqera.io/library/pgecore:7027edf49864476b
+      build_id: bd-7027edf49864476b_1
+      scan_id: sc-029e5e0e321ed6bf_1
     linux/arm64:
-      name: community.wave.seqera.io/library/pgecore:1f0ec0a47e85e3fa
-      build_id: bd-1f0ec0a47e85e3fa_1
-      scan_id: sc-04b9fa783897beff_1
+      name: community.wave.seqera.io/library/pgecore:5c538843c5f3419b
+      build_id: bd-5c538843c5f3419b_1
+      scan_id: sc-061dd607bd3df836_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/pgecore:a18df8d69a433f2a
-      build_id: bd-a18df8d69a433f2a_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b7ca5eb26f1bbaf3fba4ea585e789071aa49902df3182030df649f596ac97b1/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/pgecore:cb41742e1c237fbe
-      build_id: bd-cb41742e1c237fbe_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e88d9eb25521707812878be68bfcb5a86627875e07d7a1a9e42bda70e0294b20/data
+      name: oras://community.wave.seqera.io/library/pgecore:4555308b6dd7e0a6
+      build_id: bd-4555308b6dd7e0a6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/67/672476ade5b26fbb1d8b5dbb97453a0f48d59cf3c91272264dc34b9c7da5b3e7/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pgecore:b7c0dcd8e3fe05f5
+      build_id: bd-b7c0dcd8e3fe05f5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8bb7bd8a2b78f4d460b00f1df86ec9e05e68ae1cfb2132665575995df5404ce1/data
   conda:
     linux/amd64:
-      lock_file: modules/local/estimate_allele_frequency_naive/.conda-lock/linux_amd64-bd-e9024a6dc6e9a694_1.txt
+      lock_file: modules/local/estimate_allele_frequency_naive/.conda-lock/linux_amd64-bd-7027edf49864476b_1.txt
     linux/arm64:
-      lock_file: modules/local/estimate_allele_frequency_naive/.conda-lock/linux_arm64-bd-1f0ec0a47e85e3fa_1.txt
+      lock_file: modules/local/estimate_allele_frequency_naive/.conda-lock/linux_arm64-bd-5c538843c5f3419b_1.txt

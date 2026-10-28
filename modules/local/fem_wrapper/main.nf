@@ -9,8 +9,8 @@ process FEM_WRAPPER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/6216ed31d33ddd6e9fc77859ecfb48f843df41a45482e840fe46837e9ef07623/data'
-:         'community.wave.seqera.io/library/fem_wrapper:a701cba1416a0e6a' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/33/33b7cb126862006b53ff2178dccb5425f429ee5744d25462ba80ab4de120a2bd/data'
+:         'community.wave.seqera.io/library/fem_wrapper:9de2d0a72cd7a4d4' }"
 
     input:
     path aa_calls

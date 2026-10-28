@@ -7,6 +7,9 @@ nextflow_process {
     test("Should run without failures") {
 
         when {
+            params {
+                fem_seed = 1
+            }
             process {
                 """
                 input[0] = file(params.pipelines_testdata_base_path + 'testdata/amino_acid_calls.tsv', checkIfExists: true)
@@ -23,6 +26,7 @@ nextflow_process {
 
             assert pop == 'amino_acid_calls'
             assert path(outFile).parent.resolve('.command.sh').text.contains('--coi 3')
+            assert path(outFile).parent.resolve('.command.sh').text.contains('--seed 1')
 
             // output md5 check
             assert path(outFile).md5 == "b97dd756815f90e5db6115f33a742436"
@@ -48,6 +52,7 @@ nextflow_process {
             assert process.success
             def command = path(process.out.mlaf.get(0)[1]).parent.resolve('.command.sh').text
             assert command.contains('--coi 2')
+            assert !command.contains('--seed')
         }
 
     }
