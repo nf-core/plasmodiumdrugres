@@ -13,6 +13,7 @@ nextflow_process {
                 input[0] = file(params.pipelines_testdata_base_path + 'testdata/sl_pop1.tsv', checkIfExists: true)
                 input[1] = file(params.pipelines_testdata_base_path + 'testdata/mlaf_pop1.tsv', checkIfExists: true)
                 input[2] = file(params.pipelines_testdata_base_path + 'testdata/sl_from_mlaf_pop1.tsv', checkIfExists: true)
+                input[3] = file(params.pipelines_testdata_base_path + 'testdata/loci_no_gene.bed', checkIfExists: true)
                 """
             }
         }
@@ -45,6 +46,7 @@ nextflow_process {
                 input[0] = file(params.pipelines_testdata_base_path + 'testdata/sl_pop1.tsv', checkIfExists: true)
                 input[1] = []
                 input[2] = []
+                input[3] = file(params.pipelines_testdata_base_path + 'testdata/loci_no_gene.bed', checkIfExists: true)
                 """
             }
         }
@@ -68,6 +70,7 @@ nextflow_process {
                 input[0] = [file(params.pipelines_testdata_base_path + 'testdata/sl_pop1.tsv', checkIfExists: true),file(params.pipelines_testdata_base_path + 'testdata/sl_pop2.tsv', checkIfExists: true)]
                 input[1] = [file(params.pipelines_testdata_base_path + 'testdata/mlaf_pop1.tsv', checkIfExists: true),file(params.pipelines_testdata_base_path + 'testdata/mlaf_pop2.tsv', checkIfExists: true)]
                 input[2] = [file(params.pipelines_testdata_base_path + 'testdata/sl_from_mlaf_pop1.tsv', checkIfExists: true),file(params.pipelines_testdata_base_path + 'testdata/sl_from_mlaf_pop2.tsv', checkIfExists: true)]
+                input[3] = file(params.pipelines_testdata_base_path + 'testdata/loci_no_gene.bed', checkIfExists: true)
                 """
             }
         }
@@ -88,6 +91,53 @@ nextflow_process {
             assert path("${raw_dir}/raw_ml_summary.tsv").md5 == "29c9f707a79e777b7c5f3344eadbd7eb"
             assert path("${raw_dir}/raw_sl_from_ml_summary.tsv").md5 == "135e6e272443ddfc91307367a7f7f45b"
 
+        }
+
+    }
+
+    test("Should add gene names in variant-string order when the loci table has a gene column") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/sl_pop.tsv', checkIfExists: true)
+                input[1] = file(params.pipelines_testdata_base_path + 'testdata/ml_pop.tsv', checkIfExists: true)
+                input[2] = file(params.pipelines_testdata_base_path + 'testdata/sl_from_ml_pop.tsv', checkIfExists: true)
+                input[3] = file(params.pipelines_testdata_base_path + 'testdata/loci_with_gene.bed', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.sl_summary.get(0)).text == "population\tvariant\tgene\tprev\tsample_count\tsample_total\tfreq\npop1\tPF3D7_0417200.1:51:I\tdhfr-ts\t1\t10\t10\t0.9\npop1\tPF3D7_0709000.1:76:T\tcrt\t0.5\t5\t10\t0.5\n"
+            assert path(process.out.ml_summary.get(0)).text == "population\tgroup_id\tvariant\tgene\tprev\tsample_count\tsample_total\tfreq\npop1\tpfdhfr\tPF3D7_0417200.1:51_59_108:I_R_N\tdhfr-ts\t1\t10\t10\t0.9\npop1\tpfdhfr_pfdhps\tPF3D7_0417200.1:51_59_108:I_R_N;PF3D7_0810800.1:437:G\tdhfr-ts;dhps\t0.9\t9\t10\t0.8\npop1\treversed\tPF3D7_0810800.1:437:A;PF3D7_0417200.1:51:N\tdhps;dhfr-ts\t0.1\t1\t10\t0.1\n"
+            def raw_dir = process.out.raw_summaries.get(0)
+            assert !path("${raw_dir}/raw_sl_summary.tsv").text.contains("\tgene\t")
+            assert !path("${raw_dir}/raw_ml_summary.tsv").text.contains("\tgene\t")
+        }
+
+    }
+
+    test("Should include gene in an empty multi-locus header when the loci table has a gene column") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.pipelines_testdata_base_path + 'testdata/sl_pop.tsv', checkIfExists: true)
+                input[1] = []
+                input[2] = []
+                input[3] = file(params.pipelines_testdata_base_path + 'testdata/loci_with_gene.bed', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.sl_summary.get(0)).text.startsWith("population\tvariant\tgene\t")
+            assert path(process.out.ml_summary.get(0)).text == "population\tgroup_id\tvariant\tgene\tfreq\n"
+            def raw_dir = process.out.raw_summaries.get(0)
+            assert path("${raw_dir}/raw_ml_summary.tsv").text == "population\tgroup_id\tvariant\tfreq\n"
         }
 
     }

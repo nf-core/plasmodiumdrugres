@@ -123,7 +123,12 @@ workflow PLASMODIUMDRUGRES {
     all_ml_summary_ch = MERGE_TABLES.out.ml_summary.collect()
     all_sl_from_ml_summary_ch = MERGE_TABLES.out.sl_from_ml_summary.collect()
 
-    CONCAT_TABLES(all_sl_summary_ch, all_ml_summary_ch, all_sl_from_ml_summary_ch)
+    CONCAT_TABLES(
+        all_sl_summary_ch,
+        all_ml_summary_ch,
+        all_sl_from_ml_summary_ch,
+        file(loci_of_interest_bed)
+    )
     ch_versions = ch_versions.mix(CONCAT_TABLES.out.versions)
 
     //

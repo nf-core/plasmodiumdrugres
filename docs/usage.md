@@ -62,17 +62,17 @@ Pf3D7_08_v3 550115  550118  PF3D7_0810800.1-AA581 3 + dhps  581 PF3D7_0810800.1
 Pf3D7_08_v3 550211  550214  PF3D7_0810800.1-AA613 3 + dhps  613 PF3D7_0810800.1
 ```
 
-| Column        | Description                                                                                                                               |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `#chrom`      | Chromosome that the locus is found on. You may have multiple loci with the same #chrom. This should match with the reference information. |
-| `start`       | Genomic start position of the locus (0-based).                                                                                            |
-| `end`         | Genomic end position of the locus (0-based).                                                                                              |
-| `name`        | Unique identifier for the locus.                                                                                                          |
-| `length`      | Length in base pairs. (e.g. 3 for a standard codon)                                                                                       |
-| `strand`      | Strand orientation (+ or -) relative to the reference genome.                                                                             |
-| `gene`        | Short gene name or symbol (e.g., dhfr-ts, mdr1, crt).                                                                                     |
-| `gene_id`     | Full PlasmoDB gene model identifier (e.g., PF3D7_0417200.1).                                                                              |
-| `aa_position` | Amino acid position within the protein where the codon is located.                                                                        |
+| Column        | Description                                                                                                                                                                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `#chrom`      | Chromosome that the locus is found on. You may have multiple loci with the same #chrom. This should match with the reference information.                                                                                                         |
+| `start`       | Genomic start position of the locus (0-based).                                                                                                                                                                                                    |
+| `end`         | Genomic end position of the locus (0-based).                                                                                                                                                                                                      |
+| `name`        | Unique identifier for the locus.                                                                                                                                                                                                                  |
+| `length`      | Length in base pairs. (e.g. 3 for a standard codon)                                                                                                                                                                                               |
+| `strand`      | Strand orientation (+ or -) relative to the reference genome.                                                                                                                                                                                     |
+| `gene`        | Short gene name or symbol (e.g., dhfr-ts, mdr1, crt). Optional. When present, it is added to `sl_summary.tsv` and `ml_summary.tsv`. Multi-locus rows list one name per gene block in the variant string, separated by `;` and in that same order. |
+| `gene_id`     | Full PlasmoDB gene model identifier (e.g., PF3D7_0417200.1).                                                                                                                                                                                      |
+| `aa_position` | Amino acid position within the protein where the codon is located.                                                                                                                                                                                |
 
 An [example loci of interest bed file](../assets/loci_of_interest.bed) has been provided with the pipeline. It provides an extensive set of loci for _Plasmodium falciparum_, so you can simply filter for the loci relevant to your work rather than starting from scratch. If you identify a locus that should be added, [please let us know](https://github.com/nf-core/plasmodiumdrugres#contributions-and-support).
 

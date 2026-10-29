@@ -67,16 +67,17 @@ The results for all populations are combined into one table with the same column
 
 ### `sl_summary.tsv` columns
 
-| Column         | Description                                                                              |
-| -------------- | ---------------------------------------------------------------------------------------- |
-| `population`   | Population label for this row (a user-defined grouping of samples; see usage docs).      |
-| `variant`      | Single-locus variant in [variant string notation](#key-terms), `gene_id:aa_position:aa`. |
-| `prev`         | Estimated prevalence for the variant in the population.                                  |
-| `sample_count` | Number of samples with the variant (for prevalence estimate).                            |
-| `sample_total` | Total number of samples considered (for prevalence estimate).                            |
-| `freq`         | Estimated single-locus allele frequency.                                                 |
+| Column         | Description                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------------ |
+| `population`   | Population label for this row (a user-defined grouping of samples; see usage docs).              |
+| `variant`      | Single-locus variant in [variant string notation](#key-terms), `gene_id:aa_position:aa`.         |
+| `gene`         | Short gene name from `--loci_of_interest_bed`. Included only when that file has a `gene` column. |
+| `prev`         | Estimated prevalence for the variant in the population.                                          |
+| `sample_count` | Number of samples with the variant (for prevalence estimate).                                    |
+| `sample_total` | Total number of samples considered (for prevalence estimate).                                    |
+| `freq`         | Estimated single-locus allele frequency.                                                         |
 
-Method-specific columns are left out of this table and kept in [`raw_summaries/raw_sl_summary.tsv`](#raw-summary-tables).
+Method-specific columns are left out of this table and kept in [`raw_summaries/raw_sl_summary.tsv`](#raw-summary-tables). `gene` is added in this table only; the raw table does not include it.
 
 ## Multi Locus Allele Frequencies
 
@@ -98,25 +99,28 @@ In a polyclonal infection it is usually not possible to tell which amino acids c
 
 ### `ml_summary.tsv` columns
 
-| Column         | Description                                                                                        |
-| -------------- | -------------------------------------------------------------------------------------------------- |
-| `population`   | Population label for this row.                                                                     |
-| `group_id`     | Group identifier from `--loci_groups`.                                                             |
-| `variant`      | Haplotype in [variant string notation](#key-terms), for example `PF3D7_0417200.1:51_59_108:I_R_N`. |
-| `prev`         | Estimated prevalence (included when available).                                                    |
-| `sample_count` | Number of samples with the variant (included when available).                                      |
-| `sample_total` | Total number of samples considered (included when available).                                      |
-| `freq`         | Estimated multi-locus haplotype frequency.                                                         |
+| Column         | Description                                                                                                                                                                                                                                            |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `population`   | Population label for this row.                                                                                                                                                                                                                         |
+| `group_id`     | Group identifier from `--loci_groups`.                                                                                                                                                                                                                 |
+| `variant`      | Haplotype in [variant string notation](#key-terms), for example `PF3D7_0417200.1:51_59_108:I_R_N`.                                                                                                                                                     |
+| `gene`         | Short gene name for each gene block in `variant`, separated by `;` in that same order. Included only when `--loci_of_interest_bed` has a `gene` column. A haplotype `PF3D7_0417200.1:51_59_108:I_R_N;PF3D7_0810800.1:437:G` has `gene` `dhfr-ts;dhps`. |
+| `prev`         | Estimated prevalence (included when available).                                                                                                                                                                                                        |
+| `sample_count` | Number of samples with the variant (included when available).                                                                                                                                                                                          |
+| `sample_total` | Total number of samples considered (included when available).                                                                                                                                                                                          |
+| `freq`         | Estimated multi-locus haplotype frequency.                                                                                                                                                                                                             |
 
 Not all methods report `prev`, `sample_count` and `sample_total`. Those that are reported are included in the order shown above:
 
-| MLAF method | Columns in `ml_summary.tsv`                                                         |
-| ----------- | ----------------------------------------------------------------------------------- |
-| `naive`     | `population`, `group_id`, `variant`, `prev`, `sample_count`, `sample_total`, `freq` |
-| `MLBM`      | `population`, `group_id`, `variant`, `freq`                                         |
-| `FEM`       | `population`, `group_id`, `variant`, `prev`, `sample_total`, `freq`                 |
+| MLAF method | Columns in `ml_summary.tsv`                                                                 |
+| ----------- | ------------------------------------------------------------------------------------------- |
+| `naive`     | `population`, `group_id`, `variant`, `gene`, `prev`, `sample_count`, `sample_total`, `freq` |
+| `MLBM`      | `population`, `group_id`, `variant`, `gene`, `freq`                                         |
+| `FEM`       | `population`, `group_id`, `variant`, `gene`, `prev`, `sample_total`, `freq`                 |
 
-Method-specific columns are left out of this table and kept in [`raw_summaries/raw_ml_summary.tsv`](#raw-summary-tables).
+`gene` is omitted from every row above when `--loci_of_interest_bed` has no `gene` column.
+
+Method-specific columns are left out of this table and kept in [`raw_summaries/raw_ml_summary.tsv`](#raw-summary-tables). `gene` is added in this table only; the raw table does not include it.
 
 ## SL-from-ML Summary
 

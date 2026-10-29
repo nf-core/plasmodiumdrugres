@@ -16,6 +16,7 @@ process CONCAT_TABLES {
     path sl_files
     path ml_files
     path sl_from_ml_files
+    path loci_of_interest
 
     output:
     path "sl_summary.tsv" , emit: sl_summary
@@ -33,6 +34,7 @@ process CONCAT_TABLES {
         --sl-files "${sl_files.join(',')}" \
         --ml-files "${ml_files.join(',')}" \
         --sl-from-ml-files "${sl_from_ml_files.join(',')}" \
+        --loci-of-interest "${loci_of_interest}" \
         --sl-out "sl_summary.tsv" \
         --ml-out "ml_summary.tsv" \
         --raw-out-dir "raw_summaries"

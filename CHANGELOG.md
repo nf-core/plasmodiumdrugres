@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.1.0dev - [unreleased]
 
+### `Added`
+
+- When `--loci_of_interest_bed` includes a `gene` column, `sl_summary.tsv` and `ml_summary.tsv` include it after `variant`. Multi-locus values list one gene name per variant-string gene block, separated by `;`, in that same order.
+
 ### `Fixed`
 
 - `TRANSLATE_LOCI_OF_INTEREST` takes `--translate_loci_extra_args` and `--collapse_calls_by_summing` through `ext.args` (set in `conf/tools.config`) like the other wrappers, instead of a `val` input

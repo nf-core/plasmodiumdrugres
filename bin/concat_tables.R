@@ -10,6 +10,12 @@ opts <- list(
   make_option(c("--sl-files"), type = "character", help = "Comma-separated list of sl_summary TSVs"),
   make_option(c("--ml-files"), type = "character", help = "Comma-separated list of ml_summary TSVs"),
   make_option(c("--sl-from-ml-files"), type = "character", help = "Comma-separated list of sl_from_ml_summary TSVs"),
+  make_option(
+    c("--loci-of-interest"),
+    type = "character",
+    default = NULL,
+    help = "Loci of interest table. When it has a gene column, that name is added to the summary tables."
+  ),
   make_option(c("--sl-out"), type = "character", default = "sl_summary.tsv"),
   make_option(c("--ml-out"), type = "character", default = "ml_summary.tsv"),
   make_option(
@@ -50,13 +56,99 @@ files_to_df <- function(files) {
   bind_rows(dfs)
 }
 
-empty_ml_summary <- function() {
-  tibble(
+empty_ml_summary <- function(include_gene = FALSE) {
+  df <- tibble(
     population = character(),
     group_id = character(),
     variant = character(),
     freq = double()
   )
+  if (include_gene) {
+    df <- df %>% mutate(gene = character()) %>% relocate(gene, .after = variant)
+  }
+  df
+}
+
+# Named vector of gene_id -> gene, or NULL when the loci table has no gene column.
+read_gene_lookup <- function(path) {
+  if (is.null(path) || is.na(path) || !nzchar(path)) {
+    return(NULL)
+  }
+  if (!file.exists(path)) {
+    stop(sprintf("Loci of interest file does not exist: '%s'", path))
+  }
+  loci <- read_tsv(path, show_col_types = FALSE)
+  if (!("gene" %in% colnames(loci))) {
+    return(NULL)
+  }
+  if (!("gene_id" %in% colnames(loci))) {
+    stop("Loci of interest file has a gene column but no gene_id column")
+  }
+  lookup <- loci %>%
+    transmute(
+      gene_id = trimws(as.character(.data$gene_id)),
+      gene = trimws(as.character(.data$gene))
+    ) %>%
+    distinct()
+  if (any(is.na(lookup$gene_id) | !nzchar(lookup$gene_id))) {
+    stop("Loci of interest gene_id column contains missing values")
+  }
+  if (any(is.na(lookup$gene) | !nzchar(lookup$gene))) {
+    stop("Loci of interest gene column contains missing values")
+  }
+  conflicts <- lookup %>%
+    count(.data$gene_id) %>%
+    filter(.data$n > 1)
+  if (nrow(conflicts) > 0) {
+    stop(
+      "gene_id maps to more than one gene name: ",
+      paste(conflicts$gene_id, collapse = ", ")
+    )
+  }
+  stats::setNames(lookup$gene, lookup$gene_id)
+}
+
+# One short gene name per variant-string gene block, in that same order.
+# PF3D7_0417200.1:51_59:I_R;PF3D7_0810800.1:437:G -> dhfr-ts;dhps
+genes_for_variants <- function(variants, lookup) {
+  vapply(variants, function(variant) {
+    if (is.na(variant) || !nzchar(variant)) {
+      stop("Cannot add gene column: variant is missing")
+    }
+    parts <- strsplit(variant, ";", fixed = TRUE)[[1]]
+    gene_ids <- sub(":.*$", "", parts)
+    unknown <- gene_ids[is.na(match(gene_ids, names(lookup)))]
+    if (length(unknown) > 0) {
+      stop(
+        "No gene name for gene_id(s) ",
+        paste(unique(unknown), collapse = ", "),
+        " in variant '",
+        variant,
+        "'"
+      )
+    }
+    paste(unname(lookup[gene_ids]), collapse = ";")
+  }, character(1), USE.NAMES = FALSE)
+}
+
+add_gene_column <- function(df, lookup) {
+  if (is.null(lookup)) {
+    return(df)
+  }
+  if (!("variant" %in% colnames(df))) {
+    stop("Cannot add gene column: summary table has no variant column")
+  }
+  gene <- if (nrow(df) == 0) character() else genes_for_variants(df$variant, lookup)
+  df %>%
+    mutate(gene = gene) %>%
+    relocate(gene, .after = variant)
+}
+
+insert_gene_col <- function(cols, include_gene) {
+  if (!include_gene) {
+    return(cols)
+  }
+  append(cols, "gene", after = match("variant", cols))
 }
 
 empty_sl_from_ml_summary <- function() {
@@ -73,7 +165,7 @@ empty_sl_from_ml_summary <- function() {
   )
 }
 
-standardize_sl_summary <- function(df) {
+standardize_sl_summary <- function(df, gene_lookup = NULL) {
   missing <- setdiff(SL_SUMMARY_COLS, colnames(df))
   if (length(missing) > 0) {
     stop(
@@ -81,13 +173,17 @@ standardize_sl_summary <- function(df) {
       paste(missing, collapse = ", ")
     )
   }
-  df %>% select(all_of(SL_SUMMARY_COLS))
+  include_gene <- !is.null(gene_lookup)
+  df %>%
+    add_gene_column(gene_lookup) %>%
+    select(all_of(insert_gene_col(SL_SUMMARY_COLS, include_gene)))
 }
 
-standardize_ml_summary <- function(df) {
+standardize_ml_summary <- function(df, gene_lookup = NULL) {
+  include_gene <- !is.null(gene_lookup)
   # No ML inputs (e.g. unit tests with empty channels): emit header-only stub.
   if (ncol(df) == 0) {
-    return(empty_ml_summary())
+    return(empty_ml_summary(include_gene))
   }
 
   required <- c(ML_SUMMARY_REQUIRED_COLS, ML_SUMMARY_FREQ_COL)
@@ -103,7 +199,9 @@ standardize_ml_summary <- function(df) {
     ML_SUMMARY_OPTIONAL_COLS %in% colnames(df)
   ]
   cols <- c(ML_SUMMARY_REQUIRED_COLS, optional_present, ML_SUMMARY_FREQ_COL)
-  df %>% select(all_of(cols))
+  df %>%
+    add_gene_column(gene_lookup) %>%
+    select(all_of(insert_gene_col(cols, include_gene)))
 }
 
 maybe_sort <- function(df, sort_cols = c("population", "variant")) {
@@ -139,8 +237,9 @@ write_tsv(
   file.path(args$`raw-out-dir`, "raw_sl_from_ml_summary.tsv")
 )
 
-sl_df <- sl_concat %>% standardize_sl_summary()
-ml_df <- ml_concat %>% standardize_ml_summary()
+gene_lookup <- read_gene_lookup(args$`loci-of-interest`)
+sl_df <- standardize_sl_summary(sl_concat, gene_lookup)
+ml_df <- standardize_ml_summary(ml_concat, gene_lookup)
 
 write_tsv(sl_df, args$`sl-out`)
 write_tsv(ml_df, args$`ml-out`)

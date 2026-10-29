@@ -29,20 +29,28 @@ input:
       type: file
       description: Collected per-population SL-from-ML summary TSVs
       pattern: "*"
+  - loci_of_interest:
+      type: file
+      description: |
+        Loci of interest table. When it contains a gene column, sl_summary.tsv
+        and ml_summary.tsv gain a gene column. Multi-locus gene names are
+        separated by ';' in variant-string order.
+      pattern: "*.bed"
 output:
   - sl_summary:
       - sl_summary.tsv:
           type: file
           description: |
-            Standardized single-locus summary table (population, variant, prev,
-            sample_count, sample_total, freq).
+            Standardized single-locus summary table (population, variant, optional
+            gene, prev, sample_count, sample_total, freq).
           pattern: sl_summary.tsv
   - ml_summary:
       - ml_summary.tsv:
           type: file
           description: |
             Standardized multilocus summary table (population, group_id, variant,
-            optional prev/sample_count/sample_total, freq).
+            optional gene, optional prev/sample_count/sample_total, freq).
+            Multi-locus gene values are ';' separated in variant-string order.
           pattern: ml_summary.tsv
   - raw_summaries:
       - raw_summaries:
