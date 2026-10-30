@@ -1,0 +1,131 @@
+# Results
+
+## Allele prevalence
+
+Prevalence of each amino acid at each locus. A specimen with a mixed infection can count towards more than one amino acid, so prevalences at a locus can add up to more than 1. **By locus** draws one panel per locus (x = population). **By population** draws one panel per population (x = locus). More than 10 populations are split into numbered tabs of 10.
+
+<div class="report-tabs">
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#prev-by-locus" data-toggle="tab">By locus</a></li>
+  <li><a href="#prev-by-pop" data-toggle="tab">By population</a></li>
+</ul>
+<div class="tab-content">
+<div id="prev-by-locus" class="tab-pane fade in active">
+
+```{r prev-bars-locus, fig.height=max(5, 2.6 * max(1, n_loci)), fig.width=max(9, 0.36 * max(1, length(population_names(sl_summary))))}
+print_plot(
+  plot_prevalence_bars(sl_summary, aa_calls, loci_coverage, facet_by = "locus"),
+  interactive = interactive,
+  file = file.path(figures_dir, "prevalence_bars_by_locus.png"),
+  width = max(9, 0.36 * max(1, length(population_names(sl_summary)))),
+  height = max(5, 2.6 * max(1, n_loci))
+)
+```
+
+</div>
+<div id="prev-by-pop" class="tab-pane fade">
+
+```{r prev-bars-pop}
+render_population_tabs(
+  population_names(sl_summary),
+  id = "prev-pop",
+  make_plot = function(page) {
+    plot_prevalence_bars(
+      filter_populations(sl_summary, page),
+      aa_calls,
+      loci_coverage,
+      facet_by = "population"
+    )
+  },
+  interactive = interactive,
+  file = file.path(figures_dir, "prevalence_bars.png"),
+  width = 9,
+  height = function(pops) max(5, 2.8 * max(1, length(pops)))
+)
+```
+
+</div>
+</div>
+</div>
+
+## Allele frequency
+
+Frequency of each amino acid at each locus. Bars are stacked so frequencies at a locus add up to 1. Colours match the prevalence plot.
+
+<div class="report-tabs">
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#freq-by-locus" data-toggle="tab">By locus</a></li>
+  <li><a href="#freq-by-pop" data-toggle="tab">By population</a></li>
+</ul>
+<div class="tab-content">
+<div id="freq-by-locus" class="tab-pane fade in active">
+
+```{r freq-bars-locus, fig.height=max(5, 2.6 * max(1, n_loci)), fig.width=max(9, 0.36 * max(1, length(population_names(sl_summary))))}
+print_plot(
+  plot_frequency_bars(sl_summary, aa_calls, loci_coverage, facet_by = "locus"),
+  interactive = interactive,
+  file = file.path(figures_dir, "frequency_bars_by_locus.png"),
+  width = max(9, 0.36 * max(1, length(population_names(sl_summary)))),
+  height = max(5, 2.6 * max(1, n_loci))
+)
+```
+
+</div>
+<div id="freq-by-pop" class="tab-pane fade">
+
+```{r freq-bars-pop}
+render_population_tabs(
+  population_names(sl_summary),
+  id = "freq-pop",
+  make_plot = function(page) {
+    plot_frequency_bars(
+      filter_populations(sl_summary, page),
+      aa_calls,
+      loci_coverage,
+      facet_by = "population"
+    )
+  },
+  interactive = interactive,
+  file = file.path(figures_dir, "frequency_bars.png"),
+  width = 9,
+  height = function(pops) max(5, 2.8 * max(1, length(pops)))
+)
+```
+
+</div>
+</div>
+</div>
+
+## Multi-locus haplotypes
+
+Haplotype estimates for each loci group and population. The legend names the amino acids in each gene (`dhfr: NRN; dhps: A`); if `gene` was not provided, `gene_id` is used. Rare haplotypes (beyond the 12 most frequent in a group) are combined as `other`. Prevalence is shown only when `prev` is in `ml_summary` (naive and FEM; not MLBM). This section is empty when `--loci_groups` was omitted.
+
+```{r haplotype-prev-heading, results='asis', eval = has_ml_prev}
+cat("### Haplotype prevalence\n\n")
+cat("Prevalence of each haplotype. A specimen with a mixed infection can count towards more than one haplotype, so prevalences in a group can add up to more than 1. `other` is the sum of the remaining haplotypes' prevalences.\n")
+```
+
+```{r haplotype-prev, eval = has_ml_prev, fig.height=max(7.2, 3.2 * max(1, n_groups) + 1.8), fig.width=max(10, 0.36 * max(1, length(population_names(ml_summary))))}
+print_plot(
+  plot_haplotype_prevalence(ml_summary, aa_calls, loci_coverage),
+  interactive = interactive,
+  file = file.path(figures_dir, "haplotype_prevalence.png"),
+  height = max(7.2, 3.2 * max(1, n_groups) + 1.8),
+  width = max(10, 0.36 * max(1, length(population_names(ml_summary))))
+)
+```
+
+```{r haplotype-freq-heading, results='asis', eval = has_ml_freq}
+cat("### Haplotype frequency\n\n")
+cat("Stacked haplotype frequencies. Bars in a group add up to 1.\n")
+```
+
+```{r haplotype-stack, eval = has_ml_freq, fig.height=max(7.2, 3.2 * max(1, n_groups) + 1.8), fig.width=max(10, 0.36 * max(1, length(population_names(ml_summary))))}
+print_plot(
+  plot_haplotype_stack(ml_summary, aa_calls, loci_coverage),
+  interactive = interactive,
+  file = file.path(figures_dir, "haplotype_stack.png"),
+  height = max(7.2, 3.2 * max(1, n_groups) + 1.8),
+  width = max(10, 0.36 * max(1, length(population_names(ml_summary))))
+)
+```

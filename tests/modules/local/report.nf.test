@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process REPORT"
+    script "modules/local/report/main.nf"
+    process "REPORT"
+
+    test("Should render an interactive HTML report") {
+
+        when {
+            process {
+                """
+                input[0] = file("\${projectDir}/tests/modules/local/report/sl_summary.tsv", checkIfExists: true)
+                input[1] = file("\${projectDir}/tests/modules/local/report/ml_summary.tsv", checkIfExists: true)
+                input[2] = file("\${projectDir}/tests/modules/local/report/raw_summaries", checkIfExists: true)
+                input[3] = file("\${projectDir}/tests/modules/local/report/loci_coverage.tsv", checkIfExists: true)
+                input[4] = file("\${projectDir}/tests/modules/local/report/aa_calls.tsv", checkIfExists: true)
+                input[5] = file("\${projectDir}/assets/report", checkIfExists: true)
+                input[6] = file("\${projectDir}/tests/modules/local/report/unassigned_specimens.txt", checkIfExists: true)
+                input[7] = file("\${projectDir}/tests/modules/local/report/population_assignment.tsv", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def html = path(process.out.report.get(0)).text
+            assert html.contains("<h1>Quality Control</h1>")
+            assert html.contains("<h1>Sanity checks</h1>")
+            assert html.contains("<h1>Results</h1>")
+            assert html.indexOf("<h1>Quality Control</h1>") < html.indexOf("<h1>Sanity checks</h1>")
+            assert html.indexOf("<h1>Sanity checks</h1>") < html.indexOf("<h1>Results</h1>")
+            assert html.contains("Locus coverage")
+            assert html.contains('"type":"heatmap"')
+            assert html.contains('"z":[[0,0],[1,1],[1,1]]')
+            assert html.contains("Locus coverage by population")
+            assert html.contains("Unassigned specimens")
+            assert html.contains("s5")
+            assert html.contains("Allele prevalence")
+            assert html.contains("Allele frequency")
+            assert html.contains("Multi-locus haplotypes")
+            assert html.contains("Haplotype prevalence")
+            assert html.contains("Haplotype frequency")
+            assert html.contains("By population")
+            assert html.contains("By locus")
+            assert html.contains("dhfr-ts: IR")
+            assert html.contains("PF3D7_0709000.1: K; dhfr-ts: I")
+            assert html.contains("PF3D7_0417200.1:51_59:I_R")
+            assert html.contains("RMSE")
+            assert !html.contains("R^2 vs 1:1")
+            assert process.out.versions
+        }
+
+    }
+
+    test("Should render a static HTML report with figures") {
+
+        config "tests/modules/local/report/static.config"
+
+        when {
+            process {
+                """
+                input[0] = file("\${projectDir}/tests/modules/local/report/sl_summary.tsv", checkIfExists: true)
+                input[1] = file("\${projectDir}/tests/modules/local/report/ml_summary.tsv", checkIfExists: true)
+                input[2] = file("\${projectDir}/tests/modules/local/report/raw_summaries", checkIfExists: true)
+                input[3] = file("\${projectDir}/tests/modules/local/report/loci_coverage.tsv", checkIfExists: true)
+                input[4] = file("\${projectDir}/tests/modules/local/report/aa_calls.tsv", checkIfExists: true)
+                input[5] = file("\${projectDir}/assets/report", checkIfExists: true)
+                input[6] = file("\${projectDir}/assets/empty_unassigned_specimens.txt", checkIfExists: true)
+                input[7] = file("\${projectDir}/assets/empty_population_assignment.tsv", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def html = path(process.out.report.get(0)).text
+            assert html.contains("<h1>Quality Control</h1>")
+            assert html.contains("<h1>Sanity checks</h1>")
+            assert html.contains("<h1>Results</h1>")
+            assert html.contains("Allele frequency")
+            assert html.contains("By locus")
+            assert html.contains("RMSE")
+            assert process.out.figures
+            assert path(process.out.figures.get(0)[0]).exists()
+        }
+
+    }
+
+}

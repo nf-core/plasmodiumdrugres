@@ -1,0 +1,100 @@
+---
+title: "nf-core/plasmodiumdrugres report"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    self_contained: true
+    theme: cosmo
+    highlight: tango
+    mathjax: null
+    md_extensions: "-tex_math_dollars"
+params:
+  interactive: true
+  sl_summary: ""
+  ml_summary: ""
+  sl_from_ml: NULL
+  loci_coverage: ""
+  aa_calls: ""
+  unassigned: NULL
+  population_assignment: NULL
+  population_label: "pop1"
+  figures_dir: "figures"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 9,
+  fig.height = 5
+)
+source("report_plots.R")
+
+sl_summary <- read_tsv_if_exists(params[["sl_summary"]])
+ml_summary <- read_tsv_if_exists(params[["ml_summary"]])
+sl_from_ml <- read_tsv_if_exists(params[["sl_from_ml"]])
+loci_coverage <- read_tsv_if_exists(params[["loci_coverage"]])
+aa_calls <- read_tsv_if_exists(params[["aa_calls"]])
+population_assignment <- read_tsv_if_exists(params[["population_assignment"]])
+unassigned_specimens <- character()
+unassigned_path <- params[["unassigned"]]
+if (!is.null(unassigned_path) && file.exists(unassigned_path)) {
+  unassigned_specimens <- readLines(unassigned_path)
+  unassigned_specimens <- unassigned_specimens[nzchar(trimws(unassigned_specimens))]
+}
+interactive <- isTRUE(params[["interactive"]])
+figures_dir <- params[["figures_dir"]]
+dir.create(figures_dir, recursive = TRUE, showWarnings = FALSE)
+figures_dir <- normalizePath(figures_dir, mustWork = TRUE)
+n_populations <- if (nrow(population_assignment) > 0 && "population" %in% names(population_assignment)) {
+  n_distinct(population_assignment$population)
+} else {
+  1L
+}
+n_groups <- if (nrow(ml_summary) > 0 && "group_id" %in% names(ml_summary)) {
+  n_distinct(ml_summary$group_id)
+} else {
+  1L
+}
+n_loci <- if (nrow(loci_coverage) > 0) {
+  n_distinct(paste(loci_coverage$gene_id, loci_coverage$aa_position))
+} else if (nrow(sl_summary) > 0) {
+  n_distinct(sl_summary$variant)
+} else {
+  1L
+}
+sanity_dims <- sanity_layout_dims(n_populations)
+has_ml_prev <- has_ml_column(ml_summary, "prev")
+has_ml_freq <- has_ml_column(ml_summary, "freq")
+```
+
+```{css, echo=FALSE}
+.report-tabs { margin: 0.6rem 0 1.2rem; }
+.report-tabs .nav-tabs { margin-bottom: 0; }
+.report-tabs .tab-content { padding-top: 0.85rem; }
+```
+
+```{js, echo=FALSE}
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.jQuery) {
+    jQuery(document).on("shown.bs.tab", 'a[data-toggle="tab"]', function () {
+      window.dispatchEvent(new Event("resize"));
+    });
+  }
+});
+```
+
+This report is produced at the end of an [nf-core/plasmodiumdrugres](https://nf-co.re/plasmodiumdrugres) run. **Quality Control** plots summarise locus coverage and unassigned specimens. **Sanity checks** compare single-locus frequencies with frequencies recovered from the multi-locus estimates. **Results** plots show single and multi-locus prevalence and frequency.
+
+Figures are `r if (interactive) "interactive (hover to compare values)" else "static PNGs suitable for slides or papers"`. Re-run with `--report_interactive false` for static figures, or `--skip_report` to omit this file.
+
+```{r qc, child='_qc.Rmd'}
+```
+
+```{r sanity-checks, child='_sanity_checks.Rmd'}
+```
+
+```{r results, child='_results.Rmd'}
+```

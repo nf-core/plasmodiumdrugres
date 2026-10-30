@@ -1,0 +1,10 @@
+specimen_name	gene	gene_id	aa_position	ref_aa	aa	reads
+s1	dhfr-ts	PF3D7_0417200.1	51	N	I	100
+s1	dhfr-ts	PF3D7_0417200.1	59	C	R	100
+s2	dhfr-ts	PF3D7_0417200.1	51	N	I	80
+s2	dhfr-ts	PF3D7_0417200.1	59	C	C	80
+s3	dhfr-ts	PF3D7_0417200.1	51	N	I	90
+s3	dhfr-ts	PF3D7_0417200.1	59	C	R	90
+s4	dhfr-ts	PF3D7_0417200.1	51	N	N	70
+s4	dhfr-ts	PF3D7_0417200.1	59	C	R	70
+s5	dhfr-ts	PF3D7_0417200.1	51	N	I	50

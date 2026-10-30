@@ -21,6 +21,7 @@
 %%metro file: variant_in  | TSV   | Variant groups
 %%metro file: single_out  | TSV   | Single-locus
 %%metro file: multi_out   | TSV   | Multi-locus
+%%metro file: report_out  | HTML  | Report
 %%metro off_track: ref_in, loci_in, pop_in, variant_in
 
 graph LR
@@ -77,6 +78,12 @@ graph LR
         _mlaf_out -->|opt| multi_out
     end
 
+    subgraph vis [Visualisation]
+        report[Visualisation\nreport]
+        report_out[ ]
+        report -->|opt| report_out
+    end
+
     extract -->|step| translate
     gen_pop -->|opt| translate
     add_ref -->|opt| translate
@@ -84,3 +91,5 @@ graph LR
     split -->|step,opt| slaf
     split -->|step| slap
     split -->|opt| _mlaf
+    single_out -->|opt| report
+    multi_out -->|opt| report

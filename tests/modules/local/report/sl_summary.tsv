@@ -1,0 +1,7 @@
+population	variant	prev	sample_count	sample_total	freq
+pop1	PF3D7_0417200.1:51:I	1	2	2	1
+pop1	PF3D7_0417200.1:59:R	0.5	1	2	0.5
+pop1	PF3D7_0417200.1:59:C	0.5	1	2	0.5
+pop2	PF3D7_0417200.1:51:I	0.5	1	2	0.5
+pop2	PF3D7_0417200.1:51:N	0.5	1	2	0.5
+pop2	PF3D7_0417200.1:59:R	1	2	2	1

@@ -16,6 +16,7 @@ The pipeline steps and estimation methods are described in the [introduction](ht
 - [SL-from-ML Summary](#sl-from-ml-summary): single-locus frequencies derived from the multi-locus estimates
 - [Unassigned specimens](#unassigned-specimens): specimens left out because they have no population
 - [Raw summary tables](#raw-summary-tables): the full method-specific tables behind the summaries
+- [HTML report](#html-report): quality-control, sanity-check and results plots
 - [Pipeline information](#pipeline-information): reports and software versions from the run
 
 ## Key terms
@@ -188,6 +189,26 @@ Only `FEM` adds columns:
 | `naive`     | `population`, `group_id`, `variant`, `sample_total`, `sample_count`, `freq`, `prev` |
 | `MLBM`      | `population`, `variant`, `freq`                                                     |
 | `FEM`       | `population`, `variant`, `freq`                                                     |
+
+## HTML report
+
+After the summaries are written, the pipeline renders a self-contained HTML report at the top of the output directory. Interactive Plotly figures are the default; `--report_interactive false` embeds static ggplot PNGs instead (also written to `figures/` for slides). `--skip_report` omits this step.
+
+Quality control plots: locus coverage (including loci with no covering panel target), locus coverage by population when more than one population was assigned, and unassigned specimens.
+
+Sanity-check plots: square scatter of single-locus frequency vs frequency recovered from the multi-locus estimates, with RMSE from the 1:1 line. Panels are two per row and the same size.
+
+Results plots: allele prevalence and stacked allele frequency, each with a **By population** tab (facet = population, x = locus) and a **By locus** tab (facet = locus, x = population), plus multi-locus haplotype prevalence (when `prev` is in `ml_summary`) and stacked haplotype frequencies per loci group. Haplotype plots are skipped when `--loci_groups` was omitted.
+
+Interactive HTML can be large when there are many populations or haplotypes.
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `plasmodiumdrugres_report.html`: Self-contained HTML report.
+- `figures/`: Static PNGs, only when `--report_interactive false`.
+
+</details>
 
 ## Pipeline information
 

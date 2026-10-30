@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.1.0dev - [unreleased]
 
+### `Added`
+
+- HTML report of quality-control, sanity-check and results plots (`plasmodiumdrugres_report.html` at the top of `--outdir`). Interactive Plotly figures are the default; `--report_interactive false` writes static ggplot PNGs to `figures/`. `--skip_report` omits the report.
+
 ### `Fixed`
 
 - `TRANSLATE_LOCI_OF_INTEREST` takes `--translate_loci_extra_args` and `--collapse_calls_by_summing` through `ext.args` (set in `conf/tools.config`) like the other wrappers, instead of a `val` input

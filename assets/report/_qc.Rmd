@@ -1,0 +1,45 @@
+# Quality Control
+
+## Locus coverage
+
+Proportion of specimens with an amino acid call at each locus of interest. Loci that were input to the pipeline, but had no covering target from the panel information, are marked as uncovered.
+
+```{r locus-coverage, fig.height=5, fig.width=9}
+print_plot(
+  plot_locus_coverage(loci_coverage),
+  interactive = interactive,
+  file = file.path(figures_dir, "locus_coverage.png")
+)
+```
+
+```{r coverage-by-pop-heading, results='asis', eval = n_populations > 1}
+cat("## Locus coverage by population\n\n")
+cat("Proportion of specimens with an amino acid call for each locus, split by population if a population assignment was provided.\n")
+```
+
+```{r coverage-by-pop, eval = n_populations > 1, fig.height=max(6, 0.48 * max(1, n_loci) + 1.6), fig.width=max(9, 0.36 * max(1, n_populations))}
+print_plot(
+  plot_coverage_by_population(aa_calls, population_assignment, loci_coverage, params[["population_label"]], interactive = interactive),
+  interactive = interactive,
+  file = file.path(figures_dir, "coverage_by_population.png"),
+  width = max(9, 0.36 * max(1, n_populations)),
+  height = max(6, 0.48 * max(1, n_loci) + 1.6)
+)
+```
+
+## Unassigned specimens
+
+```{r unassigned, results='asis'}
+if (nrow(population_assignment) == 0) {
+  cat("Population assignment was not used; every specimen is in one population labelled `", params[["population_label"]], "`.\n", sep = "")
+} else if (length(unassigned_specimens) == 0) {
+  cat("No specimens were left out of the population assignment.\n")
+} else {
+  cat(
+    length(unassigned_specimens),
+    " specimen(s) had amino acid calls but no population and were excluded from every estimate:\n\n",
+    sep = ""
+  )
+  cat(paste0("- `", unassigned_specimens, "`", collapse = "\n"), "\n")
+}
+```

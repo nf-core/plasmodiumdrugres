@@ -252,6 +252,20 @@
                     "default": "dcifer",
                     "enum": ["dcifer"],
                     "fa_icon": "fas fa-users-cog"
+                },
+                "skip_report": {
+                    "type": "boolean",
+                    "description": "Skip the HTML report of quality-control, sanity-check and results plots.",
+                    "help_text": "By default the pipeline writes `plasmodiumdrugres_report.html` at the top of `--outdir`. Set `--skip_report` to omit it.",
+                    "default": false,
+                    "fa_icon": "fas fa-chart-bar"
+                },
+                "report_interactive": {
+                    "type": "boolean",
+                    "description": "Render interactive Plotly figures in the HTML report.",
+                    "help_text": "Default true. Set `--report_interactive false` for static ggplot PNGs embedded in the same HTML (and written under `figures/`). Interactive reports can be large when there are many populations or haplotypes.",
+                    "default": true,
+                    "fa_icon": "fas fa-hand-pointer"
                 }
             }
         },

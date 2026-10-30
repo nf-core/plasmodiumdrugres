@@ -1,0 +1,96 @@
+name: report
+description: |
+  Render an HTML report of sanity-check and results plots from pipeline
+  summary tables and amino acid calls.
+keywords:
+  - report
+  - plot
+  - visualisation
+  - html
+tools:
+  - report:
+      description: |
+        R Markdown report with ggplot2 / plotly figures for locus coverage,
+        coverage by population, unassigned specimens, allele prevalence and
+        frequency, multi-locus haplotype composition, and SLAF vs SL-from-ML
+        consistency.
+      homepage: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      documentation: https://github.com/PlasmoGenEpi/plasmodiumdrugres
+      licence: ["MIT"]
+input:
+  - sl_summary:
+      type: file
+      description: Standardised single-locus summary TSV
+      pattern: sl_summary.tsv
+  - ml_summary:
+      type: file
+      description: Standardised multi-locus summary TSV
+      pattern: ml_summary.tsv
+  - raw_summaries:
+      type: directory
+      description: Directory containing raw_sl_from_ml_summary.tsv
+      pattern: raw_summaries
+  - loci_coverage:
+      type: file
+      description: Locus coverage table from translate_loci_of_interest
+      pattern: loci_covered_by_target_samples_info.tsv
+  - aa_calls:
+      type: file
+      description: Collapsed amino acid calls
+      pattern: "*.tsv.gz"
+  - report_templates:
+      type: directory
+      description: R Markdown templates (report.Rmd and child documents)
+      pattern: "*"
+  - unassigned_specimens:
+      type: file
+      description: Specimens with no population assignment (may be empty)
+      pattern: "*.txt"
+  - population_assignment:
+      type: file
+      description: Specimen-to-population TSV (header-only when unused)
+      pattern: "*.tsv"
+output:
+  - report:
+      - plasmodiumdrugres_report.html:
+          type: file
+          description: Self-contained HTML report, published at the top of the output directory
+          pattern: plasmodiumdrugres_report.html
+  - figures:
+      - "figures/*":
+          type: file
+          description: Static PNG figures (only when interactive rendering is off)
+          pattern: figures/*
+  - versions:
+      - versions.yml:
+          type: file
+          description: Software versions
+          pattern: versions.yml
+authors:
+  - "@PlasmoGenEpi"
+maintainers:
+  - "@PlasmoGenEpi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/report:43073bb72f678898
+      build_id: bd-43073bb72f678898_1
+      scan_id: sc-c4217cb91d57a6d0_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/report:38a505589d95eed4
+      build_id: bd-38a505589d95eed4_1
+      scan_id: sc-781a8325be2c1618_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/report:2f29c9218d78580e
+      build_id: bd-2f29c9218d78580e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/9171694963b936e4d51ebe9fb7e76abf6372d9cad32d6f691f126e12b306a96b/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/report:6f194fe2272da1f0
+      build_id: bd-6f194fe2272da1f0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d603a9afdf3db2eda2c76369c9c54c27d4a2177b63b6d32246030293dd2b45e5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/local/report/.conda-lock/linux_amd64-bd-43073bb72f678898_1.txt
+    linux/arm64:
+      lock_file: modules/local/report/.conda-lock/linux_arm64-bd-38a505589d95eed4_1.txt

@@ -1,0 +1,7 @@
+population	group_id	variant	freq	prev
+pop1	pfdhfr	PF3D7_0417200.1:51:I	1	1
+pop1	pfdhfr	PF3D7_0417200.1:59:R	0.5	0.5
+pop1	pfdhfr	PF3D7_0417200.1:59:C	0.5	0.5
+pop2	pfdhfr	PF3D7_0417200.1:51:I	0.5	0.5
+pop2	pfdhfr	PF3D7_0417200.1:51:N	0.5	0.5
+pop2	pfdhfr	PF3D7_0417200.1:59:R	1	1

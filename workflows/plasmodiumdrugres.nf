@@ -13,6 +13,7 @@ include { ESTIMATE_MLAF } from '../subworkflows/local/estimate_mlaf'
 include { ESTIMATE_SLAF } from '../subworkflows/local/estimate_slaf'
 include { MERGE_TABLES } from '../modules/local/merge_tables'
 include { CONCAT_TABLES } from '../modules/local/concat_tables'
+include { REPORT } from '../modules/local/report'
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -125,6 +126,26 @@ workflow PLASMODIUMDRUGRES {
 
     CONCAT_TABLES(all_sl_summary_ch, all_ml_summary_ch, all_sl_from_ml_summary_ch)
     ch_versions = ch_versions.mix(CONCAT_TABLES.out.versions)
+
+    if (!params.skip_report) {
+        ch_unassigned = has_population_assignment
+            ? SPLIT_AA_TABLE_BY_POP.out.unassigned_report.ifEmpty(file("${projectDir}/assets/empty_unassigned_specimens.txt"))
+            : channel.value(file("${projectDir}/assets/empty_unassigned_specimens.txt"))
+        ch_popmap = has_population_assignment
+            ? population_assignment
+            : channel.value(file("${projectDir}/assets/empty_population_assignment.tsv"))
+        REPORT(
+            CONCAT_TABLES.out.sl_summary,
+            CONCAT_TABLES.out.ml_summary,
+            CONCAT_TABLES.out.raw_summaries,
+            TRANSLATE_LOCI_OF_INTEREST.out.loci_covered_by_target_samples_info,
+            TRANSLATE_LOCI_OF_INTEREST.out.collapsed_amino_acid_calls,
+            file("${projectDir}/assets/report"),
+            ch_unassigned,
+            ch_popmap
+        )
+        ch_versions = ch_versions.mix(REPORT.out.versions)
+    }
 
     //
     // Collate and save software versions

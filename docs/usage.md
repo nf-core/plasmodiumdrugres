@@ -246,6 +246,8 @@ Do not set both `--population_assignment` and `--pmo_population_fields`; use one
 - `--mlaf_method` - chosen method to estimate multi-locus allele frequencies (Default: `naive`; Options: `["MLBM","FEM","naive"]`)
 - `--fem_coi` - Average complexity of infection (COI) assumed for every specimen when running `--mlaf_method FEM` (Default: `3`). The pipeline does not estimate COI, so FEM applies this single value to all specimens. The default is a generic assumption rather than an estimate from your data; set it to the expected mean COI for your study population.
 - `--naive_slaf_method` - Chosen naive method when running `--slaf_method naive`. (Default: `read_count_prop`; Options: `["read_count_prop", "presence_absence"]`)
+- `--skip_report` - Skip the HTML report of quality-control, sanity-check and results plots (Default: `false`).
+- `--report_interactive` - Use interactive Plotly figures in the HTML report (Default: `true`). Set to `false` for static ggplot PNGs embedded in the report and written to `figures/`.
 
 ## Running the pipeline
 
