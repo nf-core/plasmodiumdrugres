@@ -7,7 +7,7 @@ lint:
     - docs/images/nf-core-plasmodiumdrugres_logo_light.png
     - docs/images/nf-core-plasmodiumdrugres_logo_dark.png
   multiqc_config: false
-nf_core_version: 4.2.1
+nf_core_version: 4.2.2
 repository_type: pipeline
 template:
   author: PlasmoGenEpi
